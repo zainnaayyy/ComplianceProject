@@ -1,0 +1,160 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
+  font-family: 'Poppins';
+}
+
+.ant-table {
+  border: 1px solid #4b5563 !important;
+  background-color: rgb(30, 41, 59) !important;
+}
+
+.ant-table-header > table {
+    border-color: #4b5563 !important;
+    min-width: 100% !important;
+    table-layout: fixed !important;
+    background-color: rgb(30 41 59) !important;
+}
+
+.ant-table-thead > tr > th,td {
+  /* color: #4b5563; */
+  font-weight: 600 !important;
+  letter-spacing: 0.05em !important;
+  font-size: 0.75rem !important;
+  text-transform: uppercase !important;
+  /* border-color: #e2e8f0;
+  /* background-color: #fff; bg-white */
+    color: rgb(148 163 184) !important;
+    border-color: rgb(51 65 85) !important;
+    background-color: rgb(30 41 59) !important;
+    overflow: hidden !important;
+}
+
+
+
+.ant-table-tbody > tr {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 300ms;
+    
+}
+
+.ant-table-tbody > tr :hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(15 23 42 / var(--tw-bg-opacity)) !important;
+}
+
+.ant-table-tbody > tr > td {
+    border-right: none !important;
+    border-inline-end: none !important;
+    overflow-x: hidden !important;
+}
+
+.ant-table-cell .ant-table-cell-fix-left .ant-table-cell-fix-left-last .td {
+ border: none !important;
+}
+
+.ant-table-thead .ant-table-cell-fix-left-first::before {
+  border-inline-end: none !important;
+}
+
+.ant-table-tbody .ant-table-cell-fix-right-first::after {
+  border-inline-end: none !important;
+}
+
+.ant-table-cell-scrollbar:not([rowspan]) {
+  box-shadow: none !important;
+}
+
+.ant-table-container {
+  border-inline-start: none !important;
+  border: none !important;
+}
+
+.ant-table-wrapper .ant-table-container table>thead>tr:first-child > *:first-child {
+  border-start-start-radius: 0px !important;
+  border-start-end-radius: 0px !important;
+}
+.ant-table-wrapper .ant-table-container table>thead>tr:first-child > *:last-child {
+  border-start-start-radius: 0px !important;
+  border-start-end-radius: 0px !important;
+}
+
+.ant-table-wrapper .ant-table-bordered .ant-table-cell-scrollbar {
+  border-inline-end: none !important;
+}
+
+.ant-table-wrapper .ant-table .ant-table-header {
+  border-radius: 8px 8px 0 0 !important;
+}
+
+.ant-table-wrapper .ant-table.ant-table-bordered >.ant-table-container >.ant-table-header >table >thead>tr>th:nth-last-child(2) {
+  border-inline-end: 0px !important;
+}
+
+.anticon-filter {
+  color: rgb(139 92 246) !important;
+}
+
+.ant-table-body {
+  overflow: hidden !important;
+  overflow-x: auto !important;
+  max-height: 100% !important;
+  scroll-behavior: smooth !important;
+}
+
+.ant-table-body::-webkit-scrollbar {
+  height: 8px !important;
+}
+
+.ant-table-body::-webkit-scrollbar-track {
+  background-color: rgb(148 163 184) !important;
+}
+
+.ant-table-body::-webkit-scrollbar-thumb {
+  background-color: rgb(124 58 237) !important;
+  border-radius: 20px !important;
+}
+
+.ant-table-body::-webkit-scrollbar-thumb:hover {
+  background-color: rgb(109 40 217) !important;
+}
+
+.ant-table-expanded-row-fixed::after {
+  position: absolute !important;
+  top: 0 !important;
+  inset-inline-end: 1px !important;
+  bottom: 0 !important;
+  content: "";
+}
+.ant-empty-description {
+  color: rgb(148 163 184) !important;
+}
+
+.ant-typography {
+  color: rgb(119, 53, 223) !important;
+}
+.ant-typography:hover {
+  color: rgb(139 92 246) !important;
+}
