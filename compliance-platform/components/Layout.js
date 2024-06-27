@@ -4,6 +4,8 @@ import Head from "next/head";
 import CircularMenu from "@/components/CircularMenu";
 import Nav from "@/components/Nav";
 import Chat from "./Chat";
+import Image from "next/image";
+// import LoginImage from "@/assets/image.png"
 
 const themes = ["dark", "light"];
 
@@ -48,7 +50,7 @@ const Layout = ({ children }) => {
 
   return (
     <>
-      {!true ? (
+      {!false ? (
         <div className="flex flex-col sm:flex-row h-screen w-screen overflow-y-hidden">
           <div className="flex justify-center items-center sm:hidden h-24 w-full">
             <img src="/logow.svg" alt="logo" className="w-20 py-1" />
@@ -59,37 +61,13 @@ const Layout = ({ children }) => {
               <h5 className="font-medium mb-6 text-gray-500">
                 Your Admin Dashboard Awaits!
               </h5>
-              <div className="flex justify-between w-full mb-8">
-                <button
-                  // onClick={() => signIn("google")}
-                  className="py-3 w-[150px] bg-white text-[12px] font-medium text-gray-700 rounded-lg"
-                >
-                  <span className="flex justify-center">
-                    <img src="/google-icon.svg" className="w-4" />
-                    &nbsp;Sign in with Google
-                  </span>
-                </button>
-                <button className="py-3 w-[150px] bg-white text-[12px] font-medium text-gray-700 rounded-lg">
-                  <span className="flex justify-evenly items-center">
-                    <img src="/apple-black.svg" className="w-4" />
-                    &nbsp;Sign in with Apple
-                  </span>
-                </button>
-              </div>
-              <div className="flex justify-center items-center w-full mb-6">
-                <hr className="border-gray-500 w-1/3" />
-                <span className="px-1 text-gray-500 text-[12px] font-medium">
-                  or with email
-                </span>
-                <hr className="border-gray-500 w-1/3" />
-              </div>
               <input
-                className="mb-4 px-4 py-3 w-80 border border-gray-300 rounded-lg outline-none focus:border-green-500"
+                className="mb-4 px-4 py-3 w-80 text-black border border-gray-300 rounded-lg outline-none focus:border-green-500"
                 type="email"
                 placeholder="Email"
               />
               <input
-                className="mb-4 px-4 py-3 w-80 border border-gray-300 rounded-lg outline-none focus:border-green-500"
+                className="mb-4 px-4 py-3 w-80 text-black border border-gray-300 rounded-lg outline-none focus:border-green-500"
                 type="password"
                 placeholder="Password"
               />
@@ -99,21 +77,30 @@ const Layout = ({ children }) => {
               <button className="mb-4 px-5 py-3 w-80 bg-primary text-white rounded-lg">
                 Login
               </button>
-              <p className="font-light text-gray-300 text-sm font-medium">
-                Don't have an account?{" "}
-                <a href="#!" className="text-primary">
-                  Register here
-                </a>
-              </p>
             </div>
           </div>
 
           <div className="w-1/2 hidden sm:block">
-            <img
-              src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/img3.webp"
-              alt="Login image"
-              className="w-full h-full object-cover object-left"
+          <div className='relative hidden h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex'>
+          <div className='absolute inset-0 bg-zinc-900' />
+          <div className='relative z-20 flex items-center text-lg font-medium'>
+            <Image
+              src='/logo.png'
+              width={200}
+              height={200}
+              alt='Authentication'
+              className='dark:block'
             />
+          </div>
+          <div className='relative z-20 mt-auto'>
+            <blockquote className='space-y-2'>
+              <p className='text-lg'>
+                &ldquo;It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.&rdquo;
+              </p>
+              <footer className='text-sm'>Zain</footer>
+            </blockquote>
+          </div>
+        </div>
           </div>
         </div>
       ) : (
