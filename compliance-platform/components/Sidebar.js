@@ -2,11 +2,10 @@
 import Link from "next/link";
 import { MdOutlineAdminPanelSettings, MdOutlineDashboard, MdOutlineShoppingCart } from 'react-icons/md'
 import { FaDropbox } from 'react-icons/fa'
-import { useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 
-const Nav = ({isSideBar, handleToggleSideBar}) => {
-  const route = useRouter()
-  const path = route.pathname
+const Sidebar = ({isSideBar, handleToggleSideBar}) => {
+  const path = usePathname()
   return (
       <div className={`pointer-events-none fixed start-0 top-0 z-[60] flex h-full xl:z-10 ${!isSideBar && 'hidden'}`}>
         <div className="border-muted-200 dark:border-muted-700 dark:bg-muted-800 pointer-events-auto relative z-10 h-full w-[220px] bg-white transition-all duration-300">
@@ -166,4 +165,4 @@ const Nav = ({isSideBar, handleToggleSideBar}) => {
   );
 };
 
-export default Nav;
+export default Sidebar;

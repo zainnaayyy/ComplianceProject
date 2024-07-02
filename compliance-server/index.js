@@ -1,31 +1,46 @@
-const express = require('express');
-const { PrismaClient } = require('@prisma/client');
+const express = require("express");
+const mongoose = require("mongoose");
 const cors = require("cors");
 const app = express();
-const prisma = new PrismaClient();
-const cookieParser = require("cookie-parser");
-const bodyParser = require('body-parser');
 require("dotenv").config();
-const { PORT } = process.env;
+const cookieParser = require("cookie-parser");
+const authRoute = require("./Routes/AuthRoute");
+const categoryRoute = require("./Routes/CategoryRoute");
+const productRoute = require("./Routes/ProductRoute");
+const cartRoute = require("./Routes/CartRoute");
+const paymentRoute = require("./Routes/PaymentRoute");
+const { MONGO_URL, PORT } = process.env;
 
-app.use(cors());
-app.use(express.json());
-app.use(cookieParser());
-
-// Define routes
-// app.get('/users', async (req, res) => {
-//   const users = await prisma.user.findMany();
-//   res.json(users);
-// });
-
-// app.post('/users', async (req, res) => {
-//   const { email, name } = req.body;
-//   const user = await prisma.user.create({
-//     data: { email, name },
-//   });
-//   res.json(user);
-// });
+mongoose
+  .connect(MONGO_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log("MongoDB is  connected successfully"))
+  .catch((err) => console.error(err));
 
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.log(`Server is listening on port ${PORT}`);
 });
+
+// app.use(
+//   cors({
+//     origin: ["http://localhost:8000"],
+//     methods: ["GET", "POST", "PUT", "DELETE"],
+//     credentials: true,
+//   })
+// );
+app.use(cors());
+// app.options('*', cors());
+
+app.use(cookieParser());
+
+app.use(express.json());
+
+app.use("/public", express.static("public"))
+
+app.use("/", authRoute);
+app.use("/", categoryRoute);
+app.use("/", productRoute);
+app.use("/", cartRoute);
+app.use("/", paymentRoute);

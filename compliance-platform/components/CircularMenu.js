@@ -90,7 +90,7 @@ const CircularMenu = ({ toggleTheme, handleThemeToggle }) => {
               </span>
             </label>
           </div>
-          <div className="absolute end-[0.2em] top-[0.2em] z-20 flex items-center justify-center transition-all duration-300 translate-x-[-5.75em] translate-y-[3em]">
+          {/* <div className="absolute end-[0.2em] top-[0.2em] z-20 flex items-center justify-center transition-all duration-300 translate-x-[-5.75em] translate-y-[3em]">
             <button
               type="button"
               className="bg-primary-700 flex h-9 w-9 items-center justify-center rounded-full transition-all duration-300"
@@ -101,8 +101,8 @@ const CircularMenu = ({ toggleTheme, handleThemeToggle }) => {
                 alt="flag icon"
               />
             </button>
-          </div>
-          <div className="absolute end-[0.2em] top-[0.2em] z-20 flex items-center justify-center transition-all duration-300 translate-x-[-3.15em] translate-y-[5.5em]">
+          </div> */}
+          <div className="absolute end-[0.2em] top-[0.2em] z-20 flex items-center justify-center transition-all duration-300 translate-x-[-5em] translate-y-[4.5em]">
             <a
               aria-current="page"
               href="/dashboards/ecommerce#"

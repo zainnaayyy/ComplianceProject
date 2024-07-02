@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import Head from "next/head";
 import CircularMenu from "@/components/CircularMenu";
-import Nav from "@/components/Nav";
+import Sidebar from "@/components/Sidebar";
 import Chat from "./Chat";
 import Image from "next/image";
 // import LoginImage from "@/assets/image.png"
@@ -50,7 +50,7 @@ const Layout = ({ children }) => {
 
   return (
     <>
-      {!false ? (
+      {false ? (
         <div className="flex flex-col sm:flex-row h-screen w-screen overflow-y-hidden">
           <div className="flex justify-center items-center sm:hidden h-24 w-full">
             <img src="/logow.svg" alt="logo" className="w-20 py-1" />
@@ -108,7 +108,7 @@ const Layout = ({ children }) => {
           <div>
             <div className="bg-muted-100 dark:bg-muted-900 pb-20">
               {/* ******************************** This is the Sidebar ********************************   */}
-              <Nav
+              <Sidebar
                 isSideBar={isSideBar}
                 handleToggleSideBar={handleToggleSideBar}
               />
@@ -156,7 +156,7 @@ const Layout = ({ children }) => {
                       </div>
                     </button>
                     <h1 className="font-heading text-2xl font-light leading-normal leading-normal text-muted-800 hidden dark:text-white md:block">
-                      Ecommerce
+                      Compliance Forms
                     </h1>
                     <div className="ms-auto"></div>
                     <div className="flex items-center gap-2 h-16">
@@ -204,7 +204,7 @@ const Layout = ({ children }) => {
                           )}
                         </span>
                       </label>
-                      <button
+                      {/* <button
                         type="button"
                         className="border-muted-200 hover:ring-muted-200 dark:hover:ring-muted-700 dark:border-muted-700 dark:bg-muted-800 dark:ring-offset-muted-900 flex h-9 w-9 items-center justify-center rounded-full border bg-white ring-1 ring-transparent transition-all duration-300 hover:ring-offset-4"
                       >
@@ -213,7 +213,7 @@ const Layout = ({ children }) => {
                           src="https://tairo.cssninja.io/img/icons/flags/united-states-of-america.svg"
                           alt="flag icon"
                         />
-                      </button>
+                      </button> */}
                       <div className="group inline-flex items-center justify-center text-right">
                         <div
                           data-headlessui-state
