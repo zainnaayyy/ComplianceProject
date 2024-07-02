@@ -1,23 +1,51 @@
 const User = require("../Models/UserModel");
+const Role = require("../Models/RolesModel");
 const { createSecretToken } = require("../util/SecretToken");
 const bcrypt = require("bcryptjs");
+const mongoose = require('mongoose');
 
 module.exports.Signup = async (req, res, next) => {
   try {
-    const { email, password, fullName, createdAt } = req.body;
+    const { email, password, fullName, roleIds, createdAt } = req.body;
+
+    // Check if the user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.json({ message: "User already exists" });
     }
-    const user = await User.create({ email, password, fullName, createdAt });
+
+    // Ensure roleIds are valid ObjectIds
+    if (!roleIds.every(id => mongoose.Types.ObjectId.isValid(id))) {
+      return res.status(400).json({ message: "Invalid role IDs" });
+    }
+
+    // Find roles by IDs
+    const roles = await Role.find({ _id: { $in: roleIds } });
+    if (roles.length !== roleIds.length) {
+      return res.status(404).json({ message: "Some roles not found" });
+    }
+
+    // Create the user
+    const user = await User.create({
+      email,
+      fullName,
+      password,
+      roles: roles.map(role => role),
+      createdAt: createdAt || new Date(),
+    });
+
+    // Save the user
+    await user.save();
+
+    // Create and set the token
     const token = createSecretToken(user._id);
     res.cookie("token", token, {
       withCredentials: true,
       httpOnly: false,
     });
-    res
-      .status(201)
-      .json({ message: "User signed in successfully", success: true, user });
+
+    // Respond with success message
+    res.status(201).json({ message: "User signed in successfully", success: true, user });
     next();
   } catch (error) {
     console.error(error);

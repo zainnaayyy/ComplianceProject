@@ -9,6 +9,7 @@ const categoryRoute = require("./Routes/CategoryRoute");
 const productRoute = require("./Routes/ProductRoute");
 const cartRoute = require("./Routes/CartRoute");
 const paymentRoute = require("./Routes/PaymentRoute");
+const roleRoute = require("./Routes/RoleRoute");
 const { MONGO_URL, PORT } = process.env;
 
 mongoose
@@ -44,3 +45,4 @@ app.use("/", categoryRoute);
 app.use("/", productRoute);
 app.use("/", cartRoute);
 app.use("/", paymentRoute);
+app.use("/", roleRoute);
