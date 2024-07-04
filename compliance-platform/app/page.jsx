@@ -6,12 +6,12 @@ import React from 'react';
 const page = () => {
   return (
     <>
-      <div className='h-96'>
+      <div className='h-full'>
         <LineChart />
-      </div>
       <div className='flex items-center justify-center mt-5'>
         <BarChart />
         <PieChart />
+      </div>
       </div>
     </>
   );

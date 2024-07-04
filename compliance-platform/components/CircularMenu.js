@@ -10,7 +10,7 @@ const CircularMenu = ({ toggleTheme, handleThemeToggle }) => {
 
   return (
     <div
-      className={`after:bg-primary-600 after:shadow-primary-500/50 dark:after:shadow-muted-800/10 fixed end-[1em] top-[0.6em] z-[90] transition-transform duration-300 after:absolute after:end-0 after:top-0 after:block after:h-12 after:w-12 after:rounded-full after:shadow-lg after:transition-transform after:duration-300 after:content-[''] ${
+      className={`after:bg-dark-primary-600 after:shadow-dark-primary-500/50 dark:after:shadow-dark-muted-800/10 fixed end-[1em] top-[0.6em] z-[90] transition-transform duration-300 after:absolute after:end-0 after:top-0 after:block after:h-12 after:w-12 after:rounded-full after:shadow-lg after:transition-transform after:duration-300 after:content-[''] ${
         isMenuOpen &&
         "after:ease-[cubic-bezier(0.68, 1.55, 0.265, 1)] after:scale-[5.5]"
       }`}
@@ -18,7 +18,7 @@ const CircularMenu = ({ toggleTheme, handleThemeToggle }) => {
       <button
         type="button"
         onClick={toggleMenu}
-        className="bg-primary-500 shadow-primary-500/50 dark:shadow-muted-800/10 relative z-30 flex h-12 w-12 items-center justify-center rounded-full text-white shadow-lg"
+        className="bg-dark-primary-500 shadow-dark-primary-500/50 dark:shadow-dark-muted-800/10 relative z-30 flex h-12 w-12 items-center justify-center rounded-full text-white shadow-lg"
       >
         <span
           className={`relative block h-3 w-3 transition-all duration-300 ${
@@ -26,17 +26,17 @@ const CircularMenu = ({ toggleTheme, handleThemeToggle }) => {
           }`}
         >
           <span
-            className={`bg-muted-50 absolute block h-0.5 w-full transition-all duration-300 ${
+            className={`bg-dark-muted-50 absolute block h-0.5 w-full transition-all duration-300 ${
               isMenuOpen ? "-rotate-45 top-1" : "top-0.5"
             }`}
           ></span>
           <span
-            className={`bg-muted-50 absolute top-1/2 block h-0.5 w-full transition-all duration-300 ${
+            className={`bg-dark-muted-50 absolute top-1/2 block h-0.5 w-full transition-all duration-300 ${
               isMenuOpen && "opacity-0 translate-x-4"
             }`}
           ></span>
           <span
-            className={`bg-muted-50 absolute block h-0.5 w-full transition-all duration-300 ${
+            className={`bg-dark-muted-50 absolute block h-0.5 w-full transition-all duration-300 ${
               isMenuOpen ? "rotate-45 bottom-1.5" : "bottom-0"
             }`}
           ></span>
@@ -45,7 +45,7 @@ const CircularMenu = ({ toggleTheme, handleThemeToggle }) => {
       {isMenuOpen && (
         <div>
           <div className="absolute end-[0.2em] top-[0.2em] z-20 flex items-center justify-center transition-all duration-300 translate-x-[-6.5em] translate-y-[-0.25em]">
-            <label className="nui-focus relative block h-9 w-9 shrink-0 overflow-hidden rounded-full transition-all duration-300 focus-visible:outline-2 ring-offset-muted-500 dark:ring-offset-muted-400 ms-auto">
+            <label className="nui-focus relative block h-9 w-9 shrink-0 overflow-hidden rounded-full transition-all duration-300 focus-visible:outline-2 ring-offset-dark-muted-500 dark:ring-offset-dark-muted-400 ms-auto">
               <input
                 type="checkbox"
                 onChange={handleThemeToggle}
@@ -54,8 +54,8 @@ const CircularMenu = ({ toggleTheme, handleThemeToggle }) => {
               <span
                 className={`${
                   toggleTheme === "light"
-                    ? "bg-white border-muted-300"
-                    : "bg-muted-800 border-muted-700"
+                    ? "bg-white border-dark-muted-300"
+                    : "bg-dark-muted-800 border-dark-muted-700"
                 } relative block h-9 w-9 rounded-full`}
               >
                 {toggleTheme === "light" ? (
@@ -93,7 +93,7 @@ const CircularMenu = ({ toggleTheme, handleThemeToggle }) => {
           {/* <div className="absolute end-[0.2em] top-[0.2em] z-20 flex items-center justify-center transition-all duration-300 translate-x-[-5.75em] translate-y-[3em]">
             <button
               type="button"
-              className="bg-primary-700 flex h-9 w-9 items-center justify-center rounded-full transition-all duration-300"
+              className="bg-dark-primary-700 flex h-9 w-9 items-center justify-center rounded-full transition-all duration-300"
             >
               <img
                 className="h-7 w-7 rounded-full"
@@ -105,16 +105,16 @@ const CircularMenu = ({ toggleTheme, handleThemeToggle }) => {
           <div className="absolute end-[0.2em] top-[0.2em] z-20 flex items-center justify-center transition-all duration-300 translate-x-[-5em] translate-y-[4.5em]">
             <a
               aria-current="page"
-              href="/dashboards/ecommerce#"
+              href="/"
               className="router-link-active router-link-exact-active inline-flex h-9 w-9 items-center justify-center rounded-full transition-all duration-300"
             >
-              <span className="bg-primary-700 flex h-9 w-9 items-center justify-center rounded-full">
+              <span className="bg-dark-primary-700 flex h-9 w-9 items-center justify-center rounded-full">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   xmlnsXlink="http://www.w3.org/1999/xlink"
                   aria-hidden="true"
                   role="img"
-                  className="icon text-muted-400 h-5 w-5"
+                  className="icon text-dark-muted-400 h-5 w-5"
                   width="1em"
                   height="1em"
                   viewBox="0 0 256 256"
@@ -134,14 +134,14 @@ const CircularMenu = ({ toggleTheme, handleThemeToggle }) => {
           <div className="absolute end-[0.2em] top-[0.2em] z-20 flex items-center justify-center transition-all duration-300 translate-x-[0em] translate-y-[6.5em]">
             <button
               type="button"
-              className="bg-primary-700 flex h-9 w-9 items-center justify-center rounded-full transition-all duration-300"
+              className="bg-dark-primary-700 flex h-9 w-9 items-center justify-center rounded-full transition-all duration-300"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 xmlnsXlink="http://www.w3.org/1999/xlink"
                 aria-hidden="true"
                 role="img"
-                className="icon text-muted-400 h-5 w-5"
+                className="icon text-dark-muted-400 h-5 w-5"
                 width="1em"
                 height="1em"
                 viewBox="0 0 256 256"

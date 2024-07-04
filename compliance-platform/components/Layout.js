@@ -8,15 +8,11 @@ import Image from "next/image";
 import { useTheme } from 'next-themes';
 // import LoginImage from "@/assets/image.png"
 
-const themes = ['dark', 'light'];
-
 const Layout = ({ children }) => {
-  const { setTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
   // **************** All States ****************
   const [isSideBar, setIsSideBar] = useState(true); // state for Sidebar visibility
-  const [toggleTheme, setToggleTheme] = useState('dark'); // state for toggling theme
   const [scrollPosition, setScrollPosition] = useState(0); // state for scroll position
-  const [isChatOpen, setIsChatOpen] = useState(false); // state for toggling chat
 
   // **************** All useEffects ****************
   useEffect(() => {
@@ -35,24 +31,14 @@ const Layout = ({ children }) => {
   };
 
   //2. For toggling theme
-  // const handleThemeToggle = () => {
-  //   setToggleTheme((prevTheme) => (prevTheme === 'dark' ? 'light' : 'dark'));
-  // };
-
   const handleThemeToggle = () => {
-    const newTheme = toggleTheme === 'dark' ? 'light' : 'dark';
-    setToggleTheme(newTheme);
+    const newTheme = theme === 'dark' ? 'light' : 'dark'
     setTheme(newTheme);
   };
 
   //3. For handling scroll
   const handleScroll = () => {
     setScrollPosition(window.pageYOffset);
-  };
-
-  //4. For toggling chat
-  const handleToggleChat = () => {
-    setIsChatOpen((prevState) => !prevState);
   };
 
   return (
@@ -115,7 +101,7 @@ const Layout = ({ children }) => {
       ) : (
         <div id='__nuxt'>
           <div>
-            <div className='bg-muted-100 dark:bg-muted-900 pb-20'>
+            <div className='bg-light-muted-100 dark:bg-dark-muted-900 pb-20'>
               {/* ******************************** This is the Sidebar ********************************   */}
               <Sidebar
                 isSideBar={isSideBar}
@@ -130,7 +116,7 @@ const Layout = ({ children }) => {
                     : 'xl:max-w-[calc(100%_-_40px)] xl:ms-[40px]'
                 }`}
               >
-                <div className='mx-auto w-full max-w-7xl'>
+                <div className='mx-auto w-full max-w-[90rem]'>
                   {/* ******************************* Header ***************************** */}
                   <div className='relative z-50 mb-5 flex h-16 items-center gap-2'>
                     <button
@@ -144,19 +130,19 @@ const Layout = ({ children }) => {
                         } relative h-5 w-5`}
                       >
                         <span
-                          className={`bg-primary-500 absolute block h-0.5 w-full transition-all duration-300 ${
+                          className={`bg-dark-primary-500 absolute block h-0.5 w-full transition-all duration-300 ${
                             isSideBar
                               ? '-rotate-45 rtl:rotate-45 max-w-[75%] top-1'
                               : 'top-0.5'
                           }`}
                         ></span>
                         <span
-                          className={`bg-primary-500 absolute top-1/2 block h-0.5 w-full max-w-[50%] transition-all duration-300 ${
+                          className={`bg-dark-primary-500 absolute top-1/2 block h-0.5 w-full max-w-[50%] transition-all duration-300 ${
                             isSideBar && 'opacity-0 translate-x-4'
                           }`}
                         ></span>
                         <span
-                          className={`bg-primary-500 absolute block h-0.5 w-full transition-all duration-300 ${
+                          className={`bg-dark-primary-500 absolute block h-0.5 w-full transition-all duration-300 ${
                             isSideBar
                               ? 'rotate-45 rtl:-rotate-45 max-w-[75%] bottom-1'
                               : 'bottom-0'
@@ -164,21 +150,29 @@ const Layout = ({ children }) => {
                         ></span>
                       </div>
                     </button>
-                    <h1 className='font-heading text-2xl font-light leading-normal leading-normal text-muted-800 hidden dark:text-white md:block'>
+                    <h1 className='font-heading text-2xl font-light leading-normal text-muted-800 hidden dark:text-white md:block'>
                       Compliance Forms
                     </h1>
                     <div className='ms-auto'></div>
                     <div className='flex items-center gap-2 h-16'>
-                      <button
-                        type='button'
-                        onClick={handleThemeToggle}
-                        className={`relative block h-9 w-9 shrink-0 overflow-hidden rounded-full transition-all duration-300 focus-visible:outline-2 dark:ring-offset-muted-900 ${
-                          toggleTheme === 'light'
-                            ? 'bg-white border-muted-300'
-                            : 'bg-muted-800 border-muted-700'
-                        }`}
-                      >
-                        {toggleTheme === 'light' ? (
+                      <div className='group inline-flex items-center justify-center text-right'>
+                        <div
+                          data-headlessui-state
+                          className='relative h-9 w-9 text-left'
+                        >
+                          <div
+                            id='headlessui-menu-button-207'
+                            aria-haspopup='menu'
+                            aria-expanded='false'
+                            data-headlessui-state
+                          >
+                            <button
+                              type='button'
+                              onClick={handleThemeToggle}
+                              className='group-hover:ring-dark-muted-200 dark:group-hover:ring-dark-muted-700 dark:ring-offset-dark-muted-900 inline-flex h-9 w-9 items-center justify-center rounded-full ring-1 ring-transparent transition-all duration-300 group-hover:ring-offset-4 nui-focus'
+                            >
+                              <span className='border-dark-muted-200 dark:border-dark-muted-700 dark:bg-dark-muted-800 flex h-9 w-9 items-center justify-center rounded-full border bg-white'>
+                              {theme === 'light' ? (
                           <svg
                             aria-hidden='true'
                             viewBox='0 0 24 24'
@@ -207,17 +201,11 @@ const Layout = ({ children }) => {
                             />
                           </svg>
                         )}
-                      </button>
-                      {/* <button
-                        type="button"
-                        className="border-muted-200 hover:ring-muted-200 dark:hover:ring-muted-700 dark:border-muted-700 dark:bg-muted-800 dark:ring-offset-muted-900 flex h-9 w-9 items-center justify-center rounded-full border bg-white ring-1 ring-transparent transition-all duration-300 hover:ring-offset-4"
-                      >
-                        <img
-                          className="h-7 w-7 rounded-full"
-                          src="https://tairo.cssninja.io/img/icons/flags/united-states-of-america.svg"
-                          alt="flag icon"
-                        />
-                      </button> */}
+                              </span>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
                       <div className='group inline-flex items-center justify-center text-right'>
                         <div
                           data-headlessui-state
@@ -231,15 +219,15 @@ const Layout = ({ children }) => {
                           >
                             <button
                               type='button'
-                              className='group-hover:ring-muted-200 dark:group-hover:ring-muted-700 dark:ring-offset-muted-900 inline-flex h-9 w-9 items-center justify-center rounded-full ring-1 ring-transparent transition-all duration-300 group-hover:ring-offset-4'
+                              className='group-hover:ring-dark-muted-200 dark:group-hover:ring-dark-muted-700 dark:ring-offset-dark-muted-900 inline-flex h-9 w-9 items-center justify-center rounded-full ring-1 ring-transparent transition-all duration-300 group-hover:ring-offset-4 nui-focus'
                             >
-                              <span className='border-muted-200 dark:border-muted-700 dark:bg-muted-800 flex h-9 w-9 items-center justify-center rounded-full border bg-white'>
+                              <span className='border-dark-muted-200 dark:border-dark-muted-700 dark:bg-dark-muted-800 flex h-9 w-9 items-center justify-center rounded-full border bg-white'>
                                 <svg
                                   xmlns='http://www.w3.org/2000/svg'
                                   xmlnsXlink='http://www.w3.org/1999/xlink'
                                   aria-hidden='true'
                                   role='img'
-                                  className='icon text-muted-400 h-5 w-5'
+                                  className='icon dark:text-dark-muted-400 h-5 w-5'
                                   width='1em'
                                   height='1em'
                                   viewBox='0 0 256 256'
@@ -261,14 +249,14 @@ const Layout = ({ children }) => {
 
                       <button
                         type='button'
-                        className='border-muted-200 hover:ring-muted-200 dark:hover:ring-muted-700 dark:border-muted-700 dark:bg-muted-800 dark:ring-offset-muted-900 flex h-9 w-9 items-center justify-center rounded-full border bg-white ring-1 ring-transparent transition-all duration-300 hover:ring-offset-4'
+                        className='border-dark-muted-200 hover:ring-dark-muted-200 dark:hover:ring-dark-muted-700 dark:border-dark-muted-700 dark:bg-dark-muted-800 dark:ring-offset-dark-muted-900 flex h-9 w-9 items-center justify-center rounded-full border bg-white ring-1 ring-transparent transition-all duration-300 hover:ring-offset-4 nui-focus'
                       >
                         <svg
                           xmlns='http://www.w3.org/2000/svg'
                           xmlnsXlink='http://www.w3.org/1999/xlink'
                           aria-hidden='true'
                           role='img'
-                          className='icon text-muted-400 h-5 w-5'
+                          className='icon dark:text-dark-muted-400 h-5 w-5'
                           width='1em'
                           height='1em'
                           viewBox='0 0 256 256'
@@ -290,7 +278,7 @@ const Layout = ({ children }) => {
                           className='relative h-9 w-9 text-left'
                         >
                           <button
-                            className='group-hover:ring-primary-500 dark:ring-offset-muted-900 inline-flex h-9 w-9 items-center justify-center rounded-full ring-1 ring-transparent transition-all duration-300 group-hover:ring-offset-4'
+                            className='group-hover:ring-dark-primary-500 dark:ring-offset-dark-muted-900 inline-flex h-9 w-9 items-center justify-center rounded-full ring-1 ring-transparent transition-all duration-300 group-hover:ring-offset-4 nui-focus'
                             id='headlessui-menu-button-209'
                             aria-haspopup='menu'
                             aria-expanded='false'
@@ -312,7 +300,7 @@ const Layout = ({ children }) => {
                   </div>
                   {/* main starts here */}
                   <main>
-                    <div className='nuxt-loading-indicator fixed top-0 right-0 left-0 pointer-events-none w-auto h-3 opacity-0 bg-primary-500 bg-size-[Infinity%] bg-no-repeat transform scaleX-0 transform-origin-left transition-transform duration-100 transition-height duration-400 transition-opacity z-999999'></div>
+                    <div className='nuxt-loading-indicator fixed top-0 right-0 left-0 pointer-events-none w-auto h-3 opacity-0 bg-dark-primary-500 bg-size-[Infinity%] bg-no-repeat transform scaleX-0 transform-origin-left transition-transform duration-100 transition-height duration-400 transition-opacity z-999999'></div>
                     <div></div>
                     <div>{children}</div>
                   </main>
@@ -323,7 +311,7 @@ const Layout = ({ children }) => {
             {/* ******************************** This is CircularMenuComponent ******************************** */}
             {scrollPosition > 50 && (
               <CircularMenu
-                toggleTheme={toggleTheme}
+                toggleTheme={theme}
                 handleThemeToggle={handleThemeToggle}
               />
             )}
