@@ -23,6 +23,18 @@ const userSchema = new mongoose.Schema({
   token: {
     type: String,
   },
+  status: {
+    type: Boolean,
+    required: [true, "Status is required"],
+  },
+  site: {
+    type: String,
+    required: [true, "Site is required"],
+  },
+  LOB: {
+    type: String,
+    required: [true, "Line of Business is required"],
+  },
 });
 
 userSchema.pre("save", async function (next) {

@@ -5,11 +5,9 @@ const app = express();
 require("dotenv").config();
 const cookieParser = require("cookie-parser");
 const authRoute = require("./Routes/AuthRoute");
-const categoryRoute = require("./Routes/CategoryRoute");
-const productRoute = require("./Routes/ProductRoute");
-const cartRoute = require("./Routes/CartRoute");
-const paymentRoute = require("./Routes/PaymentRoute");
 const roleRoute = require("./Routes/RoleRoute");
+const siteRoute = require("./Routes/SiteRoute");
+const LOBRoute = require("./Routes/LOBRoute");
 const { MONGO_URL, PORT } = process.env;
 
 mongoose
@@ -41,8 +39,6 @@ app.use(express.json());
 app.use("/public", express.static("public"))
 
 app.use("/", authRoute);
-app.use("/", categoryRoute);
-app.use("/", productRoute);
-app.use("/", cartRoute);
-app.use("/", paymentRoute);
 app.use("/", roleRoute);
+app.use("/", siteRoute);
+app.use("/", LOBRoute);

@@ -1,18 +1,24 @@
 'use client'
 import { useEffect, useState } from "react";
-import Head from "next/head";
 import CircularMenu from "@/components/CircularMenu";
 import Sidebar from "@/components/Sidebar";
-import Chat from "./Chat";
 import Image from "next/image";
 import { useTheme } from 'next-themes';
+import { AuthProvider, isEmpty, useAuth } from "@/shared";
+import { Button, Input } from "antd";
 // import LoginImage from "@/assets/image.png"
 
 const Layout = ({ children }) => {
   const { theme, setTheme } = useTheme();
+  const { isValidToken, login, setIsValidToken } = useAuth()
+  console.log(isValidToken)
   // **************** All States ****************
   const [isSideBar, setIsSideBar] = useState(true); // state for Sidebar visibility
   const [scrollPosition, setScrollPosition] = useState(0); // state for scroll position
+  const [ email, setEmail] = useState('');
+  const [ pass, setPass ] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState();
 
   // **************** All useEffects ****************
   useEffect(() => {
@@ -41,9 +47,38 @@ const Layout = ({ children }) => {
     setScrollPosition(window.pageYOffset);
   };
 
+  async function onSubmit(event) {
+    event.preventDefault();
+    setIsLoading(true);
+    let errorObject = {};
+    // Validate email
+    if (isEmpty(email) || !email.trim()) {
+        errorObject = { ...errorObject, email: 'Email is required' } 
+    }
+    // Validate password
+    if (isEmpty(pass) || !pass.trim()) {
+        errorObject = { ...errorObject, pass: 'Password is required.' } 
+    }
+    // If there are errors, set them and return
+    if (errorObject?.email != null || errorObject?.pass != null) {
+      setIsLoading(false);
+      return setError(errorObject)
+    }
+    
+    const userData = await login(email, pass);
+    console.log("userData: ", userData)
+    if(!userData.success) {
+      errorObject ={...errorObject, message: userData.message}
+      setIsLoading(false);
+      return setError(errorObject)
+    }
+    setIsValidToken(userData.user)
+    setIsLoading(false);
+  }
+
   return (
     <>
-      {false ? (
+      {!isValidToken ? (
         <div className='flex flex-col sm:flex-row h-screen w-screen overflow-y-hidden'>
           <div className='flex justify-center items-center sm:hidden h-24 w-full'>
             <img src='/logow.svg' alt='logo' className='w-20 py-1' />
@@ -54,22 +89,38 @@ const Layout = ({ children }) => {
               <h5 className='font-medium mb-6 text-gray-500'>
                 Your Admin Dashboard Awaits!
               </h5>
-              <input
+              <Input
                 className='mb-4 px-4 py-3 w-80 text-black border border-gray-300 rounded-lg outline-none focus:border-green-500'
-                type='email'
-                placeholder='Email'
+                id='text'
+                name='text'
+                placeholder='name@example.com'
+                type='text'
+                autoCapitalize='none'
+                autoComplete='text'
+                autoCorrect='off'
+                disabled={isLoading}
+                onChange={(e) => setEmail(e.target.value)}
               />
-              <input
+              <Input
                 className='mb-4 px-4 py-3 w-80 text-black border border-gray-300 rounded-lg outline-none focus:border-green-500'
+                id='pass'
+                name='pass'
+                placeholder='*********'
                 type='password'
-                placeholder='Password'
+                autoCapitalize='none'
+                autoComplete='off'
+                autoCorrect='off'
+                disabled={isLoading}
+                onChange={(e) => setPass(e.target.value)}
               />
-              <p className='flex justify-end w-full text-sm font-medium text-primary mb-5'>
+              <p>{error?.pass ? <span className='text-red-600 text-xs'>{error?.pass}</span> : null}</p>
+              <p className='flex justify-end w-full text-sm font-medium dark:text-dark-primary text-light-primary mb-5'>
                 <a href='#!'>Forgot password?</a>
               </p>
-              <button className='mb-4 px-5 py-3 w-80 bg-primary text-white rounded-lg'>
+              <Button loading={isLoading} onClick={onSubmit} className='mb-4 px-5 py-3 w-80 h-12 bg-light-primary dark:bg-dark-primary text-white rounded-lg'>
                 Login
-              </button>
+              </Button>
+              <p>{error?.message ? <span className='text-red-600 text-xs'>{error?.message}</span> : null}</p>
             </div>
           </div>
 
