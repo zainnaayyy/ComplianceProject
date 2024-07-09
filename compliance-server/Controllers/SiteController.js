@@ -48,3 +48,20 @@ exports.deleteSite = async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
+
+exports.searchSite = async (req, res) => {
+  try {
+    const { name } = req.query;
+    let filter = {};
+    if (name) {
+      filter.name = { $regex: name, $options: 'i' }; // Case-insensitive search
+    }
+    const sites = await Site.find(filter);
+    if (!sites.length)
+      return res.status(404).json({ message: "No site found!", success: false });
+    res.status(200).json({ message: "Data fetched successfully", success: true, sites });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
