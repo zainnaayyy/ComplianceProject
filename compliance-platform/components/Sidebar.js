@@ -7,86 +7,135 @@ import { usePathname } from "next/navigation";
 const Sidebar = ({isSideBar, handleToggleSideBar}) => {
   const path = usePathname()
   return (
-      <div className={`pointer-events-none fixed start-0 top-0 z-[60] flex h-full xl:z-10 ${!isSideBar && 'hidden'}`}>
-        <div className="border-light-muted-200 dark:border-dark-muted-700 dark:bg-dark-muted-800 bg-light-muted-50 pointer-events-auto relative z-10 h-full w-[250px] transition-all duration-300">
-          <div className="flex h-screen flex-col">
-            <div className="flex h-32 w-full items-center px-6">
-              <div className="font-heading text-dark-muted-700 font-semibold text-xl capitalize dark:text-light-muted-50">
-                Admin Dashboard
-              </div>
-              <button
-                type="button"
-                onClick={handleToggleSideBar}
-                className="dark:text-dark-muted-400 text-light-muted-800 hover:dark:bg-dark-muted-100 hover:bg-light-muted-100 hover:dark:text-dark-muted-600 hover:text-dark-muted-600 ms-auto flex h-10 w-10 items-center justify-center rounded-full transition-colors duration-300 xl:hidden"
-              >
-                X
-              </button>
+    <div
+      className={`pointer-events-none fixed start-0 top-0 z-[60] flex h-full xl:z-10 ${
+        !isSideBar && 'hidden'
+      }`}
+    >
+      <div className='border-light-muted-200 dark:border-dark-muted-700 dark:bg-dark-muted-800 bg-light-muted-50 pointer-events-auto relative z-10 h-full w-[250px] transition-all duration-300'>
+        <div className='flex h-screen flex-col'>
+          <div className='flex h-32 w-full items-center px-6'>
+            <div className='font-heading text-dark-muted-700 font-semibold text-xl capitalize dark:text-light-muted-50'>
+              Admin Dashboard
             </div>
+            <button
+              type='button'
+              onClick={handleToggleSideBar}
+              className='dark:text-dark-muted-400 text-light-muted-800 hover:dark:bg-dark-muted-100 hover:bg-light-muted-100 hover:dark:text-dark-muted-600 hover:text-dark-muted-600 ms-auto flex h-10 w-10 items-center justify-center rounded-full transition-colors duration-300 xl:hidden'
+            >
+              X
+            </button>
+          </div>
 
-            <div className="slimscroll relative h-full w-full overflow-y-auto">
-              <div className="px-6 pb-8 pr-0">
-                <ul>
-                  <li className="group mb-1 min-h-[2rem]">
-                    <Link
-                      href={'/'}
-                      className={`${path === '/' && 'dark:bg-dark-muted-900 bg-light-muted-100 p-2 rounded-l-lg'}  nui-focus relative top-0.5 flex items-center`}
+          <div className='slimscroll relative h-full w-full overflow-y-auto'>
+            <div className='px-6 pb-8 pr-0'>
+              <ul>
+                <li className='group mb-1 min-h-[2rem]'>
+                  <Link
+                    href={'/'}
+                    className={`${
+                      path === '/' &&
+                      'dark:bg-dark-muted-900 bg-light-muted-100 p-2 rounded-l-lg'
+                    }  nui-focus relative top-0.5 flex items-center`}
+                  >
+                    <span
+                      className={`${
+                        path === '/'
+                          ? 'dark:text-dark-primary-300 text-dark-primary-500'
+                          : 'text-dark-muted-500'
+                      } group-hover:dark:text-dark-primary-500 group-hover:text-dark-primary-800 relative inline-flex items-center gap-2 font-sans text-md transition-colors duration-300`}
                     >
-                      <span className={`${path === '/' ? 'dark:text-dark-primary-300 text-dark-primary-500' : 'text-dark-muted-500'} group-hover:dark:text-dark-primary-500 group-hover:text-dark-primary-800 relative inline-flex items-center gap-2 font-sans text-md transition-colors duration-300`}>
-                        <MdOutlineDashboard />
-                        <span>Dashboard</span>
-                      </span>
-                    </Link>
-                  </li>
+                      <MdOutlineDashboard />
+                      <span>Dashboard</span>
+                    </span>
+                  </Link>
+                </li>
 
-                  <li className="group mb-1 min-h-[2rem]">
-                    <Link
-                      href={'/products'}
-                      className={`${path === '/products' && 'dark:bg-dark-muted-900 bg-light-muted-100 p-2 rounded-l-lg'} nui-focus relative top-0.5 flex items-center`}
+                <li className='group mb-1 min-h-[2rem]'>
+                  <Link
+                    href={'/users'}
+                    className={`${
+                      path === '/users' &&
+                      'dark:bg-dark-muted-900 bg-light-muted-100 p-2 rounded-l-lg'
+                    } nui-focus relative top-0.5 flex items-center`}
+                  >
+                    <span
+                      className={`${
+                        path === '/users'
+                          ? 'dark:text-dark-primary-300 text-dark-primary-500'
+                          : 'text-dark-muted-500'
+                      } group-hover:dark:text-dark-primary-500 group-hover:text-dark-primary-800 relative inline-flex items-center gap-2 font-sans text-md transition-colors duration-300`}
                     >
-                      <span className={`${path === '/products' ? 'dark:text-dark-primary-300 text-dark-primary-500' : 'text-dark-muted-500'} group-hover:dark:text-dark-primary-500 group-hover:text-dark-primary-800 relative inline-flex items-center gap-2 font-sans text-md transition-colors duration-300`}>
-                        <FaDropbox />
-                        <span>Products</span>
-                      </span>
-                    </Link>
-                  </li>
+                      <FaDropbox />
+                      <span>Users</span>
+                    </span>
+                  </Link>
+                </li>
 
-                  <li className="group mb-1 min-h-[2rem]">
-                    <Link
-                      href={'/form'}
-                      className={`${path === '/form' && 'dark:bg-dark-muted-900 bg-light-muted-100 p-2 rounded-l-lg'} nui-focus relative top-0.5 flex items-center`}
+                <li className='group mb-1 min-h-[2rem]'>
+                  <Link
+                    href={'/form'}
+                    className={`${
+                      path === '/form' &&
+                      'dark:bg-dark-muted-900 bg-light-muted-100 p-2 rounded-l-lg'
+                    } nui-focus relative top-0.5 flex items-center`}
+                  >
+                    <span
+                      className={`${
+                        path === '/form'
+                          ? 'dark:text-dark-primary-300 text-dark-primary-500'
+                          : 'text-dark-muted-500'
+                      } group-hover:dark:text-dark-primary-500 group-hover:text-dark-primary-800 relative inline-flex items-center gap-2 font-sans text-md transition-colors duration-300`}
                     >
-                      <span className={`${path === '/form' ? 'dark:text-dark-primary-300 text-dark-primary-500' : 'text-dark-muted-500'} group-hover:dark:text-dark-primary-500 group-hover:text-dark-primary-800 relative inline-flex items-center gap-2 font-sans text-md transition-colors duration-300`}>
-                        <FaWpforms />
-                        <span>Forms</span>
-                      </span>
-                    </Link>
-                  </li>
+                      <FaWpforms />
+                      <span>Forms</span>
+                    </span>
+                  </Link>
+                </li>
 
-                  <li className="group mb-1 min-h-[2rem]">
-                    <Link
-                      href={'/orders'}
-                      className={`${path === '/orders' && 'dark:bg-dark-muted-900 bg-light-muted-100 p-2 rounded-l-lg'} nui-focus relative top-0.5 flex items-center`}
+                <li className='group mb-1 min-h-[2rem]'>
+                  <Link
+                    href={'/orders'}
+                    className={`${
+                      path === '/orders' &&
+                      'dark:bg-dark-muted-900 bg-light-muted-100 p-2 rounded-l-lg'
+                    } nui-focus relative top-0.5 flex items-center`}
+                  >
+                    <span
+                      className={`${
+                        path === '/orders'
+                          ? 'dark:text-dark-primary-300 text-dark-primary-500'
+                          : 'text-dark-muted-500'
+                      } group-hover:dark:text-dark-primary-500 group-hover:text-dark-primary-800 relative inline-flex items-center gap-2 font-sans text-md transition-colors duration-300`}
                     >
-                      <span className={`${path === '/orders' ? 'dark:text-dark-primary-300 text-dark-primary-500' : 'text-dark-muted-500'} group-hover:dark:text-dark-primary-500 group-hover:text-dark-primary-800 relative inline-flex items-center gap-2 font-sans text-md transition-colors duration-300`}>
-                        <MdOutlineShoppingCart />
-                        <span>Orders</span>
-                      </span>
-                    </Link>
-                  </li>
+                      <MdOutlineShoppingCart />
+                      <span>Orders</span>
+                    </span>
+                  </Link>
+                </li>
 
-                  <li className="group mb-1 min-h-[2rem]">
-                    <Link
-                      href={'/settings'}
-                      className={`${path === '/settings' && 'dark:bg-dark-muted-900 bg-light-muted-100 p-2 rounded-l-lg'} nui-focus relative top-0.5 flex items-center`}
+                <li className='group mb-1 min-h-[2rem]'>
+                  <Link
+                    href={'/settings'}
+                    className={`${
+                      path === '/settings' &&
+                      'dark:bg-dark-muted-900 bg-light-muted-100 p-2 rounded-l-lg'
+                    } nui-focus relative top-0.5 flex items-center`}
+                  >
+                    <span
+                      className={`${
+                        path === '/settings'
+                          ? 'dark:text-dark-primary-300 text-dark-primary-500'
+                          : 'text-dark-muted-500'
+                      } group-hover:dark:text-dark-primary-500 group-hover:text-dark-primary-800 relative inline-flex items-center gap-2 font-sans text-md transition-colors duration-300`}
                     >
-                      <span className={`${path === '/settings' ? 'dark:text-dark-primary-300 text-dark-primary-500' : 'text-dark-muted-500'} group-hover:dark:text-dark-primary-500 group-hover:text-dark-primary-800 relative inline-flex items-center gap-2 font-sans text-md transition-colors duration-300`}>
-                        <MdOutlineAdminPanelSettings />
-                        <span>Settings</span>
-                      </span>
-                    </Link>
-                  </li>
+                      <MdOutlineAdminPanelSettings />
+                      <span>Settings</span>
+                    </span>
+                  </Link>
+                </li>
 
-                  {/* <li className="border-dark-muted-200 dark:border-dark-muted-700 my-3 h-px w-full border-t"></li>
+                {/* <li className="border-dark-muted-200 dark:border-dark-muted-700 my-3 h-px w-full border-t"></li>
 
                   <li className="mb-1 flex min-h-[2rem] items-center">
                     <a
