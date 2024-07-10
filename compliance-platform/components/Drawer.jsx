@@ -13,6 +13,7 @@ const CustomDrawer = ({ title, visible, onClose }) => {
       {/* <Button type='primary' onClick={showDrawer}>
         Open
       </Button> */}
+      {/* Drawer */}
       <Drawer title={title} onClose={onClose} open={visible}>
         <p>Some contents...</p>
         <p>Some contents...</p>
