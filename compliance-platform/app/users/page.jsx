@@ -70,6 +70,16 @@ const Products = () => {
   const [lobDrawerVisible, setLobDrawerVisible] = useState(false);
   const [sitesDrawerVisible, setSitesDrawerVisible] = useState(false);
 
+  const lobData = [
+    { key: 1, name: 'LOB 1' },
+    { key: 2, name: 'LOB 2' },
+  ];
+
+  const sitesData = [
+    { key: 1, name: 'Site 1' },
+    { key: 2, name: 'Site 2' },
+  ];
+
   const showLobDrawer = () => {
     setLobDrawerVisible(true);
   };
@@ -156,17 +166,6 @@ const Products = () => {
       key: 'email',
       width: 150,
       editable: true,
-      filters: [
-        {
-          text: 'Available',
-          value: 'Available',
-        },
-        {
-          text: 'Out of Stock',
-          value: 'Out of Stock',
-        },
-      ],
-      onFilter: (value, record) => record.address === value,
     },
     {
       title: 'Status',
@@ -174,6 +173,17 @@ const Products = () => {
       key: '3',
       width: 150,
       editable: true,
+      filters: [
+        {
+          text: 'Active',
+          value: 'Active',
+        },
+        {
+          text: 'Inactive',
+          value: 'Inactive',
+        },
+      ],
+      onFilter: (value, record) => record.address === value,
     },
     {
       title: 'Action',
@@ -297,11 +307,13 @@ const Products = () => {
             title='LOB'
             visible={lobDrawerVisible}
             onClose={closeLobDrawer}
+            data={lobData}
           />
           <CustomDrawer
             title='SITES'
             visible={sitesDrawerVisible}
             onClose={closeSitesDrawer}
+            data={sitesData}
           />
         </div>
       </div>

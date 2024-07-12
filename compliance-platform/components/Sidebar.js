@@ -3,9 +3,14 @@ import Link from "next/link";
 import { MdOutlineAdminPanelSettings, MdOutlineDashboard, MdOutlineShoppingCart } from 'react-icons/md'
 import { FaDropbox, FaWpforms } from 'react-icons/fa'
 import { usePathname } from "next/navigation";
+import { FaPeopleGroup } from 'react-icons/fa6';
+import { IoMdHelpBuoy } from 'react-icons/io';
+import { MdOutlineDisplaySettings } from 'react-icons/md';
+import { MdFactCheck } from 'react-icons/md';
+import { MdViewHeadline } from 'react-icons/md';
 
-const Sidebar = ({isSideBar, handleToggleSideBar}) => {
-  const path = usePathname()
+const Sidebar = ({ isSideBar, handleToggleSideBar }) => {
+  const path = usePathname();
   return (
     <div
       className={`pointer-events-none fixed start-0 top-0 z-[60] flex h-full xl:z-10 ${
@@ -66,8 +71,8 @@ const Sidebar = ({isSideBar, handleToggleSideBar}) => {
                           : 'text-dark-muted-500'
                       } group-hover:dark:text-dark-primary-500 group-hover:text-dark-primary-800 relative inline-flex items-center gap-2 font-sans text-md transition-colors duration-300`}
                     >
-                      <FaDropbox />
-                      <span>Users</span>
+                      <FaPeopleGroup />
+                      <span>Staff</span>
                     </span>
                   </Link>
                 </li>
@@ -95,42 +100,84 @@ const Sidebar = ({isSideBar, handleToggleSideBar}) => {
 
                 <li className='group mb-1 min-h-[2rem]'>
                   <Link
-                    href={'/orders'}
+                    href={'/coaching'}
                     className={`${
-                      path === '/orders' &&
+                      path === '/coaching' &&
                       'dark:bg-dark-muted-900 bg-light-muted-100 p-2 rounded-l-lg'
                     } nui-focus relative top-0.5 flex items-center`}
                   >
                     <span
                       className={`${
-                        path === '/orders'
+                        path === '/coaching'
                           ? 'dark:text-dark-primary-300 text-dark-primary-500'
                           : 'text-dark-muted-500'
                       } group-hover:dark:text-dark-primary-500 group-hover:text-dark-primary-800 relative inline-flex items-center gap-2 font-sans text-md transition-colors duration-300`}
                     >
-                      <MdOutlineShoppingCart />
-                      <span>Orders</span>
+                      <IoMdHelpBuoy />
+                      <span>Coaching</span>
                     </span>
                   </Link>
                 </li>
 
                 <li className='group mb-1 min-h-[2rem]'>
                   <Link
-                    href={'/settings'}
+                    href={'/setup'}
                     className={`${
-                      path === '/settings' &&
+                      path === '/setup' &&
                       'dark:bg-dark-muted-900 bg-light-muted-100 p-2 rounded-l-lg'
                     } nui-focus relative top-0.5 flex items-center`}
                   >
                     <span
                       className={`${
-                        path === '/settings'
+                        path === '/setup'
                           ? 'dark:text-dark-primary-300 text-dark-primary-500'
                           : 'text-dark-muted-500'
                       } group-hover:dark:text-dark-primary-500 group-hover:text-dark-primary-800 relative inline-flex items-center gap-2 font-sans text-md transition-colors duration-300`}
                     >
-                      <MdOutlineAdminPanelSettings />
-                      <span>Settings</span>
+                      <MdOutlineDisplaySettings />
+                      <span>Setup</span>
+                    </span>
+                  </Link>
+                </li>
+
+                <li className='group mb-1 min-h-[2rem]'>
+                  <Link
+                    href={'/results'}
+                    className={`${
+                      path === '/results' &&
+                      'dark:bg-dark-muted-900 bg-light-muted-100 p-2 rounded-l-lg'
+                    } nui-focus relative top-0.5 flex items-center`}
+                  >
+                    <span
+                      className={`${
+                        path === '/results'
+                          ? 'dark:text-dark-primary-300 text-dark-primary-500'
+                          : 'text-dark-muted-500'
+                      } group-hover:dark:text-dark-primary-500 group-hover:text-dark-primary-800 relative inline-flex items-center gap-2 font-sans text-md transition-colors duration-300`}
+                    >
+                      <MdFactCheck />
+                      <span>Results</span>
+                    </span>
+                  </Link>
+                </li>
+
+                <li className='group mb-1 min-h-[2rem]'>
+                  <Link
+                    href={'/headline'}
+                    className={`${
+                      path === '/headline' &&
+                      'dark:bg-dark-muted-900 bg-light-muted-100 p-2 rounded-l-lg'
+                    } nui-focus relative top-0.5 flex items-center`}
+                  >
+                    <span
+                      className={`${
+                        path === '/headline'
+                          ? 'dark:text-dark-primary-300 text-dark-primary-500'
+                          : 'text-dark-muted-500'
+                      } group-hover:dark:text-dark-primary-500 group-hover:text-dark-primary-800 relative inline-flex items-center gap-2 font-sans text-md transition-colors duration-300`}
+                    >
+                      <MdViewHeadline />
+                      <span>Headline</span>
                     </span>
                   </Link>
                 </li>
