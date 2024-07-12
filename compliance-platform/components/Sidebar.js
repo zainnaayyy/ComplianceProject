@@ -119,7 +119,7 @@ const Sidebar = ({ isSideBar, handleToggleSideBar }) => {
                   </Link>
                 </li>
 
-                <li className='group mb-1 min-h-[2rem]'>
+                {/* <li className='group mb-1 min-h-[2rem]'>
                   <Link
                     href={'/setup'}
                     className={`${
@@ -138,7 +138,7 @@ const Sidebar = ({ isSideBar, handleToggleSideBar }) => {
                       <span>Setup</span>
                     </span>
                   </Link>
-                </li>
+                </li> */}
 
                 <li className='group mb-1 min-h-[2rem]'>
                   <Link
@@ -161,7 +161,7 @@ const Sidebar = ({ isSideBar, handleToggleSideBar }) => {
                   </Link>
                 </li>
 
-                <li className='group mb-1 min-h-[2rem]'>
+                {/* <li className='group mb-1 min-h-[2rem]'>
                   <Link
                     href={'/headline'}
                     className={`${
@@ -180,7 +180,7 @@ const Sidebar = ({ isSideBar, handleToggleSideBar }) => {
                       <span>Headline</span>
                     </span>
                   </Link>
-                </li>
+                </li> */}
 
                 {/* <li className="border-dark-muted-200 dark:border-dark-muted-700 my-3 h-px w-full border-t"></li>
 
