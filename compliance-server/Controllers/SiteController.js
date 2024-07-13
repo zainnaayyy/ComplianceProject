@@ -13,6 +13,8 @@ exports.addSite = async (req, res) => {
 
 exports.getSites = async (req, res) => {
   try {
+    const totalRecords = await Site.getTotalRecords();
+    await Site.updateMany({},{ $set: { totalRecords } })
     const sites = await Site.find();
     res.status(201).json({ message: "Data fetched successfully", success: true, sites });
   } catch (error) {

@@ -15,6 +15,8 @@ exports.addLOB = async (req, res) => {
 // Get all LOBs
 exports.getLOBs = async (req, res) => {
   try {
+    const totalRecords = await LOB.getTotalRecords();
+    await LOB.updateMany({},{ $set: { totalRecords } })
     const lobs = await LOB.find();
     res.status(201).json({ message: "Data fetched successfully", success: true, lobs });
   } catch (error) {

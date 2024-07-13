@@ -35,6 +35,9 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, "Line of Business is required"],
   },
+  totalRecords: {
+    type: Number,
+  }
 });
 
 userSchema.pre("save", async function (next) {
@@ -50,6 +53,11 @@ userSchema.pre("save", async function (next) {
     return next();
   }
 });
+
+// Static method to get total number of records
+userSchema.statics.getTotalRecords = async function () {
+  return await this.countDocuments();
+};
 
 const User = mongoose.model('User', userSchema);
 

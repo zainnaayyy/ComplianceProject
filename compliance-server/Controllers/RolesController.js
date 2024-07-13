@@ -13,6 +13,8 @@ exports.addRole = async (req, res) => {
 
 exports.getRoles = async (req, res) => {
   try {
+    const totalRecords = await Role.getTotalRecords();
+    await Role.updateMany({},{ $set: { totalRecords } })
     const roles = await Role.find();
     res.status(200).json({ message: "Data fetched successfully", success: true, roles });
   } catch (error) {

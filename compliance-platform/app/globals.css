@@ -62,10 +62,10 @@ body {
     
 }
 
-.ant-table-tbody > tr :hover {
+/* .ant-table-tbody > tr :hover {
   --tw-bg-opacity: 1;
   background-color: rgb(15 23 42 / var(--tw-bg-opacity)) !important;
-}
+} */
 
 .ant-table-tbody > tr > td {
     border-right: none !important;
@@ -155,8 +155,8 @@ body {
 }
 
 .ant-typography {
-  color: rgb(119, 53, 223) !important;
+  color: rgb(0, 172, 193) !important;
 }
 .ant-typography:hover {
-  color: rgb(139 92 246) !important;
+  color: rgb(0, 88, 94) !important;
 }

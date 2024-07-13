@@ -3,7 +3,7 @@ const { authMiddleware } = require('../Middlewares/AuthMiddleware');
 const router = require("express").Router();
 
 router.post('/addLOB', authMiddleware, addLOB);
-router.get('/getLOBs', authMiddleware, getLOBs);
+router.get('/getAllLOBs', authMiddleware, getLOBs);
 router.get('/getLOBById', authMiddleware, getLOBById);
 router.delete('/deleteLOB', authMiddleware, deleteLOB);
 router.get('/searchLOB', authMiddleware, searchLOBs);
