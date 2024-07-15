@@ -1,5 +1,7 @@
 'use client'
+import { Dropdown } from "antd";
 import { useState } from "react";
+import { FaBoxesPacking, FaBuilding, FaIdCard, FaSitemap } from "react-icons/fa6";
 
 const CircularMenu = ({ toggleTheme, handleThemeToggle }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -7,6 +9,24 @@ const CircularMenu = ({ toggleTheme, handleThemeToggle }) => {
   const toggleMenu = () => {
     setIsMenuOpen((prevState) => !prevState);
   };
+
+  const items = [
+    {
+      key: '1',
+      icon: <FaBuilding />,
+      label: 'Line of Business',
+    },
+    {
+      key: '2',
+      icon: <FaSitemap />,
+      label: 'Sites',
+    },
+    {
+      key: '3',
+      icon: <FaIdCard />,
+      label: 'Roles',
+    },
+  ];
 
   return (
     <div
@@ -132,30 +152,20 @@ const CircularMenu = ({ toggleTheme, handleThemeToggle }) => {
             </a>
           </div>
           <div className="absolute end-[0.2em] top-[0.2em] z-20 flex items-center justify-center transition-all duration-300 translate-x-[0em] translate-y-[6.5em]">
+          <Dropdown
+            arrow
+            placement="bottomRight"
+            menu={
+              {items}
+            }
+          >
             <button
               type="button"
               className="bg-dark-primary-700 flex h-9 w-9 items-center justify-center rounded-full transition-all duration-300"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                xmlnsXlink="http://www.w3.org/1999/xlink"
-                aria-hidden="true"
-                role="img"
-                className="icon text-dark-muted-400 h-5 w-5"
-                width="1em"
-                height="1em"
-                viewBox="0 0 256 256"
-                data-v-cd102a71=""
-              >
-                <g fill="currentColor">
-                  <path
-                    d="M112 80a32 32 0 1 1-32-32a32 32 0 0 1 32 32Zm64 32a32 32 0 1 0-32-32a32 32 0 0 0 32 32Zm-96 32a32 32 0 1 0 32 32a32 32 0 0 0-32-32Zm96 0a32 32 0 1 0 32 32a32 32 0 0 0-32-32Z"
-                    opacity=".2"
-                  ></path>
-                  <path d="M80 40a40 40 0 1 0 40 40a40 40 0 0 0-40-40Zm0 64a24 24 0 1 1 24-24a24 24 0 0 1-24 24Zm96 16a40 40 0 1 0-40-40a40 40 0 0 0 40 40Zm0-64a24 24 0 1 1-24 24a24 24 0 0 1 24-24Zm-96 80a40 40 0 1 0 40 40a40 40 0 0 0-40-40Zm0 64a24 24 0 1 1 24-24a24 24 0 0 1-24 24Zm96-64a40 40 0 1 0 40 40a40 40 0 0 0-40-40Zm0 64a24 24 0 1 1 24-24a24 24 0 0 1-24 24Z"></path>
-                </g>
-              </svg>
+              <FaBoxesPacking className="text-light-muted-50" />
             </button>
+          </Dropdown>
           </div>
         </div>
       )}

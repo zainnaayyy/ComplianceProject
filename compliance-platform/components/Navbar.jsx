@@ -1,4 +1,25 @@
+import { Dropdown } from "antd";
+import { FaBoxesPacking, FaBuilding, FaIdCard, FaPowerOff, FaSitemap } from "react-icons/fa6";
+
 const Navbar = ({handleToggleSideBar, isSideBar, handleThemeToggle, theme}) => {
+  const items = [
+    {
+      key: '1',
+      icon: <FaBuilding />,
+      label: 'Line of Business',
+    },
+    {
+      key: '2',
+      icon: <FaSitemap />,
+      label: 'Sites',
+    },
+    {
+      key: '3',
+      icon: <FaIdCard />,
+      label: 'Roles',
+    },
+  ];
+  
   return (
     <div className="relative z-50 mb-5 flex h-16 items-center gap-2">
       <button
@@ -119,33 +140,37 @@ const Navbar = ({handleToggleSideBar, isSideBar, handleThemeToggle, theme}) => {
           </div>
         </div>
 
-        <button
-          type="button"
-          className="border-dark-muted-200 hover:ring-dark-muted-200 dark:hover:ring-dark-muted-700 dark:border-dark-muted-700 dark:bg-dark-muted-800 dark:ring-offset-dark-muted-900 flex h-9 w-9 items-center justify-center rounded-full border bg-white ring-1 ring-transparent transition-all duration-300 hover:ring-offset-4 nui-focus"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            xmlnsXlink="http://www.w3.org/1999/xlink"
-            aria-hidden="true"
-            role="img"
-            className="icon dark:text-dark-muted-400 h-5 w-5"
-            width="1em"
-            height="1em"
-            viewBox="0 0 256 256"
-            data-v-cd102a71=""
+        <Dropdown
+            arrow
+            placement="bottomRight"
+            menu={
+              {items}
+            }
           >
-            <g fill="currentColor">
-              <path
-                d="M112 80a32 32 0 1 1-32-32a32 32 0 0 1 32 32Zm64 32a32 32 0 1 0-32-32a32 32 0 0 0 32 32Zm-96 32a32 32 0 1 0 32 32a32 32 0 0 0-32-32Zm96 0a32 32 0 1 0 32 32a32 32 0 0 0-32-32Z"
-                opacity=".2"
-              ></path>
-              <path d="M80 40a40 40 0 1 0 40 40a40 40 0 0 0-40-40Zm0 64a24 24 0 1 1 24-24a24 24 0 0 1-24 24Zm96 16a40 40 0 1 0-40-40a40 40 0 0 0 40 40Zm0-64a24 24 0 1 1-24 24a24 24 0 0 1 24-24Zm-96 80a40 40 0 1 0 40 40a40 40 0 0 0-40-40Zm0 64a24 24 0 1 1 24-24a24 24 0 0 1-24 24Zm96-64a40 40 0 1 0 40 40a40 40 0 0 0-40-40Zm0 64a24 24 0 1 1 24-24a24 24 0 0 1-24 24Z"></path>
-            </g>
-          </svg>
-        </button>
+            <button
+              type="button"
+              className="border-dark-muted-200 hover:ring-dark-muted-200 dark:hover:ring-dark-muted-700 dark:border-dark-muted-700 dark:bg-dark-muted-800 dark:ring-offset-dark-muted-900 flex h-9 w-9 items-center justify-center rounded-full border bg-white ring-1 ring-transparent transition-all duration-300 hover:ring-offset-4 nui-focus"
+            >
+              <FaBoxesPacking />
+            </button>
+          </Dropdown>
 
         <div className="group inline-flex items-center justify-center text-right">
           <div data-headlessui-state className="relative h-9 w-9 text-left">
+          <Dropdown
+            arrow
+            placement="bottomRight"
+            menu={
+              {items:  [
+                {
+                  key: '1',
+                  danger: true,
+                  label: 'Logout',
+                  icon: <FaPowerOff />,
+                },
+              ]}
+            }
+          >
             <button
               className="group-hover:ring-dark-primary-500 dark:ring-offset-dark-muted-900 inline-flex h-9 w-9 items-center justify-center rounded-full ring-1 ring-transparent transition-all duration-300 group-hover:ring-offset-4 nui-focus"
               id="headlessui-menu-button-209"
@@ -163,6 +188,7 @@ const Navbar = ({handleToggleSideBar, isSideBar, handleThemeToggle, theme}) => {
                 />
               </div>
             </button>
+            </Dropdown>
           </div>
         </div>
       </div>

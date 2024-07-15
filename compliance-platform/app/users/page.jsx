@@ -233,7 +233,7 @@ const Products = () => {
             </Typography.Link>
             <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
               <a>
-                <FaSquareXmark className="w-6 h-6 text-red-700" />
+                <FaSquareXmark className="w-6 h-6 text-red-600 hover:text-red-800" />
               </a>
             </Popconfirm>
           </Space>
@@ -253,7 +253,7 @@ const Products = () => {
               onConfirm={() => handleDelete(record)}
             >
               <a className="">
-                <FaTrash className="w-6 h-6 text-red-600" />
+                <FaTrash className="w-6 h-6 text-red-600 hover:text-red-800" />
               </a>
             </Popconfirm>
             <Typography.Link
