@@ -1,7 +1,7 @@
 import { Dropdown } from "antd";
 import { FaBoxesPacking, FaBuilding, FaIdCard, FaPowerOff, FaSitemap } from "react-icons/fa6";
 
-const Navbar = ({handleToggleSideBar, isSideBar, handleThemeToggle, theme}) => {
+const Navbar = ({handleToggleSideBar, isSideBar, handleThemeToggle, theme, logout}) => {
   const items = [
     {
       key: '1',
@@ -168,7 +168,9 @@ const Navbar = ({handleToggleSideBar, isSideBar, handleThemeToggle, theme}) => {
                   label: 'Logout',
                   icon: <FaPowerOff />,
                 },
-              ]}
+              ],
+              onClick: logout
+            }
             }
           >
             <button

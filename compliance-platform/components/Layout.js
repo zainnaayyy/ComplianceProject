@@ -12,7 +12,7 @@ import Navbar from "./Navbar";
 
 const Layout = ({ children }) => {
   const { theme, setTheme } = useTheme();
-  const { isValidToken, login, setIsValidToken } = useAuth();
+  const { isValidToken, login, logout, setIsValidToken } = useAuth();
   
   // **************** All States ****************
   const [isSideBar, setIsSideBar] = useState(true); // state for Sidebar visibility
@@ -190,6 +190,7 @@ const Layout = ({ children }) => {
                       handleToggleSideBar={handleToggleSideBar}
                       theme={theme}
                       handleThemeToggle={handleThemeToggle}
+                      logout={logout}
                     />
                     {/* main starts here */}
                     <main>

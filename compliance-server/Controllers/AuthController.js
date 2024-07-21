@@ -162,3 +162,26 @@ module.exports.editUser = async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
+
+// Search users controller
+module.exports.searchUsers = async (req, res) => {
+  try {
+    const { search } = req.body;
+
+    const regex = new RegExp(search, 'i'); // Case-insensitive regex
+
+    let users = await User.find({
+      $or: [{ fullName: regex }, { email: regex }],
+    }).select('-password');
+    const totalRecords = users.length;
+    await User.updateMany({},{ $set: { totalRecords } })
+    users = await User.find({
+      $or: [{ fullName: regex }, { email: regex }],
+    }).select('-password');
+
+    res.status(200).json({ message: "Users fetched successfully", success: true, users });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};

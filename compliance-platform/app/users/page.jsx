@@ -14,9 +14,9 @@ import { useEffect, useState } from "react";
 import { FaEye, FaPen, FaCheck, FaTrash, FaSquareXmark } from "react-icons/fa6";
 // import Drawer from '@/components/Drawer';
 import CustomDrawer from "@/components/Drawer";
-import { actionAPI, useAuth, useSharedDispatcher, useSharedSelector } from "@/shared";
+import { actionAPI, url, useAuth, useSharedDispatcher, useSharedSelector } from "@/shared";
 
-const Products = () => {
+const Users = () => {
   const [form] = Form.useForm();
   const dispatcher = useSharedDispatcher();
   const { token } = useAuth()
@@ -334,14 +334,39 @@ const Products = () => {
     );
   };
 
+  const onSearch = (val) => {
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", "Bearer "+ token);
+
+    const raw = JSON.stringify({
+      search: val,
+    });
+
+    const requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    fetch(url+"/searchUsers", requestOptions)
+      .then((response) => response.json())
+      .then((result) => dispatcher(actionAPI.gettingUserListSuccess(result.users)))
+      .catch((error) => dispatcher(actionAPI.gettingUserListFailed(error)));
+  };
+
   return (
     <div>
       <div className="flex justify-between">
         <div className="text-3xl p-2">Users Table </div>
         <div className="flex">
           <div class="group/nui-input relative">
-          <Input
+          <Input.Search
                 placeholder="Search users..."
+                enterButton="Search"
+                onPressEnter={(e) => onSearch(e.target.value) }
+                onSearch={(val) => onSearch(val) }
                 prefix={
                   <div class="dark:text-black text-muted-400 group-focus-within/nui-input:text-dark-primary-500 flex items-center justify-center transition-colors duration-300 peer-disabled:cursor-not-allowed peer-disabled:opacity-75">
                     <svg
@@ -367,7 +392,8 @@ const Products = () => {
                     </svg>
                   </div>
                 }
-                className='nui-focus border-muted-300 text-muted-600 placeholder:text-muted-300 dark:border-muted-700 dark:bg-muted-900/75 dark:text-black dark:placeholder:text-muted-500 dark:focus:border-muted-700 peer w-full border bg-white font-sans transition-all duration-300 disabled:cursor-not-allowed disabled:opacity-75 px-2 h-10 py-2 text-sm leading-5 rounded'
+                size="large"
+                className='text-muted-600 placeholder:text-muted-300 dark:text-black dark:placeholder:text-muted-500 peer w-full font-sans transition-all duration-300 disabled:cursor-not-allowed disabled:opacity-75 text-sm leading-5 rounded'
               />
           </div>
           <div className="flex space-x-2 px-4">
@@ -421,103 +447,8 @@ const Products = () => {
           }}
         />
       </Form>
-      {/* <div>
-        <div>
-          <div>
-            <div>
-              <div>
-                <div class="mt-6">
-                  <div class="inline-flex w-full flex-col md:flex-row md:justify-between">
-                    <ul class="border-muted-200 bg-muted-100 dark:border-muted-600 dark:bg-muted-700 mb-4 inline-flex flex-wrap gap-2 border p-1 md:mb-0 md:gap-1 rounded-xl">
-                      <li>
-                        <a
-                          aria-current="page"
-                          href="table-list-1.html"
-                          class="router-link-active router-link-exact-active flex h-10 w-10 items-center justify-center border font-sans text-sm transition-all duration-300 bg-dark-primary-500 border-dark-primary-500 shadow-dark-primary-500/50 dark:shadow-dark-primary-500/20 text-white shadow-sm rounded-xl"
-                          tabindex="0"
-                        >
-                          1
-                        </a>
-                      </li>
-
-                      <li>
-                        <a
-                          href="table-list-14658.html?page=2"
-                          class="router-link-active router-link-exact-active flex h-10 w-10 items-center justify-center font-sans text-sm transition-all duration-300 dark:bg-muted-800 border-muted-200 dark:border-muted-700 hover:bg-muted-100 dark:hover:bg-muted-900 text-muted-500 hover:text-muted-700 dark:hover:text-muted-400 bg-white rounded-xl"
-                          tabindex="0"
-                        >
-                          2
-                        </a>
-                      </li>
-
-                      <li>
-                        <a
-                          aria-current="page"
-                          href="table-list-19ba9.html?page=3"
-                          class="router-link-active router-link-exact-active flex h-10 w-10 items-center justify-center font-sans text-sm transition-all duration-300 dark:bg-muted-800 border-muted-200 dark:border-muted-700 hover:bg-muted-100 dark:hover:bg-muted-900 text-muted-500 hover:text-muted-700 dark:hover:text-muted-400 bg-white rounded-xl"
-                          tabindex="0"
-                        >
-                          3
-                        </a>
-                      </li>
-                    </ul>
-                    <div class="border-muted-200 bg-muted-100 dark:border-muted-600 dark:bg-muted-700 flex items-center justify-end gap-1 border p-1 rounded-xl">
-                      <a
-                        aria-current="page"
-                        href="table-list-1.html"
-                        class="router-link-active router-link-exact-active border-muted-200 text-muted-500 hover:bg-muted-100 hover:text-muted-700 dark:border-muted-700 dark:bg-muted-800 dark:hover:bg-muted-900 dark:hover:text-muted-400 flex h-10 w-full items-center justify-center bg-white font-sans text-sm transition-all duration-300 md:w-10 rounded-xl"
-                        tabindex="0"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          xmlnsXlink="http://www.w3.org/1999/xlink"
-                          aria-hidden="true"
-                          viewBox="0 0 24 24"
-                          className="icon block h-4 w-4"
-                        >
-                          <path
-                            fill="none"
-                            stroke="currentColor"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M15 18l-6-6 6-6"
-                          />
-                        </svg>
-                      </a>
-                      <a
-                        aria-current="page"
-                        href="table-list-14658.html?page=2"
-                        class="router-link-active router-link-exact-active border-muted-200 text-muted-500 hover:bg-muted-100 hover:text-muted-700 dark:border-muted-700 dark:bg-muted-800 dark:hover:bg-muted-900 dark:hover:text-muted-400 flex h-10 w-full items-center justify-center bg-white font-sans text-sm transition-all duration-300 md:w-10 rounded-xl"
-                        tabindex="0"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          xmlnsXlink="http://www.w3.org/1999/xlink"
-                          aria-hidden="true"
-                          viewBox="0 0 24 24"
-                          className="icon block h-4 w-4"
-                        >
-                          <path
-                            fill="none"
-                            stroke="currentColor"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M9 18l6-6-6-6"
-                          />
-                        </svg>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> */}
     </div>
   );
 };
 
-export default Products;
+export default Users;
