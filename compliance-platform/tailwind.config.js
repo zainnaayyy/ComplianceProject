@@ -26,7 +26,7 @@ module.exports = {
       },
       colors: {
         dark: {
-          primary: 'rgb(0, 188, 212)', // Cyan 500
+          'primary': 'rgb(0, 188, 212)', // Cyan 500
           'primary-50': 'rgb(224, 247, 250)',
           'primary-100': 'rgb(178, 235, 242)',
           'primary-200': 'rgb(128, 222, 234)',
@@ -52,18 +52,18 @@ module.exports = {
         },
 
         light: {
-          primary: 'rgb(58, 142, 248)',
-          'primary-50': 'rgb(240, 248, 255)',
-          'primary-100': 'rgb(230, 242, 255)',
-          'primary-200': 'rgb(202, 228, 255)',
-          'primary-300': 'rgb(162, 204, 255)',
-          'primary-400': 'rgb(119, 179, 255)',
-          'primary-500': 'rgb(77, 155, 255)',
-          'primary-600': 'rgb(58, 142, 248)',
-          'primary-700': 'rgb(40, 130, 233)',
-          'primary-800': 'rgb(20, 114, 217)',
-          'primary-900': 'rgb(10, 97, 182)',
-          'primary-950': 'rgb(5, 58, 124)',
+          'primary': 'rgb(0, 188, 212)',
+          'primary-50': 'rgb(224, 247, 250)',
+          'primary-100': 'rgb(178, 235, 242)',
+          'primary-200': 'rgb(128, 222, 234)',
+          'primary-300': 'rgb(77, 208, 225)',
+          'primary-400': 'rgb(38, 198, 218)',
+          'primary-500': 'rgb(0, 188, 212)',
+          'primary-600': 'rgb(0, 172, 193)',
+          'primary-700': 'rgb(0, 151, 167)',
+          'primary-800': 'rgb(0, 131, 143)',
+          'primary-900': 'rgb(0, 110, 117)',
+          'primary-950': 'rgb(0, 88, 94)',
           'muted-50': 'rgb(255, 255, 255)',
           'muted-100': 'rgb(245, 245, 245)',
           'muted-200': 'rgb(232, 232, 232)',

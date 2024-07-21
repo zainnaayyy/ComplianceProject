@@ -28,29 +28,34 @@ body {
 */
 
 .ant-table {
-  border: 1px solid #4b5563 !important;
-  background-color: rgb(30, 41, 59) !important;
+  border: 1px solid rgb(226, 232, 240) !important;
+  background-color: rgb(203, 213, 225) !important;
 }
 
 .ant-table-header > table {
-    border-color: #4b5563 !important;
+    border-color: rgb(226, 232, 240) !important;
     min-width: 100% !important;
     table-layout: fixed !important;
-    background-color: rgb(30 41 59) !important;
+    background-color: rgb(203, 213, 225) !important;
 }
 
 .ant-table-thead > tr > th,td {
-  /* color: #4b5563; */
   font-weight: 600 !important;
   letter-spacing: 0.05em !important;
   font-size: 0.75rem !important;
   text-transform: uppercase !important;
-  /* border-color: #e2e8f0;
-  /* background-color: #fff; bg-white */
-    color: rgb(148 163 184) !important;
-    border-color: rgb(51 65 85) !important;
-    background-color: rgb(30 41 59) !important;
-    overflow: hidden !important;
+  border-color: rgb(148, 163, 184) !important;
+  background-color: rgb(100, 116, 139) !important;
+  overflow: hidden !important;
+}
+.ant-table-tbody > tr > th,td {
+  font-weight: 600 !important;
+  letter-spacing: 0.05em !important;
+  font-size: 0.75rem !important;
+  text-transform: uppercase !important;
+  border-color: rgb(226, 232, 240) !important;
+  background-color: rgb(203, 213, 225) !important;
+  overflow: hidden !important;
 }
 
 
@@ -62,10 +67,10 @@ body {
     
 }
 
-/* .ant-table-tbody > tr :hover {
+.ant-table-tbody > tr :hover {
   --tw-bg-opacity: 1;
-  background-color: rgb(15 23 42 / var(--tw-bg-opacity)) !important;
-} */
+  background-color: rgb(226 232 240 / var(--tw-bg-opacity)) !important;
+}
 
 .ant-table-tbody > tr > td {
     border-right: none !important;
@@ -95,12 +100,12 @@ body {
 }
 
 .ant-table-wrapper .ant-table-container table>thead>tr:first-child > *:first-child {
-  border-start-start-radius: 0px !important;
+  border-start-start-radius: 8px !important;
   border-start-end-radius: 0px !important;
 }
 .ant-table-wrapper .ant-table-container table>thead>tr:first-child > *:last-child {
   border-start-start-radius: 0px !important;
-  border-start-end-radius: 0px !important;
+  border-start-end-radius: 8px !important;
 }
 
 .ant-table-wrapper .ant-table-bordered .ant-table-cell-scrollbar {
@@ -142,4 +147,193 @@ body {
 }
 .ant-typography:hover {
   color: rgb(0, 88, 94) !important;
+}
+
+.ant-card-head {
+  background-color: rgb(100, 116, 139) !important;
+}
+
+.ant-card-body {
+  background-color: rgb(203, 213, 225) !important;
+  border-radius: 8px !important;
+}
+
+.ant-card-actions {
+  background-color: rgb(100, 116, 139) !important;
+}
+
+.ant-card-actions > li {
+  display: flex !important;
+  justify-content: center !important;
+}
+
+fieldset legend {
+  max-height: 25px;
+  float: none;
+  margin-bottom: 0px !important;
+  width: fit-content !important;
+  padding: 0px 8px !important;
+  font-weight: 500 !important;
+  color: #303030 !important;
+  border: none !important;
+}
+
+.ant-btn-primary:not(:disabled):not(.ant-btn-disabled):hover {
+  background-color: rgb(0, 131, 143) !important;
+}
+
+.ant-dropdown-menu-item:not(.ant-dropdown-menu-item-danger):not(.ant-dropdown-menu-item-disabled):hover {
+  background-color: rgb(0, 188, 212) !important;
+  color: #fff;
+}
+
+.ant-select-selector:hover {
+  border-color: rgb(0, 188, 212) !important;
+}
+
+.ant-input-outlined:hover {
+  border-color: rgb(0, 188, 212) !important;
+}
+
+.ant-input-outlined:focus-within,
+.ant-select-selector:focus-within {
+  border: none !important;
+  box-shadow: none !important;
+  outline-style: dashed !important;
+  outline-width: 1px !important;
+}
+
+.ant-pagination-item-active {
+  border-color: rgb(0, 188, 212) !important;
+}
+
+.ant-pagination-item-link,
+.ant-pagination-item-active a {
+  color: rgb(0, 188, 212) !important;
+}
+
+.ant-drawer-header {
+  background-color: rgb(100, 116, 139) !important;
+  border-bottom-color: rgb(148, 163, 184) !important;
+}
+
+.form-container {
+    width: 80%;
+    margin: auto;
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+}
+
+.form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.form-header label {
+    margin-right: 10px;
+}
+
+.form-header input,
+.form-header select {
+    padding: 5px;
+    margin-right: 20px;
+}
+
+.red-flags-values {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.red-flags, .values {
+    display: flex;
+    align-items: center;
+}
+
+.red-flags label, .values label {
+    margin-right: 10px;
+}
+
+.flag, .value {
+    background-color: #ddd;
+    padding: 5px 10px;
+    margin-right: 10px;
+    border-radius: 5px;
+}
+
+.add-button {
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.add-button:hover {
+    background-color: #0056b3;
+}
+
+.question-section {
+    margin-bottom: 20px;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.question-section.blue {
+    background-color: #e0f7fa;
+}
+
+.question-section.yellow {
+    background-color: #fff9c4;
+}
+
+.question-section.green {
+    background-color: #dcedc8;
+}
+
+.question {
+    margin-bottom: 20px;
+}
+
+.question label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.question textarea {
+    width: 100%;
+    height: 50px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.evaluation {
+    display: flex;
+    flex-direction: column;
+}
+
+.evaluation label {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.evaluation .scores {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+}
+
+.evaluation .scores label {
+    margin-left: 20px;
+}
+
+.evaluation input[type="checkbox"] {
+    margin-right: 10px;
 }
