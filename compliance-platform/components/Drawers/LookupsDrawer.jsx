@@ -1,12 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Drawer, Table, Button, Modal, Input, Popconfirm } from 'antd';
 import { MdDelete } from 'react-icons/md';
 
-const CustomDrawer = ({ title, visible, onClose, data }) => {
-  const [tableData, setTableData] = useState(data);
+const LookupsDrawer = ({ title, visible, onClose, data, loading }) => {
+  const [tableData, setTableData] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [newName, setNewName] = useState('');
-
+  
+  useEffect(() => {
+    if(data?.length) {
+      console.log(data)
+      setTableData(data)
+    }
+  }, [data])
   const showAddModal = () => {
     setModalVisible(true);
   };
@@ -36,15 +42,12 @@ const CustomDrawer = ({ title, visible, onClose, data }) => {
       title: 'Action',
       key: 'action',
       render: (_, record) => (
-        // <Button type='link' onClick={() => handleDelete(record.key)}>
-        //   <MdDelete className='w-6 h-6 text-red-500' />
-        // </Button>
         <Popconfirm
           title='Sure to delete?'
           onConfirm={() => handleDelete(record.key)}
         >
           <a className=''>
-            <MdDelete className='w-6 h-6 text-red-600' />
+            <MdDelete className='w-6 h-6 text-red-600 hover:text-red-800' />
           </a>
         </Popconfirm>
       ),
@@ -52,14 +55,14 @@ const CustomDrawer = ({ title, visible, onClose, data }) => {
   ];
 
   return (
-    <Drawer title={title} onClose={onClose} visible={visible}>
+    <Drawer title={title} onClose={onClose} open={visible}>
       <div className='flex space-x-5'>
         <div class='group/nui-input relative'>
           <input
             id='ninja-input-93'
             type='text'
             class='nui-focus border-muted-300 text-muted-600 placeholder:text-muted-300 dark:border-muted-700 dark:bg-muted-900/75 dark:text-muted-200 dark:placeholder:text-muted-500 dark:focus:border-muted-700 peer w-full border bg-white font-sans transition-all duration-300 disabled:cursor-not-allowed disabled:opacity-75 px-2 h-10 py-2 text-sm leading-5 pe-4 ps-9 rounded'
-            placeholder='Filter LOB...'
+            placeholder={`Filter ${title}...`}
           />
 
           <div class='h-10 w-10 text-muted-400 group-focus-within/nui-input:text-primary-500 absolute start-0 top-0 flex items-center justify-center transition-colors duration-300 peer-disabled:cursor-not-allowed peer-disabled:opacity-75'>
@@ -97,6 +100,7 @@ const CustomDrawer = ({ title, visible, onClose, data }) => {
         </div>
       </div>
       <Table
+        loading={loading}
         className='mt-5'
         columns={columns}
         dataSource={tableData}
@@ -105,7 +109,7 @@ const CustomDrawer = ({ title, visible, onClose, data }) => {
 
       <Modal
         title='Add New Item'
-        visible={modalVisible}
+        open={modalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
       >
@@ -119,4 +123,4 @@ const CustomDrawer = ({ title, visible, onClose, data }) => {
   );
 };
 
-export default CustomDrawer;
+export default LookupsDrawer;

@@ -3,9 +3,9 @@ const { authMiddleware } = require('../Middlewares/AuthMiddleware');
 const router = require("express").Router();
 
 router.post('/roles', authMiddleware, addRole);
-router.get('/roles', getRoles);
+router.get('/getAllRoles', getRoles);
 router.get('/roles/:id',authMiddleware, getRoleById);
-router.put('/roles/:id',authMiddleware, updateRole);
+router.post('/updateRoles',authMiddleware, updateRole);
 router.delete('/roles/:id',authMiddleware, deleteRole);
 
 module.exports = router;

@@ -61,6 +61,9 @@ exports.searchSite = async (req, res) => {
     const sites = await Site.find(filter);
     if (!sites.length)
       return res.status(404).json({ message: "No site found!", success: false });
+    const totalRecords = sites.length;
+    await Site.updateMany({},{ $set: { totalRecords } })
+    sites = await Site.find(filter);
     res.status(200).json({ message: "Data fetched successfully", success: true, sites });
   } catch (error) {
     console.error(error);

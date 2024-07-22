@@ -2,8 +2,8 @@ const Role = require('../Models/RolesModel');
 
 exports.addRole = async (req, res) => {
   try {
-    const { name, title } = req.body;
-    const role = await Role.create({ name, title });
+    const { name } = req.body;
+    const role = await Role.create({ name });
     res.status(201).json({ message: "Role saved successfully", success: true, role });
   } catch (error) {
     console.error(error);
@@ -39,9 +39,8 @@ exports.getRoleById = async (req, res) => {
 
 exports.updateRole = async (req, res) => {
   try {
-    const { id } = req.params;
-    const { name, title } = req.body;
-    const role = await Role.findByIdAndUpdate(id, { name, title }, { new: true, runValidators: true });
+    const { id, name } = req.body;
+    const role = await Role.findByIdAndUpdate(id, { name }, { new: true, runValidators: true });
     if (!role) {
       return res.status(404).json({ message: "Role not found" });
     }
@@ -60,6 +59,26 @@ exports.deleteRole = async (req, res) => {
       return res.status(404).json({ message: "Role not found" });
     }
     res.status(200).json({ message: "Role deleted successfully", success: true });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+exports.searchRole = async (req, res) => {
+  try {
+    const { name } = req.query;
+    let filter = {};
+    if (name) {
+      filter.name = { $regex: name, $options: 'i' }; // Case-insensitive search
+    }
+    let roles = await Role.find(filter);
+    if (!roles.length)
+      return res.status(404).json({ message: "No site found!", success: false });
+    const totalRecords = roles.length;
+    await Role.updateMany({},{ $set: { totalRecords } })
+    roles = await Role.find(filter);
+    res.status(200).json({ message: "Data fetched successfully", success: true, roles });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal Server Error' });

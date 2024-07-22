@@ -63,9 +63,12 @@ exports.searchLOBs = async (req, res) => {
     if (name) {
       filter.name = { $regex: name, $options: 'i' }; // Case-insensitive search
     }
-    const lobs = await LOB.find(filter);
+    let lobs = await LOB.find(filter);
     if (!lobs.length)
       return res.status(404).json({ message: "No line of business found!", success: false });
+    const totalRecords = lobs.length;
+    await LOB.updateMany({},{ $set: { totalRecords } })
+    lobs = await LOB.find(filter);
     res.status(200).json({ message: "Data fetched successfully", success: true, lobs });
   } catch (error) {
     console.error(error);

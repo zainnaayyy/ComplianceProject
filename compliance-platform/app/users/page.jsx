@@ -1,8 +1,8 @@
 "use client";
 import {
+  Button,
   Form,
   Input,
-  InputNumber,
   Popconfirm,
   Select,
   Space,
@@ -12,9 +12,13 @@ import {
 } from "antd";
 import { useEffect, useState } from "react";
 import { FaEye, FaPen, FaCheck, FaTrash, FaSquareXmark } from "react-icons/fa6";
-// import Drawer from '@/components/Drawer';
-import CustomDrawer from "@/components/Drawer";
-import { actionAPI, url, useAuth, useSharedDispatcher, useSharedSelector } from "@/shared";
+import {
+  actionAPI,
+  url,
+  useAuth,
+  useSharedDispatcher,
+  useSharedSelector,
+} from "@/shared";
 import ModalComponent from '@/components/ModalComponent';
 
 const Users = () => {
@@ -28,15 +32,15 @@ const Users = () => {
   const { LOBs, LOBsLoading, LOBsError, LOBsErrorMessage } = useSharedSelector(
     (state) => state.LOBData
   );
-  const [editingKey, setEditingKey] = useState('');
+  const [editingKey, setEditingKey] = useState("");
   const [usersArray, setUsersArray] = useState([]);
   const [statusArray, setStatusArray] = useState([
     {
-      label: 'Active',
+      label: "Active",
       value: true,
     },
     {
-      label: 'In-Active',
+      label: "In-Active",
       value: false,
     },
   ]);
@@ -106,35 +110,10 @@ const Users = () => {
     }
   }, [users, sites, LOBs]);
 
-  const lobData = [
-    { key: 1, name: 'LOB 1' },
-    { key: 2, name: 'LOB 2' },
-  ];
-
-  const sitesData = [
-    { key: 1, name: 'Site 1' },
-    { key: 2, name: 'Site 2' },
-  ];
-
-  const showLobDrawer = () => {
-    setLobDrawerVisible(true);
-  };
-
-  const closeLobDrawer = () => {
-    setLobDrawerVisible(false);
-  };
-
-  const showSitesDrawer = () => {
-    setSitesDrawerVisible(true);
-  };
-
-  const closeSitesDrawer = () => {
-    setSitesDrawerVisible(false);
-  };
-  const isEditing = (record) => record.key === editingKey;
+  const isEditing = (record) => record === editingKey;
   const edit = (record) => {
     form.setFieldsValue(record);
-    setEditingKey(record.key);
+    setEditingKey(record._id);
   };
 
   const cancel = () => {
@@ -192,7 +171,6 @@ const Users = () => {
       editable: true,
       render: (id, record) => {
         const LOB = LOBs?.length && LOBs.find((val) => val._id === id);
-        console.log('sss', LOB?.name);
         return LOB?.name;
       },
     },
@@ -215,18 +193,18 @@ const Users = () => {
       editable: true,
     },
     {
-      title: 'Status',
-      dataIndex: 'status',
-      key: '3',
+      title: "Status",
+      dataIndex: "status",
+      key: "status",
       width: 20,
       editable: true,
       filters: [
         {
-          text: 'Active',
+          text: "Active",
           value: true,
         },
         {
-          text: 'Inactive',
+          text: "Inactive",
           value: false,
         },
       ],
@@ -240,7 +218,7 @@ const Users = () => {
             Active
           </Tag>
         ) : (
-          <Tag className='inline-block px-3 font-sans transition-shadow duration-300 py-1 text-[0.65rem] rounded-full bg-info-100 text-info-500 border-info-100 dark:border-info-500 dark:text-info-500 border font-medium'>
+          <Tag className="inline-block px-3 font-sans transition-shadow duration-300 py-1 text-[0.65rem] rounded-full bg-info-100 text-info-500 border-info-100 dark:border-info-500 dark:text-info-500 border font-medium">
             In-Active
           </Tag>
         );
@@ -252,11 +230,11 @@ const Users = () => {
       // fixed: "right",
       width: 10,
       render: (_, record) => {
-        const editable = isEditing(record);
+        const editable = isEditing(record._id);
         return editable ? (
           <Space>
             <Typography.Link onClick={() => save(record._id)}>
-              <FaCheck className='w-6 h-6' />
+              <FaCheck className="w-6 h-6" />
             </Typography.Link>
             <Popconfirm title='Sure to cancel?' onConfirm={cancel}>
               <a>
@@ -301,14 +279,14 @@ const Users = () => {
       onCell: (record) => ({
         record,
         inputType:
-          col.dataIndex === 'status' ||
-          col.dataIndex === 'LOB' ||
-          col.dataIndex === 'site'
-            ? 'select'
-            : 'text',
+          col.dataIndex === "status" ||
+          col.dataIndex === "LOB" ||
+          col.dataIndex === "site"
+            ? "select"
+            : "text",
         dataIndex: col.dataIndex,
         title: col.title,
-        editing: isEditing(record),
+        editing: isEditing(record._id),
       }),
     };
   });
@@ -337,11 +315,11 @@ const Users = () => {
           }}
           placeholder={`Select ${dataIndex}`}
           options={
-            dataIndex === 'site'
+            dataIndex === "site"
               ? sitesArray
-              : dataIndex === 'LOB'
+              : dataIndex === "LOB"
               ? LOBsArray
-              : dataIndex === 'status'
+              : dataIndex === "status"
               ? statusArray
               : null
           }
@@ -376,7 +354,7 @@ const Users = () => {
   const onSearch = (val) => {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
-    myHeaders.append("Authorization", "Bearer "+ token);
+    myHeaders.append("Authorization", "Bearer " + token);
 
     const raw = JSON.stringify({
       search: val,
@@ -389,76 +367,59 @@ const Users = () => {
       redirect: "follow",
     };
 
-    fetch(url+"/searchUsers", requestOptions)
+    fetch(url + "/searchUsers", requestOptions)
       .then((response) => response.json())
-      .then((result) => dispatcher(actionAPI.gettingUserListSuccess(result.users)))
+      .then((result) =>
+        dispatcher(actionAPI.gettingUserListSuccess(result.users))
+      )
       .catch((error) => dispatcher(actionAPI.gettingUserListFailed(error)));
   };
 
   return (
     <div>
-      <div className='flex justify-between'>
-        <div className='text-3xl p-2'>Users Table </div>
-        <div className='flex'>
-          <div class='group/nui-input relative'>
-            <Input
-              placeholder='Search users...'
+      <div className="flex justify-between">
+        <div className="text-3xl p-2">Users Table </div>
+        <div className="flex">
+          <div class="group/nui-input relative">
+            <Input.Search
+              placeholder="Search users..."
+              enterButton="Search"
+              onPressEnter={(e) => onSearch(e.target.value)}
+              onSearch={(val) => onSearch(val)}
               prefix={
-                <div class='dark:text-black text-muted-400 group-focus-within/nui-input:text-dark-primary-500 flex items-center justify-center transition-colors duration-300 peer-disabled:cursor-not-allowed peer-disabled:opacity-75'>
+                <div class="dark:text-black text-muted-400 group-focus-within/nui-input:text-dark-primary-500 flex items-center justify-center transition-colors duration-300 peer-disabled:cursor-not-allowed peer-disabled:opacity-75">
                   <svg
-                    xmlns='http://www.w3.org/2000/svg'
-                    xmlnsXlink='http://www.w3.org/1999/xlink'
-                    aria-hidden='true'
-                    role='img'
-                    className='icon h-[1.15rem] w-[1.15rem]'
-                    width='1em'
-                    height='1em'
-                    viewBox='0 0 24 24'
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlnsXlink="http://www.w3.org/1999/xlink"
+                    aria-hidden="true"
+                    role="img"
+                    className="icon h-[1.15rem] w-[1.15rem]"
+                    width="1em"
+                    height="1em"
+                    viewBox="0 0 24 24"
                   >
                     <g
-                      fill='none'
-                      stroke='currentColor'
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                      strokeWidth='2'
+                      fill="none"
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
                     >
-                      <circle cx='11' cy='11' r='8' />
-                      <path d='M21 21l-4.35-4.35' />
+                      <circle cx="11" cy="11" r="8" />
+                      <path d="M21 21l-4.35-4.35" />
                     </g>
                   </svg>
                 </div>
               }
-              className='nui-focus border-muted-300 text-muted-600 placeholder:text-muted-300 dark:border-muted-700 dark:bg-muted-900/75 dark:text-black dark:placeholder:text-muted-500 dark:focus:border-muted-700 peer w-full border bg-white font-sans transition-all duration-300 disabled:cursor-not-allowed disabled:opacity-75 px-2 h-10 py-2 text-sm leading-5 rounded'
+              size="large"
+              className="text-dark-muted-600 placeholder:text-dark-muted-300 dark:text-black dark:placeholder:text-dark-muted-500 peer w-full font-sans transition-all duration-300 disabled:cursor-not-allowed disabled:opacity-75 text-sm leading-5 rounded"
             />
           </div>
-          <div className='flex space-x-2 px-4'>
-            <button
-              onClick={showLobDrawer}
-              type='button'
-              class='nui-focus border-muted-300 dark:border-muted-700 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'
-            >
-              LOB
-            </button>
-            <button
-              onClick={showSitesDrawer}
-              type='button'
-              class='nui-focus border-muted-300 dark:border-muted-700 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'
-            >
-              SITES
-            </button>
+          <div className="flex space-x-2 px-4">
+            <Button className="nui-focus border-dark-muted-300 dark:border-dark-muted-700 text-white focus:ring-4 focus:ring-dark-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none dark:focus:ring-dark-primary-800 bg-dark-primary" type="primary" size="large" onClick={console.log("add")}>
+              Add Users
+            </Button>
           </div>
-          <CustomDrawer
-            title='LOB'
-            visible={lobDrawerVisible}
-            onClose={closeLobDrawer}
-            data={lobData}
-          />
-          <CustomDrawer
-            title='SITES'
-            visible={sitesDrawerVisible}
-            onClose={closeSitesDrawer}
-            data={sitesData}
-          />
         </div>
       </div>
       <Form form={form} component={false}>
@@ -482,107 +443,15 @@ const Users = () => {
           }}
         />
       </Form>
-      <ModalComponent
-        isModalOpen={isModalOpen}
-        handleOk={handleOk}
-        handleCancel={handleCancel}
-        selectedUser={selectedUser}
-      />
-      {/* <div>
-        <div>
-          <div>
-            <div>
-              <div>
-                <div class="mt-6">
-                  <div class="inline-flex w-full flex-col md:flex-row md:justify-between">
-                    <ul class="border-muted-200 bg-muted-100 dark:border-muted-600 dark:bg-muted-700 mb-4 inline-flex flex-wrap gap-2 border p-1 md:mb-0 md:gap-1 rounded-xl">
-                      <li>
-                        <a
-                          aria-current="page"
-                          href="table-list-1.html"
-                          class="router-link-active router-link-exact-active flex h-10 w-10 items-center justify-center border font-sans text-sm transition-all duration-300 bg-dark-primary-500 border-dark-primary-500 shadow-dark-primary-500/50 dark:shadow-dark-primary-500/20 text-white shadow-sm rounded-xl"
-                          tabindex="0"
-                        >
-                          1
-                        </a>
-                      </li>
-
-                      <li>
-                        <a
-                          href="table-list-14658.html?page=2"
-                          class="router-link-active router-link-exact-active flex h-10 w-10 items-center justify-center font-sans text-sm transition-all duration-300 dark:bg-muted-800 border-muted-200 dark:border-muted-700 hover:bg-muted-100 dark:hover:bg-muted-900 text-muted-500 hover:text-muted-700 dark:hover:text-muted-400 bg-white rounded-xl"
-                          tabindex="0"
-                        >
-                          2
-                        </a>
-                      </li>
-
-                      <li>
-                        <a
-                          aria-current="page"
-                          href="table-list-19ba9.html?page=3"
-                          class="router-link-active router-link-exact-active flex h-10 w-10 items-center justify-center font-sans text-sm transition-all duration-300 dark:bg-muted-800 border-muted-200 dark:border-muted-700 hover:bg-muted-100 dark:hover:bg-muted-900 text-muted-500 hover:text-muted-700 dark:hover:text-muted-400 bg-white rounded-xl"
-                          tabindex="0"
-                        >
-                          3
-                        </a>
-                      </li>
-                    </ul>
-                    <div class="border-muted-200 bg-muted-100 dark:border-muted-600 dark:bg-muted-700 flex items-center justify-end gap-1 border p-1 rounded-xl">
-                      <a
-                        aria-current="page"
-                        href="table-list-1.html"
-                        class="router-link-active router-link-exact-active border-muted-200 text-muted-500 hover:bg-muted-100 hover:text-muted-700 dark:border-muted-700 dark:bg-muted-800 dark:hover:bg-muted-900 dark:hover:text-muted-400 flex h-10 w-full items-center justify-center bg-white font-sans text-sm transition-all duration-300 md:w-10 rounded-xl"
-                        tabindex="0"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          xmlnsXlink="http://www.w3.org/1999/xlink"
-                          aria-hidden="true"
-                          viewBox="0 0 24 24"
-                          className="icon block h-4 w-4"
-                        >
-                          <path
-                            fill="none"
-                            stroke="currentColor"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M15 18l-6-6 6-6"
-                          />
-                        </svg>
-                      </a>
-                      <a
-                        aria-current="page"
-                        href="table-list-14658.html?page=2"
-                        class="router-link-active router-link-exact-active border-muted-200 text-muted-500 hover:bg-muted-100 hover:text-muted-700 dark:border-muted-700 dark:bg-muted-800 dark:hover:bg-muted-900 dark:hover:text-muted-400 flex h-10 w-full items-center justify-center bg-white font-sans text-sm transition-all duration-300 md:w-10 rounded-xl"
-                        tabindex="0"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          xmlnsXlink="http://www.w3.org/1999/xlink"
-                          aria-hidden="true"
-                          viewBox="0 0 24 24"
-                          className="icon block h-4 w-4"
-                        >
-                          <path
-                            fill="none"
-                            stroke="currentColor"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M9 18l6-6-6-6"
-                          />
-                        </svg>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> */}
+      {
+        isModalOpen ?
+          <ModalComponent
+          isModalOpen={isModalOpen}
+          handleOk={handleOk}
+          handleCancel={handleCancel}
+          selectedUser={selectedUser}
+        /> : null
+      }
     </div>
   );
 };

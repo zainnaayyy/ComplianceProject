@@ -1,7 +1,18 @@
+'use client'
+import { useEffect, useState } from "react";
 import { Dropdown } from "antd";
 import { FaBoxesPacking, FaBuilding, FaIdCard, FaPowerOff, FaSitemap } from "react-icons/fa6";
+import { actionAPI, useSharedSelector, useSharedDispatcher } from "@/shared";
+import LookupsDrawer from "./Drawers/LookupsDrawer";
 
-const Navbar = ({handleToggleSideBar, isSideBar, handleThemeToggle, theme, logout}) => {
+const Navbar = ({handleToggleSideBar, isSideBar, handleThemeToggle, theme, logout, token}) => {
+  const dispatcher = useSharedDispatcher()
+  const { sites, sitesLoading, sitesError, sitesErrorMessage } = useSharedSelector((state) => state.SiteData);
+  const { LOBs, LOBsLoading, LOBsError, LOBsErrorMessage } = useSharedSelector((state) => state.LOBData);
+  const { Roles, RolesLoading, RolesError, RolesErrorMessage } = useSharedSelector((state) => state.RolesData);
+  const [data, setData] = useState(0)
+  const [openDrawer, setOpenDrawer] = useState(false)
+
   const items = [
     {
       key: '1',
@@ -20,6 +31,17 @@ const Navbar = ({handleToggleSideBar, isSideBar, handleThemeToggle, theme, logou
     },
   ];
   
+  const onClick = async({key}) => {
+    setData(key)
+    if(key === '1') 
+      dispatcher(actionAPI.getLOBs(token))
+    if(key === '2') 
+      dispatcher(actionAPI.getSites(token))
+    if(key === '3') 
+      dispatcher(actionAPI.getRoles(token))
+    setOpenDrawer(true)
+  }
+
   return (
     <div className="relative z-50 mb-5 flex h-16 items-center gap-2">
       <button
@@ -144,7 +166,7 @@ const Navbar = ({handleToggleSideBar, isSideBar, handleThemeToggle, theme, logou
             arrow
             placement="bottomRight"
             menu={
-              {items}
+              {items, onClick}
             }
           >
             <button
@@ -194,6 +216,20 @@ const Navbar = ({handleToggleSideBar, isSideBar, handleThemeToggle, theme, logou
           </div>
         </div>
       </div>
+      {
+        openDrawer ? 
+        <LookupsDrawer 
+          title = { data === '1' ? "Line of Business" : data === '2' ? "Sites" : data === '3' ? "Roles" : ''}
+          visible={openDrawer}
+          onClose={() => {
+            setOpenDrawer(false)
+            setData(0)
+          }}
+          data={data === '1' ? LOBs : data === '2' ? sites : data === '3' ? Roles : []}
+          loading={LOBsLoading || sitesLoading || RolesLoading}
+        />
+        : null
+      }
     </div>
   );
 };

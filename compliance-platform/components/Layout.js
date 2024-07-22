@@ -4,7 +4,7 @@ import CircularMenu from "@/components/CircularMenu";
 import Sidebar from "@/components/Sidebar";
 import Image from "next/image";
 import { useTheme } from "next-themes";
-import { AuthProvider, isEmpty, Store, useAuth } from "@/shared";
+import { isEmpty, Store, useAuth } from "@/shared";
 import { Button, Input } from "antd";
 import { Provider } from "react-redux";
 import Navbar from "./Navbar";
@@ -12,7 +12,7 @@ import Navbar from "./Navbar";
 
 const Layout = ({ children }) => {
   const { theme, setTheme } = useTheme();
-  const { isValidToken, login, logout, setIsValidToken } = useAuth();
+  const { isValidToken, login, logout, setIsValidToken, token } = useAuth();
   
   // **************** All States ****************
   const [isSideBar, setIsSideBar] = useState(true); // state for Sidebar visibility
@@ -186,6 +186,7 @@ const Layout = ({ children }) => {
                   <div className="mx-auto w-full max-w-[90rem]">
                     {/* ******************************* Header ***************************** */}
                     <Navbar
+                      token={token}
                       isSideBar={isSideBar}
                       handleToggleSideBar={handleToggleSideBar}
                       theme={theme}

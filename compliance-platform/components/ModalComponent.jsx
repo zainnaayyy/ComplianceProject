@@ -7,7 +7,6 @@ const ModalComponent = ({
   handleCancel,
   selectedUser,
 }) => {
-  console.log(selectedUser._id, 'selectedUser');
   return (
     <Modal
       title='User Profile'
