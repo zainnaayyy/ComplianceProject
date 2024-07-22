@@ -15,70 +15,94 @@ import { FaEye, FaPen, FaCheck, FaTrash, FaSquareXmark } from "react-icons/fa6";
 // import Drawer from '@/components/Drawer';
 import CustomDrawer from "@/components/Drawer";
 import { actionAPI, useAuth, useSharedDispatcher, useSharedSelector } from "@/shared";
+import ModalComponent from '@/components/ModalComponent';
 
 const Products = () => {
   const [form] = Form.useForm();
   const dispatcher = useSharedDispatcher();
-  const { token } = useAuth()
-  const { users, usersLoading, usersError, usersErrorMessage } = useSharedSelector((state) => state.UserData);
-  const { sites, sitesLoading, sitesError, sitesErrorMessage } = useSharedSelector((state) => state.SiteData);
-  const { LOBs, LOBsLoading, LOBsError, LOBsErrorMessage } = useSharedSelector((state) => state.LOBData);
-  const [editingKey, setEditingKey] = useState("");
+  const { token } = useAuth();
+  const { users, usersLoading, usersError, usersErrorMessage } =
+    useSharedSelector((state) => state.UserData);
+  const { sites, sitesLoading, sitesError, sitesErrorMessage } =
+    useSharedSelector((state) => state.SiteData);
+  const { LOBs, LOBsLoading, LOBsError, LOBsErrorMessage } = useSharedSelector(
+    (state) => state.LOBData
+  );
+  const [editingKey, setEditingKey] = useState('');
   const [usersArray, setUsersArray] = useState([]);
   const [statusArray, setStatusArray] = useState([
-      {
-        label: 'Active',
-        value: true
-      },
-      {
-        label: 'In-Active',
-        value: false
-      },
+    {
+      label: 'Active',
+      value: true,
+    },
+    {
+      label: 'In-Active',
+      value: false,
+    },
   ]);
   const [sitesArray, setSitesArray] = useState([]);
   const [LOBsArray, setLOBsArray] = useState([]);
   const [lobDrawerVisible, setLobDrawerVisible] = useState(false);
   const [sitesDrawerVisible, setSitesDrawerVisible] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
+
+  const showModal = (record) => {
+    const selectedLOB =
+      LOBs?.length && LOBs.find((val) => val._id === record.LOB);
+    const selectedSite =
+      sites?.length && sites.find((val) => val._id === record.site);
+
+    setSelectedUser({
+      ...record,
+      LOB: selectedLOB?.name || record.LOB,
+      site: selectedSite?.name || record.site,
+    });
+    setIsModalOpen(true);
+  };
+
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
 
   useEffect(() => {
-    if(token) {
-      if(!users?.length) 
-        dispatcher(actionAPI.getUsers(token))
-      if(!sites?.length) 
-        dispatcher(actionAPI.getSites(token))
-      if(!LOBs?.length) 
-        dispatcher(actionAPI.getLOBs(token))
+    if (token) {
+      if (!users?.length) dispatcher(actionAPI.getUsers(token));
+      if (!sites?.length) dispatcher(actionAPI.getSites(token));
+      if (!LOBs?.length) dispatcher(actionAPI.getLOBs(token));
     }
-  }, [users, token, sites, LOBs])
+  }, [users, token, sites, LOBs]);
 
   var groupBy = function (xs, key) {
     return xs.reduce(function (rv, x) {
-    (rv[x[key]] = rv[x[key]] || []).push(x);
-    return rv;
+      (rv[x[key]] = rv[x[key]] || []).push(x);
+      return rv;
     }, {});
   };
 
   useEffect(() => {
-    if(users) {
-      setUsersArray(users)
+    if (users) {
+      setUsersArray(users);
     }
 
-    if(sites) {
+    if (sites) {
       const siteOptions = sites.map((site) => ({
-          value: site._id,
-          label: site.name,
-        })
-      );
+        value: site._id,
+        label: site.name,
+      }));
       setSitesArray(siteOptions);
     }
 
-    if(LOBs) {
+    if (LOBs) {
       const lobOptions = LOBs.map((lob) => ({
-          value: lob._id,
-          label: lob.name,
-        })
-      );
-    setLOBsArray(lobOptions);
+        value: lob._id,
+        label: lob.name,
+      }));
+      setLOBsArray(lobOptions);
     }
   }, [users, sites, LOBs]);
 
@@ -112,9 +136,9 @@ const Products = () => {
     form.setFieldsValue(record);
     setEditingKey(record.key);
   };
-  
+
   const cancel = () => {
-    setEditingKey("");
+    setEditingKey('');
   };
 
   const save = async (key) => {
@@ -129,14 +153,14 @@ const Products = () => {
           ...row,
         });
         setUsersArray(newData);
-        setEditingKey("");
+        setEditingKey('');
       } else {
         newData.push(row);
         setUsersArray(newData);
-        setEditingKey("");
+        setEditingKey('');
       }
     } catch (errInfo) {
-      console.log("Validate Failed:", errInfo);
+      console.log('Validate Failed:', errInfo);
     }
   };
 
@@ -147,47 +171,53 @@ const Products = () => {
 
   const columns = [
     {
-      title: "Full Name",
+      title: 'Full Name',
       width: 125,
-      dataIndex: "fullName",
-      key: "name",
+      dataIndex: 'fullName',
+      key: 'name',
       // fixed: "left",
       editable: true,
+      render: (text, record) => (
+        <Typography.Link onClick={() => showModal(record)}>
+          {text}
+        </Typography.Link>
+      ),
     },
     {
-      title: "LOB",
+      title: 'LOB',
       width: 50,
-      dataIndex: "LOB",
-      key: "lob",
+      dataIndex: 'LOB',
+      key: 'lob',
       // fixed: "left",
       editable: true,
       render: (id, record) => {
-        const LOB = LOBs?.length && LOBs.find((val) => val._id === id)
-      return LOB?.name
-    }
+        const LOB = LOBs?.length && LOBs.find((val) => val._id === id);
+        console.log('sss', LOB?.name);
+        return LOB?.name;
+      },
     },
     {
-      title: "Site",
-      dataIndex: "site",
-      key: "site",
+      title: 'Site',
+      dataIndex: 'site',
+      key: 'site',
       width: 50,
       editable: true,
       render: (id, record) => {
-          const site = sites?.length && sites.find((val) => val._id === id)
-        return site?.name
-      }
+        const site = sites?.length && sites.find((val) => val._id === id);
+        return site?.name;
+      },
     },
     {
-      title: "Email",
-      dataIndex: "email",
-      key: "email",
+      title: 'Email',
+      dataIndex: 'email',
+      key: 'email',
       width: 150,
       editable: true,
     },
     {
-      title: "Status",
-      dataIndex: "status",
-      key: "3",
+      title: 'Status',
+      dataIndex: 'status',
+      key: '3',
       width: 20,
       editable: true,
       filters: [
@@ -204,61 +234,57 @@ const Products = () => {
       render: (val, record) => {
         return val ? (
           <Tag
-            className="inline-block px-3 font-sans transition-shadow duration-300 py-1 text-[0.65rem] rounded-full bg-info-100 text-info-500 border-info-100 dark:border-info-500 dark:text-info-500 border font-medium"
-            color="success"
+            className='inline-block px-3 font-sans transition-shadow duration-300 py-1 text-[0.65rem] rounded-full bg-info-100 text-info-500 border-info-100 dark:border-info-500 dark:text-info-500 border font-medium'
+            color='success'
           >
             Active
           </Tag>
         ) : (
-          <Tag
-            className="inline-block px-3 font-sans transition-shadow duration-300 py-1 text-[0.65rem] rounded-full bg-info-100 text-info-500 border-info-100 dark:border-info-500 dark:text-info-500 border font-medium"
-          >In-Active</Tag>
+          <Tag className='inline-block px-3 font-sans transition-shadow duration-300 py-1 text-[0.65rem] rounded-full bg-info-100 text-info-500 border-info-100 dark:border-info-500 dark:text-info-500 border font-medium'>
+            In-Active
+          </Tag>
         );
       },
     },
     {
-      title: "Action",
-      dataIndex: "operation",
+      title: 'Action',
+      dataIndex: 'operation',
       // fixed: "right",
       width: 10,
       render: (_, record) => {
         const editable = isEditing(record);
         return editable ? (
           <Space>
-            <Typography.Link
-              onClick={() => save(record._id)}
-            >
-              <FaCheck className="w-6 h-6" />
+            <Typography.Link onClick={() => save(record._id)}>
+              <FaCheck className='w-6 h-6' />
             </Typography.Link>
-            <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
+            <Popconfirm title='Sure to cancel?' onConfirm={cancel}>
               <a>
-                <FaSquareXmark className="w-6 h-6 text-red-600 hover:text-red-800" />
+                <FaSquareXmark className='w-6 h-6 text-red-600 hover:text-red-800' />
               </a>
             </Popconfirm>
           </Space>
         ) : (
           <Space>
             <Typography.Link
-              className="text-dark-primary-600"
-              disabled={editingKey !== ""}
+              className='text-dark-primary-600'
+              disabled={editingKey !== ''}
               onClick={() => edit(record)}
             >
               <div>
-                <FaPen className="w-6 h-6" />
+                <FaPen className='w-6 h-6' />
               </div>
             </Typography.Link>
             <Popconfirm
-              title="Sure to delete?"
+              title='Sure to delete?'
               onConfirm={() => handleDelete(record)}
             >
-              <a className="">
-                <FaTrash className="w-6 h-6 text-red-600 hover:text-red-800" />
+              <a className=''>
+                <FaTrash className='w-6 h-6 text-red-600 hover:text-red-800' />
               </a>
             </Popconfirm>
-            <Typography.Link
-              onClick={() => console.log("view")}
-            >
-              <FaEye className="w-6 h-6" />
+            <Typography.Link onClick={() => showModal(record)}>
+              <FaEye className='w-6 h-6' />
             </Typography.Link>
           </Space>
         );
@@ -274,7 +300,12 @@ const Products = () => {
       ...col,
       onCell: (record) => ({
         record,
-        inputType: (col.dataIndex === "status" || col.dataIndex === "LOB" || col.dataIndex === "site")? "select" : "text",
+        inputType:
+          col.dataIndex === 'status' ||
+          col.dataIndex === 'LOB' ||
+          col.dataIndex === 'site'
+            ? 'select'
+            : 'text',
         dataIndex: col.dataIndex,
         title: col.title,
         editing: isEditing(record),
@@ -293,7 +324,7 @@ const Products = () => {
     ...restProps
   }) => {
     const inputNode =
-      inputType === "select" ? (
+      inputType === 'select' ? (
         <Select
           allowClear
           showSearch
@@ -302,10 +333,18 @@ const Products = () => {
               return true;
           }}
           style={{
-            width: "100%",
+            width: '100%',
           }}
           placeholder={`Select ${dataIndex}`}
-          options={dataIndex === 'site' ? sitesArray : dataIndex === 'LOB' ? LOBsArray : dataIndex === 'status' ? statusArray : null}
+          options={
+            dataIndex === 'site'
+              ? sitesArray
+              : dataIndex === 'LOB'
+              ? LOBsArray
+              : dataIndex === 'status'
+              ? statusArray
+              : null
+          }
         />
       ) : (
         <Input />
@@ -336,64 +375,64 @@ const Products = () => {
 
   return (
     <div>
-      <div className="flex justify-between">
-        <div className="text-3xl p-2">Users Table </div>
-        <div className="flex">
-          <div class="group/nui-input relative">
-          <Input
-                placeholder="Search users..."
-                prefix={
-                  <div class="dark:text-black text-muted-400 group-focus-within/nui-input:text-dark-primary-500 flex items-center justify-center transition-colors duration-300 peer-disabled:cursor-not-allowed peer-disabled:opacity-75">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      xmlnsXlink="http://www.w3.org/1999/xlink"
-                      aria-hidden="true"
-                      role="img"
-                      className="icon h-[1.15rem] w-[1.15rem]"
-                      width="1em"
-                      height="1em"
-                      viewBox="0 0 24 24"
+      <div className='flex justify-between'>
+        <div className='text-3xl p-2'>Users Table </div>
+        <div className='flex'>
+          <div class='group/nui-input relative'>
+            <Input
+              placeholder='Search users...'
+              prefix={
+                <div class='dark:text-black text-muted-400 group-focus-within/nui-input:text-dark-primary-500 flex items-center justify-center transition-colors duration-300 peer-disabled:cursor-not-allowed peer-disabled:opacity-75'>
+                  <svg
+                    xmlns='http://www.w3.org/2000/svg'
+                    xmlnsXlink='http://www.w3.org/1999/xlink'
+                    aria-hidden='true'
+                    role='img'
+                    className='icon h-[1.15rem] w-[1.15rem]'
+                    width='1em'
+                    height='1em'
+                    viewBox='0 0 24 24'
+                  >
+                    <g
+                      fill='none'
+                      stroke='currentColor'
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      strokeWidth='2'
                     >
-                      <g
-                        fill="none"
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                      >
-                        <circle cx="11" cy="11" r="8" />
-                        <path d="M21 21l-4.35-4.35" />
-                      </g>
-                    </svg>
-                  </div>
-                }
-                className='nui-focus border-muted-300 text-muted-600 placeholder:text-muted-300 dark:border-muted-700 dark:bg-muted-900/75 dark:text-black dark:placeholder:text-muted-500 dark:focus:border-muted-700 peer w-full border bg-white font-sans transition-all duration-300 disabled:cursor-not-allowed disabled:opacity-75 px-2 h-10 py-2 text-sm leading-5 rounded'
-              />
+                      <circle cx='11' cy='11' r='8' />
+                      <path d='M21 21l-4.35-4.35' />
+                    </g>
+                  </svg>
+                </div>
+              }
+              className='nui-focus border-muted-300 text-muted-600 placeholder:text-muted-300 dark:border-muted-700 dark:bg-muted-900/75 dark:text-black dark:placeholder:text-muted-500 dark:focus:border-muted-700 peer w-full border bg-white font-sans transition-all duration-300 disabled:cursor-not-allowed disabled:opacity-75 px-2 h-10 py-2 text-sm leading-5 rounded'
+            />
           </div>
-          <div className="flex space-x-2 px-4">
+          <div className='flex space-x-2 px-4'>
             <button
               onClick={showLobDrawer}
-              type="button"
-              class="nui-focus border-muted-300 dark:border-muted-700 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+              type='button'
+              class='nui-focus border-muted-300 dark:border-muted-700 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'
             >
               LOB
             </button>
             <button
               onClick={showSitesDrawer}
-              type="button"
-              class="nui-focus border-muted-300 dark:border-muted-700 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+              type='button'
+              class='nui-focus border-muted-300 dark:border-muted-700 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'
             >
               SITES
             </button>
           </div>
           <CustomDrawer
-            title="LOB"
+            title='LOB'
             visible={lobDrawerVisible}
             onClose={closeLobDrawer}
             data={lobData}
           />
           <CustomDrawer
-            title="SITES"
+            title='SITES'
             visible={sitesDrawerVisible}
             onClose={closeSitesDrawer}
             data={sitesData}
@@ -410,7 +449,7 @@ const Products = () => {
           bordered
           columns={mergedColumns}
           dataSource={usersArray}
-          rowClassName="editable-row"
+          rowClassName='editable-row'
           // scroll={{
           //   x: 1500,
           //   y: 300,
@@ -421,6 +460,12 @@ const Products = () => {
           }}
         />
       </Form>
+      <ModalComponent
+        isModalOpen={isModalOpen}
+        handleOk={handleOk}
+        handleCancel={handleCancel}
+        selectedUser={selectedUser}
+      />
       {/* <div>
         <div>
           <div>
