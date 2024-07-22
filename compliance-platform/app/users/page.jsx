@@ -14,10 +14,10 @@ import { useEffect, useState } from "react";
 import { FaEye, FaPen, FaCheck, FaTrash, FaSquareXmark } from "react-icons/fa6";
 // import Drawer from '@/components/Drawer';
 import CustomDrawer from "@/components/Drawer";
-import { actionAPI, useAuth, useSharedDispatcher, useSharedSelector } from "@/shared";
+import { actionAPI, url, useAuth, useSharedDispatcher, useSharedSelector } from "@/shared";
 import ModalComponent from '@/components/ModalComponent';
 
-const Products = () => {
+const Users = () => {
   const [form] = Form.useForm();
   const dispatcher = useSharedDispatcher();
   const { token } = useAuth();
@@ -373,6 +373,28 @@ const Products = () => {
     );
   };
 
+  const onSearch = (val) => {
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", "Bearer "+ token);
+
+    const raw = JSON.stringify({
+      search: val,
+    });
+
+    const requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    fetch(url+"/searchUsers", requestOptions)
+      .then((response) => response.json())
+      .then((result) => dispatcher(actionAPI.gettingUserListSuccess(result.users)))
+      .catch((error) => dispatcher(actionAPI.gettingUserListFailed(error)));
+  };
+
   return (
     <div>
       <div className='flex justify-between'>
@@ -565,4 +587,4 @@ const Products = () => {
   );
 };
 
-export default Products;
+export default Users;

@@ -77,12 +77,13 @@ export function AuthProvider({ children }) {
     return response.json();
   };
 
-  const logout = async (token) => {
-    const response = await fetch(`${url}/auth/logout/`, {
+  const logout = async () => {
+    const response = await fetch(`${url}/logout`, {
       method: "POST",
-      body: JSON.stringify({ token }),
+      body: JSON.stringify({ "userId": user._id }),
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
       },
     });
     if (response.status === 200) {

@@ -178,6 +178,9 @@ fieldset legend {
   border: none !important;
 }
 
+.ant-input-search-button {
+  background-color: rgb(0, 188, 212) !important;
+}
 .ant-btn-primary:not(:disabled):not(.ant-btn-disabled):hover {
   background-color: rgb(0, 131, 143) !important;
 }
@@ -201,139 +204,28 @@ fieldset legend {
   box-shadow: none !important;
   outline-style: dashed !important;
   outline-width: 1px !important;
+  outline-color: rgb(0, 188, 212) !important;
+}
+
+.ant-pagination-item {
+  border-color: rgb(0, 188, 212) !important;
+  background-color: #fff !important;
 }
 
 .ant-pagination-item-active {
   border-color: rgb(0, 188, 212) !important;
+  background-color: rgb(0, 188, 212) !important;
 }
 
-.ant-pagination-item-link,
 .ant-pagination-item-active a {
+  color: #fff !important;
+}
+
+.ant-pagination-item-link {
   color: rgb(0, 188, 212) !important;
 }
 
 .ant-drawer-header {
   background-color: rgb(100, 116, 139) !important;
   border-bottom-color: rgb(148, 163, 184) !important;
-}
-
-.form-container {
-    width: 80%;
-    margin: auto;
-    border: 1px solid #ccc;
-    padding: 20px;
-    border-radius: 10px;
-    background-color: #f9f9f9;
-}
-
-.form-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-.form-header label {
-    margin-right: 10px;
-}
-
-.form-header input,
-.form-header select {
-    padding: 5px;
-    margin-right: 20px;
-}
-
-.red-flags-values {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-}
-
-.red-flags, .values {
-    display: flex;
-    align-items: center;
-}
-
-.red-flags label, .values label {
-    margin-right: 10px;
-}
-
-.flag, .value {
-    background-color: #ddd;
-    padding: 5px 10px;
-    margin-right: 10px;
-    border-radius: 5px;
-}
-
-.add-button {
-    padding: 5px 10px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.add-button:hover {
-    background-color: #0056b3;
-}
-
-.question-section {
-    margin-bottom: 20px;
-    padding: 20px;
-    border-radius: 10px;
-}
-
-.question-section.blue {
-    background-color: #e0f7fa;
-}
-
-.question-section.yellow {
-    background-color: #fff9c4;
-}
-
-.question-section.green {
-    background-color: #dcedc8;
-}
-
-.question {
-    margin-bottom: 20px;
-}
-
-.question label {
-    display: block;
-    margin-bottom: 10px;
-}
-
-.question textarea {
-    width: 100%;
-    height: 50px;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-}
-
-.evaluation {
-    display: flex;
-    flex-direction: column;
-}
-
-.evaluation label {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-}
-
-.evaluation .scores {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 10px;
-}
-
-.evaluation .scores label {
-    margin-left: 20px;
-}
-
-.evaluation input[type="checkbox"] {
-    margin-right: 10px;
 }
