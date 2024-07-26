@@ -4,6 +4,7 @@ const cors = require("cors");
 const app = express();
 require("dotenv").config();
 const cookieParser = require("cookie-parser");
+const bodyParser = require('body-parser');
 const authRoute = require("./Routes/AuthRoute");
 const roleRoute = require("./Routes/RoleRoute");
 const siteRoute = require("./Routes/SiteRoute");
@@ -32,11 +33,16 @@ app.listen(PORT, () => {
 app.use(cors());
 // app.options('*', cors());
 
+// Middleware to handle larger request payloads
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
+
 app.use(cookieParser());
 
 app.use(express.json());
 
 app.use("/public", express.static("public"))
+
 
 app.use("/", authRoute);
 app.use("/", roleRoute);

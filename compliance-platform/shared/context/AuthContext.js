@@ -129,7 +129,7 @@ export function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider
-      value={{ token, isValidToken, setIsValidToken, user, login, logout, updateToken }}
+      value={{ token, isValidToken, setIsValidToken, user, setUser, login, logout, updateToken }}
     >
       {children}
     </AuthContext.Provider>

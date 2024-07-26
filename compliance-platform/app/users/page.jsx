@@ -19,7 +19,7 @@ import {
   useSharedDispatcher,
   useSharedSelector,
 } from "@/shared";
-import ModalComponent from '@/components/ModalComponent';
+import ModalComponent from "@/components/ModalComponent";
 
 const Users = () => {
   const [form] = Form.useForm();
@@ -32,6 +32,8 @@ const Users = () => {
   const { LOBs, LOBsLoading, LOBsError, LOBsErrorMessage } = useSharedSelector(
     (state) => state.LOBData
   );
+  const { Roles, RolesLoading, RolesError, RolesErrorMessage } =
+    useSharedSelector((state) => state.RolesData);
   const [editingKey, setEditingKey] = useState("");
   const [usersArray, setUsersArray] = useState([]);
   const [statusArray, setStatusArray] = useState([
@@ -51,33 +53,12 @@ const Users = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
 
-  const showModal = (record) => {
-    const selectedLOB =
-      LOBs?.length && LOBs.find((val) => val._id === record.LOB);
-    const selectedSite =
-      sites?.length && sites.find((val) => val._id === record.site);
-
-    setSelectedUser({
-      ...record,
-      LOB: selectedLOB?.name || record.LOB,
-      site: selectedSite?.name || record.site,
-    });
-    setIsModalOpen(true);
-  };
-
-  const handleOk = () => {
-    setIsModalOpen(false);
-  };
-
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
-
   useEffect(() => {
     if (token) {
       if (!users?.length) dispatcher(actionAPI.getUsers(token));
       if (!sites?.length) dispatcher(actionAPI.getSites(token));
       if (!LOBs?.length) dispatcher(actionAPI.getLOBs(token));
+      if (!Roles?.length) dispatcher(actionAPI.getRoles());
     }
   }, [users, token, sites, LOBs]);
 
@@ -117,7 +98,7 @@ const Users = () => {
   };
 
   const cancel = () => {
-    setEditingKey('');
+    setEditingKey("");
   };
 
   const save = async (key) => {
@@ -132,14 +113,14 @@ const Users = () => {
           ...row,
         });
         setUsersArray(newData);
-        setEditingKey('');
+        setEditingKey("");
       } else {
         newData.push(row);
         setUsersArray(newData);
-        setEditingKey('');
+        setEditingKey("");
       }
     } catch (errInfo) {
-      console.log('Validate Failed:', errInfo);
+      console.log("Validate Failed:", errInfo);
     }
   };
 
@@ -150,10 +131,10 @@ const Users = () => {
 
   const columns = [
     {
-      title: 'Full Name',
+      title: "Full Name",
       width: 125,
-      dataIndex: 'fullName',
-      key: 'name',
+      dataIndex: "fullName",
+      key: "name",
       // fixed: "left",
       editable: true,
       render: (text, record) => (
@@ -163,10 +144,10 @@ const Users = () => {
       ),
     },
     {
-      title: 'LOB',
+      title: "LOB",
       width: 50,
-      dataIndex: 'LOB',
-      key: 'lob',
+      dataIndex: "LOB",
+      key: "lob",
       // fixed: "left",
       editable: true,
       render: (id, record) => {
@@ -175,9 +156,9 @@ const Users = () => {
       },
     },
     {
-      title: 'Site',
-      dataIndex: 'site',
-      key: 'site',
+      title: "Site",
+      dataIndex: "site",
+      key: "site",
       width: 50,
       editable: true,
       render: (id, record) => {
@@ -186,9 +167,9 @@ const Users = () => {
       },
     },
     {
-      title: 'Email',
-      dataIndex: 'email',
-      key: 'email',
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
       width: 150,
       editable: true,
     },
@@ -212,8 +193,8 @@ const Users = () => {
       render: (val, record) => {
         return val ? (
           <Tag
-            className='inline-block px-3 font-sans transition-shadow duration-300 py-1 text-[0.65rem] rounded-full bg-info-100 text-info-500 border-info-100 dark:border-info-500 dark:text-info-500 border font-medium'
-            color='success'
+            className="inline-block px-3 font-sans transition-shadow duration-300 py-1 text-[0.65rem] rounded-full bg-info-100 text-info-500 border-info-100 dark:border-info-500 dark:text-info-500 border font-medium"
+            color="success"
           >
             Active
           </Tag>
@@ -225,8 +206,8 @@ const Users = () => {
       },
     },
     {
-      title: 'Action',
-      dataIndex: 'operation',
+      title: "Action",
+      dataIndex: "operation",
       // fixed: "right",
       width: 10,
       render: (_, record) => {
@@ -236,33 +217,33 @@ const Users = () => {
             <Typography.Link onClick={() => save(record._id)}>
               <FaCheck className="w-6 h-6" />
             </Typography.Link>
-            <Popconfirm title='Sure to cancel?' onConfirm={cancel}>
+            <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
               <a>
-                <FaSquareXmark className='w-6 h-6 text-red-600 hover:text-red-800' />
+                <FaSquareXmark className="w-6 h-6 text-red-600 hover:text-red-800" />
               </a>
             </Popconfirm>
           </Space>
         ) : (
           <Space>
             <Typography.Link
-              className='text-dark-primary-600'
-              disabled={editingKey !== ''}
+              className="text-dark-primary-600"
+              disabled={editingKey !== ""}
               onClick={() => edit(record)}
             >
               <div>
-                <FaPen className='w-6 h-6' />
+                <FaPen className="w-6 h-6" />
               </div>
             </Typography.Link>
             <Popconfirm
-              title='Sure to delete?'
+              title="Sure to delete?"
               onConfirm={() => handleDelete(record)}
             >
-              <a className=''>
-                <FaTrash className='w-6 h-6 text-red-600 hover:text-red-800' />
+              <a className="">
+                <FaTrash className="w-6 h-6 text-red-600 hover:text-red-800" />
               </a>
             </Popconfirm>
             <Typography.Link onClick={() => showModal(record)}>
-              <FaEye className='w-6 h-6' />
+              <FaEye className="w-6 h-6" />
             </Typography.Link>
           </Space>
         );
@@ -302,7 +283,7 @@ const Users = () => {
     ...restProps
   }) => {
     const inputNode =
-      inputType === 'select' ? (
+      inputType === "select" ? (
         <Select
           allowClear
           showSearch
@@ -311,7 +292,7 @@ const Users = () => {
               return true;
           }}
           style={{
-            width: '100%',
+            width: "100%",
           }}
           placeholder={`Select ${dataIndex}`}
           options={
@@ -352,6 +333,7 @@ const Users = () => {
   };
 
   const onSearch = (val) => {
+    dispatcher(actionAPI.gettingUserListLoading());
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append("Authorization", "Bearer " + token);
@@ -373,6 +355,27 @@ const Users = () => {
         dispatcher(actionAPI.gettingUserListSuccess(result.users))
       )
       .catch((error) => dispatcher(actionAPI.gettingUserListFailed(error)));
+  };
+
+  const showModal = (record) => {
+    const selectedLOB =
+      LOBs?.length && LOBs.find((val) => val._id === record.LOB);
+    const selectedSite =
+      sites?.length && sites.find((val) => val._id === record.site);
+    const selectedRoles = [];
+    Roles?.length &&
+      record.roles.forEach((role, index) => {
+        const roles = Roles?.find((val) => val._id === role);
+        if (roles) selectedRoles.push(roles.name);
+      });
+
+    setSelectedUser({
+      ...record,
+      LOB: selectedLOB?.name || record.LOB,
+      site: selectedSite?.name || record.site,
+      roles: selectedRoles || record.role,
+    });
+    setIsModalOpen(true);
   };
 
   return (
@@ -416,7 +419,12 @@ const Users = () => {
             />
           </div>
           <div className="flex space-x-2 px-4">
-            <Button className="nui-focus border-dark-muted-300 dark:border-dark-muted-700 text-white focus:ring-4 focus:ring-dark-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none dark:focus:ring-dark-primary-800 bg-dark-primary" type="primary" size="large" onClick={console.log("add")}>
+            <Button
+              className="nui-focus border-dark-muted-300 dark:border-dark-muted-700 text-white focus:ring-4 focus:ring-dark-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none dark:focus:ring-dark-primary-800 bg-dark-primary"
+              type="primary"
+              size="large"
+              onClick={console.log("add")}
+            >
               Add Users
             </Button>
           </div>
@@ -432,7 +440,7 @@ const Users = () => {
           bordered
           columns={mergedColumns}
           dataSource={usersArray}
-          rowClassName='editable-row'
+          rowClassName="editable-row"
           // scroll={{
           //   x: 1500,
           //   y: 300,
@@ -443,15 +451,14 @@ const Users = () => {
           }}
         />
       </Form>
-      {
-        isModalOpen ?
-          <ModalComponent
+      {isModalOpen ? (
+        <ModalComponent
+          token={token}
           isModalOpen={isModalOpen}
-          handleOk={handleOk}
-          handleCancel={handleCancel}
+          setIsModalOpen={setIsModalOpen}
           selectedUser={selectedUser}
-        /> : null
-      }
+        />
+      ) : null}
     </div>
   );
 };

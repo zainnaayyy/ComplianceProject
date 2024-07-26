@@ -229,3 +229,13 @@ fieldset legend {
   background-color: rgb(100, 116, 139) !important;
   border-bottom-color: rgb(148, 163, 184) !important;
 }
+
+.ant-upload-picture-circle-wrapper .ant-upload-list.ant-upload-list-picture-circle .ant-upload-list-item-container,
+.ant-upload-wrapper.ant-upload-picture-circle-wrapper .ant-upload.ant-upload-select {
+  width: 12rem !important;
+  height: 12rem !important;
+}
+
+.ant-upload.ant-upload-select:not(.ant-upload-disabled):hover{
+  border-color: rgb(0, 188, 212) !important;
+}

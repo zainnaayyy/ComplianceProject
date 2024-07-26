@@ -1,5 +1,5 @@
 export const blobValidation=(blob, onlyImage)=>{
-    var allowedTypes =onlyImage ? /\.(jpe?g|png|mp4)$/i : /\.(jpe?g|png|pdf|mp4)$/i
+    var allowedTypes =onlyImage ? /\.(jpe?g|png)$/i : /\.(jpe?g|png|pdf|mp4)$/i
     if (!allowedTypes.test(blob?.name)) 
         return (
             {

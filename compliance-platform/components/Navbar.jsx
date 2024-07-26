@@ -2,11 +2,12 @@
 import { useEffect, useState } from "react";
 import { Dropdown } from "antd";
 import { FaBoxesPacking, FaBuilding, FaIdCard, FaPowerOff, FaSitemap } from "react-icons/fa6";
-import { actionAPI, useSharedSelector, useSharedDispatcher } from "@/shared";
+import { actionAPI, useSharedSelector, useSharedDispatcher, useAuth } from "@/shared";
 import LookupsDrawer from "./Drawers/LookupsDrawer";
 
 const Navbar = ({handleToggleSideBar, isSideBar, handleThemeToggle, theme, logout, token}) => {
   const dispatcher = useSharedDispatcher()
+  const { user } = useAuth();
   const { sites, sitesLoading, sitesError, sitesErrorMessage } = useSharedSelector((state) => state.SiteData);
   const { LOBs, LOBsLoading, LOBsError, LOBsErrorMessage } = useSharedSelector((state) => state.LOBData);
   const { Roles, RolesLoading, RolesError, RolesErrorMessage } = useSharedSelector((state) => state.RolesData);
@@ -204,11 +205,11 @@ const Navbar = ({handleToggleSideBar, isSideBar, handleThemeToggle, theme, logou
               <div className="relative inline-flex h-9 w-9 items-center justify-center rounded-full">
                 <img
                   src={
-                    true
-                      ? "https://tairo.cssninja.io/img/avatars/2.svg"
+                    user.profileImage
+                      ? user.profileImage
                       : "https://tairo.cssninja.io/img/avatars/2.svg"
                   }
-                  className="max-w-full rounded-full object-cover shadow-sm dark:border-transparent"
+                  className="max-w-full max-h-full rounded-full object-cover shadow-sm dark:border-transparent"
                 />
               </div>
             </button>

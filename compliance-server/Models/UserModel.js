@@ -35,6 +35,9 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, "Line of Business is required"],
   },
+  profileImage: {
+    type: String,
+  },
   totalRecords: {
     type: Number,
   }

@@ -124,9 +124,10 @@ const Layout = ({ children }) => {
                   <a href="#!">Forgot password?</a>
                 </p>
                 <Button
+                  type="primary"
                   loading={isLoading}
                   onClick={onSubmit}
-                  className="mb-4 px-5 py-3 w-80 h-12 bg-light-primary hover:dark:bg-dark-primary-900 dark:bg-dark-primary text-white rounded-lg"
+                  className="mb-4 px-5 py-3 w-80 h-12 bg-light-primary text-white rounded-lg"
                 >
                   Login
                 </Button>
