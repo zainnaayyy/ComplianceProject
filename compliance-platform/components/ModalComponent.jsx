@@ -124,18 +124,54 @@ const ModalComponent = ({
       });
   };
 
+  const handleRemove = () => {
+    setLoading(true);
+    const myHeaders = new Headers();
+    myHeaders.append('Content-Type', 'application/json');
+    myHeaders.append('Authorization', 'Bearer ' + token);
+
+    const raw = JSON.stringify({
+      userId: selectedUser._id,
+    });
+
+    const requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: raw,
+      redirect: 'follow',
+    };
+
+    fetch(url + '/deleteProfileImage', requestOptions)
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.success) {
+          message.success(result?.message);
+          setProfile([]);
+          setImage('');
+          dispatcher(actionAPI.getUsers(token));
+        } else {
+          message.error('An error occurred. Please try again!');
+        }
+        setLoading(false);
+      })
+      .catch((error) => {
+        message.error('An error occurred. Please try again!');
+        setLoading(false);
+      });
+  };
+
   return (
     <Modal
-      title="User Profile"
+      title='User Profile'
       open={isModalOpen}
       onCancel={() => setIsModalOpen(false)}
       width={600} // Increased modal width
       footer={[
         <Button
           hidden={isEmpty(image)}
-          key="submit"
-          type="primary"
-          className="bg-dark-primary"
+          key='submit'
+          type='primary'
+          className='bg-dark-primary'
           loading={loading}
           onClick={handleUpdate}
         >
@@ -143,19 +179,16 @@ const ModalComponent = ({
         </Button>,
       ]}
     >
-      <div className="flex flex-col items-center">
-        <Flex gap="middle" wrap>
+      <div className='flex flex-col items-center'>
+        <Flex gap='middle' wrap>
           <Upload
             customRequest={({ file, onProgress, onSuccess, onError }) =>
               handleFileChange(file, onProgress, onSuccess, onError)
             }
-            listType="picture-circle"
+            listType='picture-circle'
             onPreview={handlePreview}
-            onRemove={() => {
-              setProfile([]);
-              setImage("");
-            }}
-            className="mb-5"
+            onRemove={handleRemove}
+            className='mb-5'
             fileList={profile}
           >
             {!isEmpty(image) || profile?.length ? null : uploadButton}
@@ -163,58 +196,58 @@ const ModalComponent = ({
           {previewImage ? (
             <Image
               wrapperStyle={{
-                display: "none",
+                display: 'none',
               }}
               preview={{
                 visible: previewOpen,
                 onVisibleChange: (visible) => setPreviewOpen(visible),
-                afterOpenChange: (visible) => !visible && setPreviewImage(""),
+                afterOpenChange: (visible) => !visible && setPreviewImage(''),
               }}
               src={previewImage}
             />
           ) : null}
         </Flex>
         {selectedUser && (
-          <div className="grid grid-cols-2 gap-14 content-center">
-            <div className="flex flex-col ">
-              <span className=" text-lg font-bold text-gray-700">
+          <div className='grid grid-cols-2 gap-14 content-center'>
+            <div className='flex flex-col '>
+              <span className=' text-lg font-bold text-gray-700'>
                 Full Name
               </span>
-              <span className="text-lg text-gray-900">
+              <span className='text-lg text-gray-900'>
                 {selectedUser.fullName}
               </span>
             </div>
-            <div className="flex flex-col ">
-              <span className="text-lg font-bold text-gray-700">Email</span>
-              <span className="text-lg text-gray-900">
+            <div className='flex flex-col '>
+              <span className='text-lg font-bold text-gray-700'>Email</span>
+              <span className='text-lg text-gray-900'>
                 {selectedUser.email}
               </span>
             </div>
-            <div className="flex flex-col ">
-              <span className="text-lg font-bold text-gray-700">
+            <div className='flex flex-col '>
+              <span className='text-lg font-bold text-gray-700'>
                 Line Of Business
               </span>
-              <span className="text-lg text-gray-900">{selectedUser.LOB}</span>
+              <span className='text-lg text-gray-900'>{selectedUser.LOB}</span>
             </div>
-            <div className="flex flex-col ">
-              <span className="text-lg font-bold text-gray-700">Site</span>
-              <span className="text-lg text-gray-900">{selectedUser.site}</span>
+            <div className='flex flex-col '>
+              <span className='text-lg font-bold text-gray-700'>Site</span>
+              <span className='text-lg text-gray-900'>{selectedUser.site}</span>
             </div>
-            <div className="flex flex-col ">
-              <span className="text-lg font-bold text-gray-700">Status</span>
+            <div className='flex flex-col '>
+              <span className='text-lg font-bold text-gray-700'>Status</span>
               <span
                 className={`text-lg font-medium ${
-                  selectedUser.status ? "text-green-600" : "text-red-600"
+                  selectedUser.status ? 'text-green-600' : 'text-red-600'
                 }`}
               >
-                {selectedUser.status ? "Active" : "Inactive"}
+                {selectedUser.status ? 'Active' : 'Inactive'}
               </span>
             </div>
-            <div className="flex flex-col ">
-              <span className="text-lg font-bold text-gray-700">Role</span>
+            <div className='flex flex-col '>
+              <span className='text-lg font-bold text-gray-700'>Role</span>
               {console.log(selectedUser.roles)}
-              <span className="text-lg text-gray-900">
-                {selectedUser.roles.join(", ")}
+              <span className='text-lg text-gray-900'>
+                {selectedUser.roles.join(', ')}
               </span>
             </div>
           </div>

@@ -1,24 +1,56 @@
 import React, { useEffect, useState } from 'react';
 import { Drawer, Table, Button, Modal, Input, Popconfirm } from 'antd';
 import { MdDelete } from 'react-icons/md';
+import { url } from '@/shared';
 
-const LookupsDrawer = ({ title, visible, onClose, data, loading }) => {
+const LookupsDrawer = ({ title, visible, onClose, data, loading, token }) => {
   const [tableData, setTableData] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [newName, setNewName] = useState('');
-  
+
   useEffect(() => {
-    if(data?.length) {
-      console.log(data)
-      setTableData(data)
+    if (data?.length) {
+      console.log(data);
+      setTableData(data);
     }
-  }, [data])
+  }, [data]);
   const showAddModal = () => {
     setModalVisible(true);
   };
 
-  const handleOk = () => {
-    setTableData([...tableData, { key: tableData.length + 1, name: newName }]);
+  const handleOk = async () => {
+    let endpoint = '';
+
+    if (title === 'Line of Business') {
+      endpoint = `${url}/addLOB`;
+    } else if (title === 'Sites') {
+      endpoint = `${url}/addSite`;
+    } else if (title === 'Roles') {
+      endpoint = `${url}/roles`;
+    }
+
+    try {
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`, // Ensure you pass the token
+        },
+        body: JSON.stringify({ name: newName }),
+      });
+      const result = await response.json();
+
+      if (result.success) {
+        setTableData([
+          ...tableData,
+          { key: tableData.length + 1, name: newName },
+        ]);
+      } else {
+        console.error('Error:', result.error);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
     setModalVisible(false);
     setNewName('');
   };

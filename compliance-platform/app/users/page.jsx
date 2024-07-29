@@ -20,6 +20,7 @@ import {
   useSharedSelector,
 } from "@/shared";
 import ModalComponent from "@/components/ModalComponent";
+import AddUserModal from '@/components/AddUserModal';
 
 const Users = () => {
   const [form] = Form.useForm();
@@ -34,15 +35,15 @@ const Users = () => {
   );
   const { Roles, RolesLoading, RolesError, RolesErrorMessage } =
     useSharedSelector((state) => state.RolesData);
-  const [editingKey, setEditingKey] = useState("");
+  const [editingKey, setEditingKey] = useState('');
   const [usersArray, setUsersArray] = useState([]);
   const [statusArray, setStatusArray] = useState([
     {
-      label: "Active",
+      label: 'Active',
       value: true,
     },
     {
-      label: "In-Active",
+      label: 'In-Active',
       value: false,
     },
   ]);
@@ -52,6 +53,7 @@ const Users = () => {
   const [sitesDrawerVisible, setSitesDrawerVisible] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [isAddUserModalOpen, setIsAddUserModalOpen] = useState(false);
 
   useEffect(() => {
     if (token) {
@@ -93,12 +95,15 @@ const Users = () => {
 
   const isEditing = (record) => record === editingKey;
   const edit = (record) => {
-    form.setFieldsValue(record);
+    form.setFieldsValue({
+      ...record,
+      roles: record.roles.map((role) => role._id), // Ensure roles are set correctly
+    });
     setEditingKey(record._id);
   };
 
   const cancel = () => {
-    setEditingKey("");
+    setEditingKey('');
   };
 
   const save = async (key) => {
@@ -106,21 +111,37 @@ const Users = () => {
       const row = await form.validateFields();
       const newData = [...usersArray];
       const index = newData.findIndex((item) => key === item._id);
+
       if (index > -1) {
         const item = newData[index];
-        newData.splice(index, 1, {
-          ...item,
-          ...row,
+        const updatedUser = { ...item, ...row };
+
+        // Make the API call to update the user
+        const response = await fetch(`${url}/editUser`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(updatedUser),
         });
-        setUsersArray(newData);
-        setEditingKey("");
+
+        const result = await response.json();
+
+        if (result.success) {
+          newData.splice(index, 1, result.user);
+          setUsersArray(newData);
+          setEditingKey('');
+        } else {
+          console.error('Error updating user:', result.message);
+        }
       } else {
         newData.push(row);
         setUsersArray(newData);
-        setEditingKey("");
+        setEditingKey('');
       }
     } catch (errInfo) {
-      console.log("Validate Failed:", errInfo);
+      console.log('Validate Failed:', errInfo);
     }
   };
 
@@ -131,10 +152,10 @@ const Users = () => {
 
   const columns = [
     {
-      title: "Full Name",
+      title: 'Full Name',
       width: 125,
-      dataIndex: "fullName",
-      key: "name",
+      dataIndex: 'fullName',
+      key: 'name',
       // fixed: "left",
       editable: true,
       render: (text, record) => (
@@ -144,10 +165,10 @@ const Users = () => {
       ),
     },
     {
-      title: "LOB",
+      title: 'LOB',
       width: 50,
-      dataIndex: "LOB",
-      key: "lob",
+      dataIndex: 'LOB',
+      key: 'lob',
       // fixed: "left",
       editable: true,
       render: (id, record) => {
@@ -156,9 +177,9 @@ const Users = () => {
       },
     },
     {
-      title: "Site",
-      dataIndex: "site",
-      key: "site",
+      title: 'Site',
+      dataIndex: 'site',
+      key: 'site',
       width: 50,
       editable: true,
       render: (id, record) => {
@@ -167,25 +188,25 @@ const Users = () => {
       },
     },
     {
-      title: "Email",
-      dataIndex: "email",
-      key: "email",
+      title: 'Email',
+      dataIndex: 'email',
+      key: 'email',
       width: 150,
       editable: true,
     },
     {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
+      title: 'Status',
+      dataIndex: 'status',
+      key: 'status',
       width: 20,
       editable: true,
       filters: [
         {
-          text: "Active",
+          text: 'Active',
           value: true,
         },
         {
-          text: "Inactive",
+          text: 'Inactive',
           value: false,
         },
       ],
@@ -193,21 +214,21 @@ const Users = () => {
       render: (val, record) => {
         return val ? (
           <Tag
-            className="inline-block px-3 font-sans transition-shadow duration-300 py-1 text-[0.65rem] rounded-full bg-info-100 text-info-500 border-info-100 dark:border-info-500 dark:text-info-500 border font-medium"
-            color="success"
+            className='inline-block px-3 font-sans transition-shadow duration-300 py-1 text-[0.65rem] rounded-full bg-info-100 text-info-500 border-info-100 dark:border-info-500 dark:text-info-500 border font-medium'
+            color='success'
           >
             Active
           </Tag>
         ) : (
-          <Tag className="inline-block px-3 font-sans transition-shadow duration-300 py-1 text-[0.65rem] rounded-full bg-info-100 text-info-500 border-info-100 dark:border-info-500 dark:text-info-500 border font-medium">
+          <Tag className='inline-block px-3 font-sans transition-shadow duration-300 py-1 text-[0.65rem] rounded-full bg-info-100 text-info-500 border-info-100 dark:border-info-500 dark:text-info-500 border font-medium'>
             In-Active
           </Tag>
         );
       },
     },
     {
-      title: "Action",
-      dataIndex: "operation",
+      title: 'Action',
+      dataIndex: 'operation',
       // fixed: "right",
       width: 10,
       render: (_, record) => {
@@ -215,35 +236,35 @@ const Users = () => {
         return editable ? (
           <Space>
             <Typography.Link onClick={() => save(record._id)}>
-              <FaCheck className="w-6 h-6" />
+              <FaCheck className='w-6 h-6' />
             </Typography.Link>
-            <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
+            <Popconfirm title='Sure to cancel?' onConfirm={cancel}>
               <a>
-                <FaSquareXmark className="w-6 h-6 text-red-600 hover:text-red-800" />
+                <FaSquareXmark className='w-6 h-6 text-red-600 hover:text-red-800' />
               </a>
             </Popconfirm>
           </Space>
         ) : (
           <Space>
             <Typography.Link
-              className="text-dark-primary-600"
-              disabled={editingKey !== ""}
+              className='text-dark-primary-600'
+              disabled={editingKey !== ''}
               onClick={() => edit(record)}
             >
               <div>
-                <FaPen className="w-6 h-6" />
+                <FaPen className='w-6 h-6' />
               </div>
             </Typography.Link>
             <Popconfirm
-              title="Sure to delete?"
+              title='Sure to delete?'
               onConfirm={() => handleDelete(record)}
             >
-              <a className="">
-                <FaTrash className="w-6 h-6 text-red-600 hover:text-red-800" />
+              <a className=''>
+                <FaTrash className='w-6 h-6 text-red-600 hover:text-red-800' />
               </a>
             </Popconfirm>
             <Typography.Link onClick={() => showModal(record)}>
-              <FaEye className="w-6 h-6" />
+              <FaEye className='w-6 h-6' />
             </Typography.Link>
           </Space>
         );
@@ -260,11 +281,11 @@ const Users = () => {
       onCell: (record) => ({
         record,
         inputType:
-          col.dataIndex === "status" ||
-          col.dataIndex === "LOB" ||
-          col.dataIndex === "site"
-            ? "select"
-            : "text",
+          col.dataIndex === 'status' ||
+          col.dataIndex === 'LOB' ||
+          col.dataIndex === 'site'
+            ? 'select'
+            : 'text',
         dataIndex: col.dataIndex,
         title: col.title,
         editing: isEditing(record._id),
@@ -283,7 +304,7 @@ const Users = () => {
     ...restProps
   }) => {
     const inputNode =
-      inputType === "select" ? (
+      inputType === 'select' ? (
         <Select
           allowClear
           showSearch
@@ -292,15 +313,15 @@ const Users = () => {
               return true;
           }}
           style={{
-            width: "100%",
+            width: '100%',
           }}
           placeholder={`Select ${dataIndex}`}
           options={
-            dataIndex === "site"
+            dataIndex === 'site'
               ? sitesArray
-              : dataIndex === "LOB"
+              : dataIndex === 'LOB'
               ? LOBsArray
-              : dataIndex === "status"
+              : dataIndex === 'status'
               ? statusArray
               : null
           }
@@ -335,21 +356,21 @@ const Users = () => {
   const onSearch = (val) => {
     dispatcher(actionAPI.gettingUserListLoading());
     const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-    myHeaders.append("Authorization", "Bearer " + token);
+    myHeaders.append('Content-Type', 'application/json');
+    myHeaders.append('Authorization', 'Bearer ' + token);
 
     const raw = JSON.stringify({
       search: val,
     });
 
     const requestOptions = {
-      method: "POST",
+      method: 'POST',
       headers: myHeaders,
       body: raw,
-      redirect: "follow",
+      redirect: 'follow',
     };
 
-    fetch(url + "/searchUsers", requestOptions)
+    fetch(url + '/searchUsers', requestOptions)
       .then((response) => response.json())
       .then((result) =>
         dispatcher(actionAPI.gettingUserListSuccess(result.users))
@@ -380,50 +401,50 @@ const Users = () => {
 
   return (
     <div>
-      <div className="flex justify-between">
-        <div className="text-3xl p-2">Users Table </div>
-        <div className="flex">
-          <div class="group/nui-input relative">
+      <div className='flex justify-between'>
+        <div className='text-3xl p-2'>Users Table </div>
+        <div className='flex'>
+          <div class='group/nui-input relative'>
             <Input.Search
-              placeholder="Search users..."
-              enterButton="Search"
+              placeholder='Search users...'
+              enterButton='Search'
               onPressEnter={(e) => onSearch(e.target.value)}
               onSearch={(val) => onSearch(val)}
               prefix={
-                <div class="dark:text-black text-muted-400 group-focus-within/nui-input:text-dark-primary-500 flex items-center justify-center transition-colors duration-300 peer-disabled:cursor-not-allowed peer-disabled:opacity-75">
+                <div class='dark:text-black text-muted-400 group-focus-within/nui-input:text-dark-primary-500 flex items-center justify-center transition-colors duration-300 peer-disabled:cursor-not-allowed peer-disabled:opacity-75'>
                   <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    xmlnsXlink="http://www.w3.org/1999/xlink"
-                    aria-hidden="true"
-                    role="img"
-                    className="icon h-[1.15rem] w-[1.15rem]"
-                    width="1em"
-                    height="1em"
-                    viewBox="0 0 24 24"
+                    xmlns='http://www.w3.org/2000/svg'
+                    xmlnsXlink='http://www.w3.org/1999/xlink'
+                    aria-hidden='true'
+                    role='img'
+                    className='icon h-[1.15rem] w-[1.15rem]'
+                    width='1em'
+                    height='1em'
+                    viewBox='0 0 24 24'
                   >
                     <g
-                      fill="none"
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
+                      fill='none'
+                      stroke='currentColor'
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      strokeWidth='2'
                     >
-                      <circle cx="11" cy="11" r="8" />
-                      <path d="M21 21l-4.35-4.35" />
+                      <circle cx='11' cy='11' r='8' />
+                      <path d='M21 21l-4.35-4.35' />
                     </g>
                   </svg>
                 </div>
               }
-              size="large"
-              className="text-dark-muted-600 placeholder:text-dark-muted-300 dark:text-black dark:placeholder:text-dark-muted-500 peer w-full font-sans transition-all duration-300 disabled:cursor-not-allowed disabled:opacity-75 text-sm leading-5 rounded"
+              size='large'
+              className='text-dark-muted-600 placeholder:text-dark-muted-300 dark:text-black dark:placeholder:text-dark-muted-500 peer w-full font-sans transition-all duration-300 disabled:cursor-not-allowed disabled:opacity-75 text-sm leading-5 rounded'
             />
           </div>
-          <div className="flex space-x-2 px-4">
+          <div className='flex space-x-2 px-4'>
             <Button
-              className="nui-focus border-dark-muted-300 dark:border-dark-muted-700 text-white focus:ring-4 focus:ring-dark-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none dark:focus:ring-dark-primary-800 bg-dark-primary"
-              type="primary"
-              size="large"
-              onClick={console.log("add")}
+              className='nui-focus border-dark-muted-300 dark:border-dark-muted-700 text-white focus:ring-4 focus:ring-dark-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none dark:focus:ring-dark-primary-800 bg-dark-primary'
+              type='primary'
+              size='large'
+              onClick={() => setIsAddUserModalOpen(true)}
             >
               Add Users
             </Button>
@@ -440,7 +461,7 @@ const Users = () => {
           bordered
           columns={mergedColumns}
           dataSource={usersArray}
-          rowClassName="editable-row"
+          rowClassName='editable-row'
           // scroll={{
           //   x: 1500,
           //   y: 300,
@@ -459,6 +480,12 @@ const Users = () => {
           selectedUser={selectedUser}
         />
       ) : null}
+      {isAddUserModalOpen && (
+        <AddUserModal
+          isModalOpen={isAddUserModalOpen}
+          setIsModalOpen={setIsAddUserModalOpen}
+        />
+      )}
     </div>
   );
 };
