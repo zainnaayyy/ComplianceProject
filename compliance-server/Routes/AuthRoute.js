@@ -2,7 +2,7 @@ const { Signup, Login, Logout, editUser, getAllUsers, searchUsers, addProfileIma
 const { userVerification, authMiddleware } = require("../Middlewares/AuthMiddleware");
 const router = require("express").Router();
 
-router.post("/signup", Signup);
+router.post('/addUser', authMiddleware, Signup);
 router.post('/login', Login)
 router.post('/', userVerification)
 router.post('/logout', authMiddleware, Logout)

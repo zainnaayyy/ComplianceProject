@@ -124,30 +124,33 @@ module.exports.getAllUsers = async (req, res) => {
 // Edit user controller
 module.exports.editUser = async (req, res) => {
   try {
-    const { id } = req.body; // Changed to req.body to accommodate POST request
+    const { _id } = req.body; // Changed to req.body to accommodate POST request
     const { email, fullName, roleIds, status, site, LOB } = req.body;
 
     // Ensure roleIds are valid ObjectIds
-    if (roleIds && !roleIds.every(id => mongoose.Types.ObjectId.isValid(id))) {
-      return res.status(400).json({ message: "Invalid role IDs" });
+    if (
+      roleIds &&
+      !roleIds.every((id) => mongoose.Types.ObjectId.isValid(id))
+    ) {
+      return res.status(400).json({ message: 'Invalid role IDs' });
     }
 
     // Find roles by IDs
     const roles = roleIds ? await Role.find({ _id: { $in: roleIds } }) : [];
     if (roleIds && roles.length !== roleIds.length) {
-      return res.status(404).json({ message: "Some roles not found" });
+      return res.status(404).json({ message: 'Some roles not found' });
     }
 
     // Update user
     const updatedUser = await User.findByIdAndUpdate(
-      id,
+      _id,
       {
         email,
         fullName,
-        roles: roles.map(role => role),
+        roles: roles.map((role) => role),
         status,
         site,
-        LOB
+        LOB,
       },
       { new: true }
     ).select('-password');
