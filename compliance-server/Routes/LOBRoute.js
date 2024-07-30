@@ -4,8 +4,8 @@ const router = require("express").Router();
 
 router.post('/addLOB', authMiddleware, addLOB);
 router.get('/getAllLOBs', authMiddleware, getLOBs);
-router.get('/getLOBById', authMiddleware, getLOBById);
+router.post('/getLOBById', authMiddleware, getLOBById);
 router.delete('/deleteLOB', authMiddleware, deleteLOB);
-router.get('/searchLOB', authMiddleware, searchLOBs);
+router.post('/searchLOB', authMiddleware, searchLOBs);
 
 module.exports = router;

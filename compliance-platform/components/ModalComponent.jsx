@@ -135,7 +135,7 @@ const ModalComponent = ({
     });
 
     const requestOptions = {
-      method: 'POST',
+      method: 'DELETE',
       headers: myHeaders,
       body: raw,
       redirect: 'follow',

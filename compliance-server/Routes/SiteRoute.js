@@ -4,8 +4,8 @@ const router = require("express").Router();
 
 router.post('/addSite', authMiddleware, addSite);
 router.get('/getAllSites', authMiddleware, getSites);
-router.get('/getSiteById', authMiddleware, getSiteById);
+router.post('/getSiteById', authMiddleware, getSiteById);
 router.delete('/deleteSite', authMiddleware, deleteSite);
-router.get('/searchSite', authMiddleware, searchSite);
+router.post('/searchSite', authMiddleware, searchSite);
 
 module.exports = router;

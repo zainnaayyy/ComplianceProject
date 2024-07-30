@@ -90,7 +90,7 @@ const FormDrawer = ({ open, setOpen }) => {
                 },
               ]}
             >
-              <Input placeholder="Enter Form name..." />
+              <Input allowClear placeholder="Enter Form name..." />
             </Form.Item>
           </Form.Item>
           <Form.Item label="Assigned To">
@@ -140,7 +140,7 @@ const FormDrawer = ({ open, setOpen }) => {
                             },
                           ]}
                         >
-                          <Input placeholder="Enter flag..." />
+                          <Input allowClear placeholder="Enter flag..." />
                         </Form.Item>
                       </Col>
                       <Col className="flex justify-center items-center">
@@ -187,7 +187,7 @@ const FormDrawer = ({ open, setOpen }) => {
                             },
                           ]}
                         >
-                          <Input placeholder="Enter value..." />
+                          <Input allowClear placeholder="Enter value..." />
                         </Form.Item>
                       </Col>
                       <Col className="flex justify-center items-center">
@@ -242,14 +242,14 @@ const FormDrawer = ({ open, setOpen }) => {
                           name={[field.name, "question"]}
                           label="Question"
                         >
-                          <Input />
+                          <Input allowClear />
                         </Form.Item>
 
                         <Form.Item
                           name={[field.name, "bio"]}
                           label="Question Details"
                         >
-                          <Input.TextArea rows={6} />
+                          <Input.TextArea allowClear rows={6} />
                         </Form.Item>
                       </Col>
                       <Divider className="h-auto" type="vertical" />
@@ -321,7 +321,7 @@ const FormDrawer = ({ open, setOpen }) => {
                                             noStyle
                                             name={[subField.name, "optionText"]}
                                           >
-                                            <Input placeholder="Enter Option..." />
+                                            <Input allowClear placeholder="Enter Option..." />
                                           </Form.Item>
                                         </Col>
                                         <Col>
@@ -419,14 +419,14 @@ const FormDrawer = ({ open, setOpen }) => {
                           name={[field.name, "question"]}
                           label="Question"
                         >
-                          <Input />
+                          <Input allowClear />
                         </Form.Item>
 
                         <Form.Item
                           name={[field.name, "bio"]}
                           label="Question Details"
                         >
-                          <Input.TextArea rows={6} />
+                          <Input.TextArea allowClear rows={6} />
                         </Form.Item>
                       </Col>
                       <Divider className="h-auto" type="vertical" />
@@ -450,7 +450,7 @@ const FormDrawer = ({ open, setOpen }) => {
                                             noStyle
                                             name={[subField.name, "label"]}
                                           >
-                                            <Input placeholder="Enter Option..." />
+                                            <Input allowClear placeholder="Enter Option..." />
                                           </Form.Item>
                                         </Col>
                                         <Col className="flex justify-center items-center">

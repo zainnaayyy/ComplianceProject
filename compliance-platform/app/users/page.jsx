@@ -3,6 +3,7 @@ import {
   Button,
   Form,
   Input,
+  message,
   Popconfirm,
   Select,
   Space,
@@ -49,11 +50,10 @@ const Users = () => {
   ]);
   const [sitesArray, setSitesArray] = useState([]);
   const [LOBsArray, setLOBsArray] = useState([]);
-  const [lobDrawerVisible, setLobDrawerVisible] = useState(false);
-  const [sitesDrawerVisible, setSitesDrawerVisible] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [isAddUserModalOpen, setIsAddUserModalOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (token) {
@@ -62,7 +62,7 @@ const Users = () => {
       if (!LOBs?.length) dispatcher(actionAPI.getLOBs(token));
       if (!Roles?.length) dispatcher(actionAPI.getRoles());
     }
-  }, [users, token, sites, LOBs]);
+  }, [token]);
 
   var groupBy = function (xs, key) {
     return xs.reduce(function (rv, x) {
@@ -108,6 +108,7 @@ const Users = () => {
 
   const save = async (key) => {
     try {
+      setLoading(true);
       const row = await form.validateFields();
       const newData = [...usersArray];
       const index = newData.findIndex((item) => key === item._id);
@@ -131,23 +132,56 @@ const Users = () => {
         if (result.success) {
           newData.splice(index, 1, result.user);
           setUsersArray(newData);
+          message.success(result?.message);
+          dispatcher(actionAPI.getUsers(token))
           setEditingKey('');
         } else {
           console.error('Error updating user:', result.message);
+          message.error(result?.message);
         }
       } else {
         newData.push(row);
         setUsersArray(newData);
         setEditingKey('');
       }
+      setLoading(false);
     } catch (errInfo) {
       console.log('Validate Failed:', errInfo);
+      setLoading(false);
     }
   };
 
-  const handleDelete = (record) => {
-    const newData = usersArray.filter((item) => item.key !== record.key);
-    setUsersArray(newData);
+  const handleDelete = (id) => {
+    const myHeaders = new Headers();
+    myHeaders.append('Content-Type', 'application/json');
+    myHeaders.append('Authorization', 'Bearer ' + token);
+
+    const raw = JSON.stringify({
+      id: id,
+    });
+
+    const requestOptions = {
+      method: 'Delete',
+      headers: myHeaders,
+      body: raw,
+      redirect: 'follow',
+    };
+
+    fetch(url + '/deleteUser', requestOptions)
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.success) {
+          message.success(result?.message);
+          dispatcher(actionAPI.getUsers(token));
+        } else {
+          message.error(result?.message);
+        }
+        setLoading(false);
+      })
+      .catch((error) => {
+        message.error('An error occurred. Please try again!');
+        setLoading(false);
+      });
   };
 
   const columns = [
@@ -159,7 +193,7 @@ const Users = () => {
       // fixed: "left",
       editable: true,
       render: (text, record) => (
-        <Typography.Link onClick={() => showModal(record)}>
+        <Typography.Link disabled={editingKey !== ''} onClick={() => showModal(record)}>
           {text}
         </Typography.Link>
       ),
@@ -235,13 +269,13 @@ const Users = () => {
         const editable = isEditing(record._id);
         return editable ? (
           <Space>
-            <Typography.Link onClick={() => save(record._id)}>
+            <Typography.Link disabled={loading} onClick={() => save(record._id)}>
               <FaCheck className='w-6 h-6' />
             </Typography.Link>
             <Popconfirm title='Sure to cancel?' onConfirm={cancel}>
-              <a>
+              <Typography.Link disabled={loading}>
                 <FaSquareXmark className='w-6 h-6 text-red-600 hover:text-red-800' />
-              </a>
+              </Typography.Link>
             </Popconfirm>
           </Space>
         ) : (
@@ -257,13 +291,13 @@ const Users = () => {
             </Typography.Link>
             <Popconfirm
               title='Sure to delete?'
-              onConfirm={() => handleDelete(record)}
+              onConfirm={() => handleDelete(record._id)}
             >
-              <a className=''>
+              <Typography.Link disabled={editingKey !== ''} className=''>
                 <FaTrash className='w-6 h-6 text-red-600 hover:text-red-800' />
-              </a>
+              </Typography.Link>
             </Popconfirm>
-            <Typography.Link onClick={() => showModal(record)}>
+            <Typography.Link disabled={editingKey !== ''} onClick={() => showModal(record)}>
               <FaEye className='w-6 h-6' />
             </Typography.Link>
           </Space>
@@ -406,6 +440,7 @@ const Users = () => {
         <div className='flex'>
           <div class='group/nui-input relative'>
             <Input.Search
+              allowClear
               placeholder='Search users...'
               enterButton='Search'
               onPressEnter={(e) => onSearch(e.target.value)}
@@ -466,7 +501,7 @@ const Users = () => {
           //   x: 1500,
           //   y: 300,
           // }}
-          loading={usersLoading || sitesLoading || LOBsLoading}
+          loading={usersLoading || sitesLoading || LOBsLoading || loading}
           pagination={{
             onChange: cancel,
           }}
@@ -484,6 +519,8 @@ const Users = () => {
         <AddUserModal
           isModalOpen={isAddUserModalOpen}
           setIsModalOpen={setIsAddUserModalOpen}
+          sitesArray={sitesArray}
+          LOBsArray={LOBsArray}
         />
       )}
     </div>

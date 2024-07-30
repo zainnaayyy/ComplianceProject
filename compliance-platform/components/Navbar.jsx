@@ -8,13 +8,6 @@ import LookupsDrawer from "./Drawers/LookupsDrawer";
 const Navbar = ({handleToggleSideBar, isSideBar, handleThemeToggle, theme, logout, token}) => {
   const dispatcher = useSharedDispatcher()
   const { user } = useAuth();
-  const { sites, sitesLoading, sitesError, sitesErrorMessage } =
-    useSharedSelector((state) => state.SiteData);
-  const { LOBs, LOBsLoading, LOBsError, LOBsErrorMessage } = useSharedSelector(
-    (state) => state.LOBData
-  );
-  const { Roles, RolesLoading, RolesError, RolesErrorMessage } =
-    useSharedSelector((state) => state.RolesData);
   const [data, setData] = useState(0);
   const [openDrawer, setOpenDrawer] = useState(false);
 
@@ -227,16 +220,6 @@ const Navbar = ({handleToggleSideBar, isSideBar, handleThemeToggle, theme, logou
             setOpenDrawer(false);
             setData(0);
           }}
-          data={
-            data === '1'
-              ? LOBs
-              : data === '2'
-              ? sites
-              : data === '3'
-              ? Roles
-              : []
-          }
-          loading={LOBsLoading || sitesLoading || RolesLoading}
           token={token}
         />
       ) : null}

@@ -28,7 +28,7 @@ exports.getLOBs = async (req, res) => {
 // Get LOB by ID
 exports.getLOBById = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id } = req.body;
     const lob = await LOB.findById(id);
     if (!lob) {
       return res.status(404).json({ message: "Line of Business not found" });
@@ -43,7 +43,7 @@ exports.getLOBById = async (req, res) => {
 // Delete a LOB
 exports.deleteLOB = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id } = req.body;
     const lob = await LOB.findByIdAndDelete(id);
     if (!lob) {
       return res.status(404).json({ message: "LOB not found" });
@@ -58,7 +58,7 @@ exports.deleteLOB = async (req, res) => {
 // Search LOBs
 exports.searchLOBs = async (req, res) => {
   try {
-    const { name } = req.query;
+    const { name } = req.body;
     let filter = {};
     if (name) {
       filter.name = { $regex: name, $options: 'i' }; // Case-insensitive search

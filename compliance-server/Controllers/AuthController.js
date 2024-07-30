@@ -124,8 +124,7 @@ module.exports.getAllUsers = async (req, res) => {
 // Edit user controller
 module.exports.editUser = async (req, res) => {
   try {
-    const { _id } = req.body; // Changed to req.body to accommodate POST request
-    const { email, fullName, roleIds, status, site, LOB } = req.body;
+    const { _id, email, fullName, roleIds, status, site, LOB } = req.body;
 
     // Ensure roleIds are valid ObjectIds
     if (
@@ -183,6 +182,21 @@ module.exports.searchUsers = async (req, res) => {
     }).select('-password');
 
     res.status(200).json({ message: "Users fetched successfully", success: true, users });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+// Delete user
+exports.deleteUser = async (req, res) => {
+  try {
+    const { id } = req.body;
+    const user = await User.findByIdAndDelete(id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.status(200).json({ message: "User deleted successfully", success: true });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal Server Error' });

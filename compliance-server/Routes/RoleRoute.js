@@ -1,11 +1,11 @@
-const { addRole, getRoles, deleteRole, getRoleById, updateRole } = require('../Controllers/RolesController');
+const { addRole, getRoles, deleteRole, getRoleById, searchRole } = require('../Controllers/RolesController');
 const { authMiddleware } = require('../Middlewares/AuthMiddleware');
 const router = require("express").Router();
 
 router.post('/roles', authMiddleware, addRole);
 router.get('/getAllRoles', getRoles);
-router.get('/roles/:id',authMiddleware, getRoleById);
-router.post('/updateRoles',authMiddleware, updateRole);
-router.delete('/roles/:id',authMiddleware, deleteRole);
+router.post('/roles',authMiddleware, getRoleById);
+router.delete('/deleteRoles',authMiddleware, deleteRole);
+router.post('/searchRoles',authMiddleware, searchRole);
 
 module.exports = router;

@@ -25,7 +25,7 @@ exports.getSites = async (req, res) => {
 
 exports.getSiteById = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id } = req.body;
     const site = await Site.findById(id);
     if (!site) {
       return res.status(404).json({ message: "Site not found" });
@@ -39,7 +39,7 @@ exports.getSiteById = async (req, res) => {
 
 exports.deleteSite = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id } = req.body;
     const site = await Site.findByIdAndDelete(id);
     if (!site) {
       return res.status(404).json({ message: "Role not found" });
@@ -53,7 +53,7 @@ exports.deleteSite = async (req, res) => {
 
 exports.searchSite = async (req, res) => {
   try {
-    const { name } = req.query;
+    const { name } = req.body;
     let filter = {};
     if (name) {
       filter.name = { $regex: name, $options: 'i' }; // Case-insensitive search

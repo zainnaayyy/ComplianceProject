@@ -25,7 +25,7 @@ exports.getRoles = async (req, res) => {
 
 exports.getRoleById = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id } = req.body;
     const role = await Role.findById(id);
     if (!role) {
       return res.status(404).json({ message: "Role not found" });
@@ -37,23 +37,9 @@ exports.getRoleById = async (req, res) => {
   }
 };
 
-exports.updateRole = async (req, res) => {
-  try {
-    const { id, name } = req.body;
-    const role = await Role.findByIdAndUpdate(id, { name }, { new: true, runValidators: true });
-    if (!role) {
-      return res.status(404).json({ message: "Role not found" });
-    }
-    res.status(200).json({ message: "Role updated successfully", success: true, role });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-};
-
 exports.deleteRole = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id } = req.body;
     const role = await Role.findByIdAndDelete(id);
     if (!role) {
       return res.status(404).json({ message: "Role not found" });
@@ -67,7 +53,7 @@ exports.deleteRole = async (req, res) => {
 
 exports.searchRole = async (req, res) => {
   try {
-    const { name } = req.query;
+    const { name } = req.body;
     let filter = {};
     if (name) {
       filter.name = { $regex: name, $options: 'i' }; // Case-insensitive search
