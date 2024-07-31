@@ -82,7 +82,12 @@ const AddUserModal = ({ isModalOpen, setIsModalOpen, sitesArray, LOBsArray }) =>
           </h3>
         </div>
 
-        <Form disabled={loading} form={form} layout='vertical'>
+        <Form
+          disabled={loading}
+          autoComplete='off'
+          form={form}
+          layout='vertical'
+        >
           <div className='grid grid-cols-1 sm:grid-cols-3 gap-8'>
             <Form.Item
               label='Full Name'
@@ -93,6 +98,7 @@ const AddUserModal = ({ isModalOpen, setIsModalOpen, sitesArray, LOBsArray }) =>
             >
               <Input
                 allowClear
+                autoComplete='off'
                 className='bg-gray-100 text-gray-800 text-sm px-4 py-3.5 rounded-md focus:bg-transparent outline-blue-500 transition-all'
                 placeholder='Enter Full name'
               />
@@ -105,6 +111,7 @@ const AddUserModal = ({ isModalOpen, setIsModalOpen, sitesArray, LOBsArray }) =>
             >
               <Input
                 allowClear
+                autoComplete='new-email'
                 className='bg-gray-100 text-gray-800 text-sm px-4 py-3.5 rounded-md focus:bg-transparent outline-blue-500 transition-all'
                 placeholder='Enter email'
               />
@@ -119,6 +126,7 @@ const AddUserModal = ({ isModalOpen, setIsModalOpen, sitesArray, LOBsArray }) =>
             >
               <Input.Password
                 allowClear
+                autoComplete='new-password'
                 className='bg-gray-100 text-gray-800 text-sm px-4 py-3.5 rounded-md focus:bg-transparent outline-blue-500 transition-all'
                 placeholder='Enter password'
               />
