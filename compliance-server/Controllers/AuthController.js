@@ -193,6 +193,8 @@ exports.deleteUser = async (req, res) => {
   try {
     const { id } = req.body;
     const user = await User.findByIdAndDelete(id);
+    const totalRecords = await User.getTotalRecords();
+    await User.updateMany({},{ $set: { totalRecords } })
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }

@@ -34,7 +34,7 @@ const RoleData = createSlice({
   },
   reducers: {
     gettingRoleListLoading: (state, action) => {
-      state.Roles = null;
+      state.Roles = [];
       state.RolesLoading = true;
       state.RolesError = false;
       state.RolesErrorMessage = null;
@@ -48,14 +48,14 @@ const RoleData = createSlice({
       state.status = "success";
     },
     gettingRoleListFailed: (state, action) => {
-      state.Roles = null;
+      state.Roles = [];
       state.RolesLoading = false;
       state.RolesError = true;
       state.RolesErrorMessage = action.payload;
       state.status = "error";
     },
     gettingRoleListClear: (state, action) => {
-      state.Roles = null;
+      state.Roles = [];
       state.RolesLoading = false;
       state.RolesError = false;
       state.RolesErrorMessage = null;

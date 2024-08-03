@@ -2,6 +2,7 @@ import { getUsers, gettingUserListLoading, gettingUserListSuccess, gettingUserLi
 import { getSites, gettingSiteListLoading, gettingSiteListSuccess, gettingSiteListFailed, gettingSiteListClear } from './action/Sites/SiteSlice'
 import { getLOBs, gettingLOBListLoading, gettingLOBListSuccess, gettingLOBListFailed, gettingLOBListClear } from './action/LOBs/LOBSlice'
 import { getRoles, gettingRoleListLoading, gettingRoleListSuccess, gettingRoleListFailed, gettingRoleListClear } from './action/Roles/RolesSlice'
+import { getFormTemplates, gettingFormTemplateListLoading, gettingFormTemplateListSuccess, gettingFormTemplateListFailed, gettingFormTemplateListClear } from './action/FormTemplate/FormTemplateSlice'
 
 export const actionAPI = {
     getUsers, 
@@ -24,4 +25,9 @@ export const actionAPI = {
     gettingRoleListSuccess, 
     gettingRoleListFailed, 
     gettingRoleListClear,
+    getFormTemplates, 
+    gettingFormTemplateListLoading, 
+    gettingFormTemplateListSuccess, 
+    gettingFormTemplateListFailed, 
+    gettingFormTemplateListClear
 }

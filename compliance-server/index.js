@@ -9,6 +9,7 @@ const authRoute = require("./Routes/AuthRoute");
 const roleRoute = require("./Routes/RoleRoute");
 const siteRoute = require("./Routes/SiteRoute");
 const LOBRoute = require("./Routes/LOBRoute");
+const FormTemplateRoute = require("./Routes/FormTemplateRoute");
 const { MONGO_URL, PORT } = process.env;
 
 mongoose
@@ -48,3 +49,4 @@ app.use("/", authRoute);
 app.use("/", roleRoute);
 app.use("/", siteRoute);
 app.use("/", LOBRoute);
+app.use("/", FormTemplateRoute);

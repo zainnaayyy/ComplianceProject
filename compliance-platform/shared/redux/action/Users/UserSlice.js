@@ -34,7 +34,7 @@ const userData = createSlice({
   },
   reducers: {
     gettingUserListLoading: (state, action) => {
-      state.users = null;
+      state.users = [];
       state.usersLoading = true;
       state.usersError = false;
       state.usersErrorMessage = null;
@@ -48,14 +48,14 @@ const userData = createSlice({
       state.status = "success";
     },
     gettingUserListFailed: (state, action) => {
-      state.users = null;
+      state.users = [];
       state.usersLoading = false;
       state.usersError = true;
       state.usersErrorMessage = action.payload;
       state.status = "error";
     },
     gettingUserListClear: (state, action) => {
-      state.users = null;
+      state.users = [];
       state.usersLoading = false;
       state.usersError = false;
       state.usersErrorMessage = null;

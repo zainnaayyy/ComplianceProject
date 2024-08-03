@@ -167,6 +167,10 @@ body {
   justify-content: center !important;
 }
 
+fieldset {
+  border: 1px solid rgb(210, 210, 210) !important;
+}
+
 fieldset legend {
   max-height: 25px;
   float: none;

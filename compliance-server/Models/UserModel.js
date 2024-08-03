@@ -27,14 +27,8 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     required: [true, "Status is required"],
   },
-  site: {
-    type: String,
-    required: [true, "Site is required"],
-  },
-  LOB: {
-    type: String,
-    required: [true, "Line of Business is required"],
-  },
+  site: { type: mongoose.Schema.Types.ObjectId, ref: 'Site', required: true },
+  LOB: { type: mongoose.Schema.Types.ObjectId, ref: 'LOB', required: true },
   profileImage: {
     type: String,
   },

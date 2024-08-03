@@ -97,7 +97,7 @@ exports.getProductById = async (req, res) => {
     const {productId} = req.body;
     // Fetch products based on the filter
     const product = await Product.findById(productId);
-    res.status(201).json({ message: "Data fetched successfully", success: true, product });
+    res.status(200).json({ message: "Data fetched successfully", success: true, product });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal Server Error' });

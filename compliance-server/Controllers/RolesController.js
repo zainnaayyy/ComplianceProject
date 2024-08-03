@@ -41,6 +41,8 @@ exports.deleteRole = async (req, res) => {
   try {
     const { id } = req.body;
     const role = await Role.findByIdAndDelete(id);
+    const totalRecords = await Role.getTotalRecords();
+    await Role.updateMany({},{ $set: { totalRecords } })
     if (!role) {
       return res.status(404).json({ message: "Role not found" });
     }

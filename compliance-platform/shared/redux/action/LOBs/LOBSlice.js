@@ -34,7 +34,7 @@ const LOBData = createSlice({
   },
   reducers: {
     gettingLOBListLoading: (state, action) => {
-      state.LOBs = null;
+      state.LOBs = [];
       state.LOBsLoading = true;
       state.LOBsError = false;
       state.LOBsErrorMessage = null;
@@ -48,14 +48,14 @@ const LOBData = createSlice({
       state.status = "success";
     },
     gettingLOBListFailed: (state, action) => {
-      state.LOBs = null;
+      state.LOBs = [];
       state.LOBsLoading = false;
       state.LOBsError = true;
       state.LOBsErrorMessage = action.payload;
       state.status = "error";
     },
     gettingLOBListClear: (state, action) => {
-      state.LOBs = null;
+      state.LOBs = [];
       state.LOBsLoading = false;
       state.LOBsError = false;
       state.LOBsErrorMessage = null;

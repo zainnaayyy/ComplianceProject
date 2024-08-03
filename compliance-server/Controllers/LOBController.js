@@ -18,7 +18,7 @@ exports.getLOBs = async (req, res) => {
     const totalRecords = await LOB.getTotalRecords();
     await LOB.updateMany({},{ $set: { totalRecords } })
     const lobs = await LOB.find();
-    res.status(201).json({ message: "Data fetched successfully", success: true, lobs });
+    res.status(200).json({ message: "Data fetched successfully", success: true, lobs });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal Server Error' });
@@ -45,6 +45,8 @@ exports.deleteLOB = async (req, res) => {
   try {
     const { id } = req.body;
     const lob = await LOB.findByIdAndDelete(id);
+    const totalRecords = await LOB.getTotalRecords();
+    await LOB.updateMany({},{ $set: { totalRecords } })
     if (!lob) {
       return res.status(404).json({ message: "LOB not found" });
     }

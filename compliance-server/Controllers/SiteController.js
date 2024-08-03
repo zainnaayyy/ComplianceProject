@@ -16,7 +16,7 @@ exports.getSites = async (req, res) => {
     const totalRecords = await Site.getTotalRecords();
     await Site.updateMany({},{ $set: { totalRecords } })
     const sites = await Site.find();
-    res.status(201).json({ message: "Data fetched successfully", success: true, sites });
+    res.status(200).json({ message: "Data fetched successfully", success: true, sites });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal Server Error' });
@@ -41,6 +41,8 @@ exports.deleteSite = async (req, res) => {
   try {
     const { id } = req.body;
     const site = await Site.findByIdAndDelete(id);
+    const totalRecords = await Site.getTotalRecords();
+    await Site.updateMany({},{ $set: { totalRecords } })
     if (!site) {
       return res.status(404).json({ message: "Role not found" });
     }
@@ -58,7 +60,7 @@ exports.searchSite = async (req, res) => {
     if (name) {
       filter.name = { $regex: name, $options: 'i' }; // Case-insensitive search
     }
-    const sites = await Site.find(filter);
+    let sites = await Site.find(filter);
     if (!sites.length)
       return res.status(404).json({ message: "No site found!", success: false });
     const totalRecords = sites.length;

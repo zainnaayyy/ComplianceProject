@@ -34,7 +34,7 @@ const siteData = createSlice({
   },
   reducers: {
     gettingSiteListLoading: (state, action) => {
-      state.sites = null;
+      state.sites = [];
       state.sitesLoading = true;
       state.sitesError = false;
       state.sitesErrorMessage = null;
@@ -48,14 +48,14 @@ const siteData = createSlice({
       state.status = "success";
     },
     gettingSiteListFailed: (state, action) => {
-      state.sites = null;
+      state.sites = [];
       state.sitesLoading = false;
       state.sitesError = true;
       state.sitesErrorMessage = action.payload;
       state.status = "error";
     },
     gettingSiteListClear: (state, action) => {
-      state.sites = null;
+      state.sites = [];
       state.sitesLoading = false;
       state.sitesError = false;
       state.sitesErrorMessage = null;

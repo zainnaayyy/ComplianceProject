@@ -21,7 +21,6 @@ const AddUserModal = ({ isModalOpen, setIsModalOpen, sitesArray, LOBsArray }) =>
     setLoading(true);
     try {
       const values = await form.validateFields();
-      console.log('Form Values:', values);
 
       const response = await fetch(url + '/addUser', {
         method: 'POST',
@@ -33,7 +32,6 @@ const AddUserModal = ({ isModalOpen, setIsModalOpen, sitesArray, LOBsArray }) =>
       });
 
       const result = await response.json();
-      console.log('API Response:', result);
 
       if (result?.success) {
         message.success(result.message);
@@ -46,7 +44,6 @@ const AddUserModal = ({ isModalOpen, setIsModalOpen, sitesArray, LOBsArray }) =>
       setLoading(false);
     } catch (error) {
       message.error('An error occurred while adding the user');
-      console.error('Add User Error:', error);
       setLoading(false);
     }
   };
@@ -76,7 +73,7 @@ const AddUserModal = ({ isModalOpen, setIsModalOpen, sitesArray, LOBsArray }) =>
       ]}
     >
       <div className='max-w-4xl mx-auto font-[sans-serif] p-6'>
-        <div className='text-center mb-16'>
+        <div className='text-center mb-10'>
           <h3 className='text-gray-800 text-2xl font-semibold mt-6'>
             Add New User
           </h3>
@@ -99,7 +96,7 @@ const AddUserModal = ({ isModalOpen, setIsModalOpen, sitesArray, LOBsArray }) =>
               <Input
                 allowClear
                 autoComplete='off'
-                className='bg-gray-100 text-gray-800 text-sm px-4 py-3.5 rounded-md focus:bg-transparent outline-blue-500 transition-all'
+                className='text-gray-800 text-sm px-4 py-3.5 rounded-md focus:bg-transparent outline-blue-500 transition-all'
                 placeholder='Enter Full name'
               />
             </Form.Item>
@@ -112,7 +109,7 @@ const AddUserModal = ({ isModalOpen, setIsModalOpen, sitesArray, LOBsArray }) =>
               <Input
                 allowClear
                 autoComplete='new-email'
-                className='bg-gray-100 text-gray-800 text-sm px-4 py-3.5 rounded-md focus:bg-transparent outline-blue-500 transition-all'
+                className='text-gray-800 text-sm px-4 py-3.5 rounded-md focus:bg-transparent outline-blue-500 transition-all'
                 placeholder='Enter email'
               />
             </Form.Item>
@@ -127,7 +124,7 @@ const AddUserModal = ({ isModalOpen, setIsModalOpen, sitesArray, LOBsArray }) =>
               <Input.Password
                 allowClear
                 autoComplete='new-password'
-                className='bg-gray-100 text-gray-800 text-sm px-4 py-3.5 rounded-md focus:bg-transparent outline-blue-500 transition-all'
+                className='text-gray-800 text-sm px-4 py-3.5 rounded-md focus:bg-transparent outline-blue-500 transition-all'
                 placeholder='Enter password'
               />
             </Form.Item>
@@ -155,7 +152,7 @@ const AddUserModal = ({ isModalOpen, setIsModalOpen, sitesArray, LOBsArray }) =>
             >
               <Select
                 allowClear
-                className='bg-gray-100 text-gray-800 text-sm rounded-md focus:bg-transparent outline-blue-500 transition-all'
+                className='text-gray-800 text-sm rounded-md focus:bg-transparent outline-blue-500 transition-all'
                 placeholder='Select status'
                 options={[
                   { value: true, label: 'Active' },
@@ -171,7 +168,7 @@ const AddUserModal = ({ isModalOpen, setIsModalOpen, sitesArray, LOBsArray }) =>
             >
               <Select
                 allowClear
-                className='bg-gray-100 text-gray-800 text-sm rounded-md focus:bg-transparent outline-blue-500 transition-all'
+                className='text-gray-800 text-sm rounded-md focus:bg-transparent outline-blue-500 transition-all'
                 placeholder='Select site'
                 options={sitesArray}
               />
@@ -184,7 +181,7 @@ const AddUserModal = ({ isModalOpen, setIsModalOpen, sitesArray, LOBsArray }) =>
             >
               <Select
                 allowClear
-                className='bg-gray-100 text-gray-800 text-sm rounded-md focus:bg-transparent outline-blue-500 transition-all'
+                className='text-gray-800 text-sm rounded-md focus:bg-transparent outline-blue-500 transition-all'
                 placeholder='Select LOB'
                 options={LOBsArray}
               />
