@@ -64,7 +64,7 @@ const FormTemplate = () => {
   };
 
   const handleDelete = (id) => {
-    setLoading(true)
+    dispatcher(actionAPI.gettingFormTemplateListLoading());
     const myHeaders = new Headers();
     myHeaders.append('Content-Type', 'application/json');
     myHeaders.append('Authorization', 'Bearer ' + token);
@@ -89,11 +89,9 @@ const FormTemplate = () => {
         } else {
           message.error(result?.message);
         }
-        setLoading(false);
       })
       .catch((error) => {
         message.error('An error occurred. Please try again!');
-        setLoading(false);
       });
   };
 
@@ -156,7 +154,7 @@ const FormTemplate = () => {
         </div>
       </div>
       <Flex className="mt-4 gap-[80px]" vertical={false} wrap justify="flex-start">
-        {formTemplate?.length && !formTemplateLoading
+        {formTemplate?.length
           ? formTemplate?.map((template, i) => {
               return (
                 <Card
@@ -195,7 +193,7 @@ const FormTemplate = () => {
                   />
                 </Card>
               );
-            }) :
+            }) : formTemplateLoading ?
             <Card
                   loading={true}
                   actions={[
@@ -228,7 +226,7 @@ const FormTemplate = () => {
                     //   </>
                     // }
                   />
-                </Card>
+                </Card> : <Typography.Paragraph strong className="text-center">No forms to show!</Typography.Paragraph>
           }
         {isDrawerOpen ? (
           <FormDrawer open={isDrawerOpen} setOpen={setIsDrawerOpen} token={token} editableData={editableData} setEditableData={setEditableData} />

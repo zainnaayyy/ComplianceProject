@@ -5,9 +5,9 @@ const mongoose = require('mongoose');
 // Add Form controller
 module.exports.AddForm = async (req, res, next) => {
   try {
-    const { form, lob, flags, value, questions, MCQs, createdAt } = req.body;
+    const { form, lob, flags, group, questions, MCQs, createdAt } = req.body;
 
-    if (!form || !lob || !flags || !value || !questions || !MCQs) {
+    if (!form || !lob || !flags || !group || !questions || !MCQs) {
       return res.status(403).json({ message: 'All fields are required' });
     }
 
@@ -33,7 +33,7 @@ module.exports.AddForm = async (req, res, next) => {
       form,
       lob: lobs.map(lob => lob),
       flags,
-      value,
+      group,
       questions,
       MCQs,
       createdAt: createdAt || new Date(),
@@ -67,7 +67,7 @@ module.exports.getAllFormTemplates = async (req, res) => {
 // Edit Form Template controller
 module.exports.editFormTemplate = async (req, res) => {
   try {
-    const { _id, form, lob, flags, value, questions, MCQs } = req.body;
+    const { _id, form, lob, flags, group, questions, MCQs } = req.body;
 
     // Ensure LOB IDs are valid ObjectIds
     if (!lob.every(id => mongoose.Types.ObjectId.isValid(id))) {
@@ -87,7 +87,7 @@ module.exports.editFormTemplate = async (req, res) => {
         form,
         lob: lobs.map(lob => lob),
         flags,
-        value,
+        group,
         questions,
         MCQs,
       },

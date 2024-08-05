@@ -11,7 +11,7 @@ const formTemplateSchema = new mongoose.Schema({
     type: String,
     required: [true, "Flag is required"],
   }],
-  value: [{
+  group: [{
     type: String,
     required: [true, "Value is required"],
   }],

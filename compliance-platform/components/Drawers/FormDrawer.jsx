@@ -133,7 +133,7 @@ const FormDrawer = ({
                 form: null,
                 lob: [],
                 flags: [null],
-                value: [null],
+                group: [null],
                 questions: [
                   {
                     option: [null],
@@ -236,8 +236,8 @@ const FormDrawer = ({
               )}
             </Form.List>
           </Form.Item>
-          <Form.Item label="Value">
-            <Form.List name={"value"}>
+          <Form.Item label="Group">
+            <Form.List name={"group"}>
               {(subFields, subOpt) => (
                 <div
                   style={{
@@ -255,7 +255,7 @@ const FormDrawer = ({
                           rules={[
                             {
                               required: true,
-                              message: "Value is required",
+                              message: "Group is required",
                             },
                           ]}
                         >
@@ -263,7 +263,7 @@ const FormDrawer = ({
                             onBlur={(e) => {
                               if (!isEmpty(e.target.value)) {
                                 const options = form
-                                  .getFieldValue("value")
+                                  .getFieldValue("group")
                                   ?.map((value, i) => {
                                     return { label: value, value: value };
                                   });
@@ -271,7 +271,7 @@ const FormDrawer = ({
                               }
                             }}
                             allowClear
-                            placeholder="Enter value..."
+                            placeholder="Enter group..."
                           />
                         </Form.Item>
                       </Col>
@@ -281,7 +281,7 @@ const FormDrawer = ({
                           onClick={() => {
                             subOpt.remove(subField.name);
                             const options = form
-                              .getFieldValue("value")
+                              .getFieldValue("group")
                               ?.map((value, i) => {
                                 return { label: value, value: value };
                               });
@@ -400,13 +400,12 @@ const FormDrawer = ({
                                 noStyle
                                 rules={[
                                   {
-                                    required: form.getFieldValue("questions")[f]?.applicable ? false : true,
+                                    required: true,
                                     message: "Score is required.",
                                   },
                                 ]}
                               >
                                 <InputNumber
-                                  disabled={form.getFieldValue("questions")[f]?.applicable}
                                   onBlur={() =>
                                     setQuestion(form.getFieldValue("questions"))
                                   }
@@ -471,7 +470,7 @@ const FormDrawer = ({
                                                   question[f]?.option[i]
                                                     ?.optionText
                                                 )
-                                                  ? form.getFieldValue("questions")[f]?.applicable ? false : true
+                                                  ? true
                                                   : false,
                                                 message:
                                                   "Score is mandatory for an option.",
@@ -479,18 +478,18 @@ const FormDrawer = ({
                                             ]}
                                           >
                                             <InputNumber
-                                              disabled={form.getFieldValue("questions")[f]?.applicable}
+                                              disabled={form.getFieldValue("questions")[f]?.option[i]?.optionText==='Not Applicable'}
                                               max={
-                                                form.getFieldValue("questions")[f]?.applicable || question[f]?.score === 0 ? 0 : i === 0
+                                                i === 0
                                                   ? question[f]?.score
                                                   : question[f]?.option[i - 1]
                                                       ?.optionScore - 1
                                               }
                                               min={
-                                                form.getFieldValue("questions")[f]?.applicable || question[f]?.score === 0 ? 0 : isEmpty(
+                                                isEmpty(
                                                   question[f]?.option[i + 1]
                                                     ?.optionScore
-                                                )
+                                                ) || question[f]?.option[i + 1]?.optionText==='Not Applicable'
                                                   ? 0
                                                   : question[f]?.option[i + 1]
                                                       ?.optionScore + 1
@@ -526,7 +525,10 @@ const FormDrawer = ({
                                       icon={<FaPlus />}
                                       className="w-2/6 bg-dark-primary"
                                       type="primary"
-                                      onClick={() => subOpt.add()}
+                                      onClick={() => {
+                                        subOpt.add()
+                                        setQuestion(form.getFieldValue("questions"))
+                                      }}
                                     >
                                       Add Option(s) & their Score
                                     </Button>
@@ -552,11 +554,14 @@ const FormDrawer = ({
                             // ]}
                           >
                             <Checkbox onChange={(e) => {
+                              let resetScore = form.getFieldValue("questions")[f].option
+                              let isLast = form.getFieldValue("questions")[f]?.option?.findLast(val => val?.optionText === 'Not Applicable')
                               if(e.target.checked){
-                                let resetScore = form.getFieldValue("questions")[f].option.map(val => {return{...val, optionScore:null}})
-                                form.setFieldValue(["questions", f, "option"], resetScore)
-                                form.setFieldValue(["questions", f, "score"], null)
+                                resetScore.push({optionText: 'Not Applicable', optionScore: true})
+                              } else if (isLast) {
+                                resetScore.pop()
                               }
+                              form.setFieldValue(["questions", f, "option"], resetScore)
                               setQuestion(form.getFieldValue("questions"))
                             }}>Not Applicable</Checkbox>
                           </Form.Item>
