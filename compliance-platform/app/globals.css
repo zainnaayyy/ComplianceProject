@@ -194,14 +194,13 @@ fieldset legend {
   color: #fff;
 }
 
-.ant-select-selector:hover {
-  border-color: rgb(0, 188, 212) !important;
-}
-
+.ant-picker-outlined:hover,
+.ant-select-selector:hover,
 .ant-input-outlined:hover {
   border-color: rgb(0, 188, 212) !important;
 }
 
+.ant-picker-outlined:focus-within,
 .ant-input-outlined:focus-within,
 .ant-select-selector:focus-within {
   border: none !important;
@@ -242,4 +241,34 @@ fieldset legend {
 
 .ant-upload.ant-upload-select:not(.ant-upload-disabled):hover{
   border-color: rgb(0, 188, 212) !important;
+}
+
+.ant-tabs-tab-btn {
+  padding: 8px 16px !important;
+  /* Padding for better appearance */
+}
+
+.ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: rgb(0, 188, 212) !important;
+}
+
+.ant-tabs-tab-active .ant-tabs-tab-btn:hover {
+  color: rgb(0, 131, 143) !important;
+}
+
+.ant-tabs-tab:hover {
+  color: rgb(0, 188, 212) !important;
+}
+
+.ant-tabs-tab {
+  color: rgb(100, 116, 139) !important;
+}
+
+.ant-tabs-nav::before {
+  border: none !important;
+}
+
+.ant-tabs-ink-bar,
+.ant-picker-active-bar {
+  background: rgb(0, 188, 212) !important;
 }
