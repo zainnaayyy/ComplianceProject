@@ -124,19 +124,19 @@ module.exports.getAllUsers = async (req, res) => {
 // Edit user controller
 module.exports.editUser = async (req, res) => {
   try {
-    const { _id, email, fullName, roleIds, status, site, LOB } = req.body;
+    const { _id, email, fullName, roles, status, site, LOB } = req.body;
 
     // Ensure roleIds are valid ObjectIds
     if (
-      roleIds &&
-      !roleIds.every((id) => mongoose.Types.ObjectId.isValid(id))
+      roles &&
+      !roles.every((id) => mongoose.Types.ObjectId.isValid(id))
     ) {
       return res.status(400).json({ message: 'Invalid role IDs' });
     }
 
     // Find roles by IDs
-    const roles = roleIds ? await Role.find({ _id: { $in: roleIds } }) : [];
-    if (roleIds && roles.length !== roleIds.length) {
+    const rolesByIds = roles ? await Role.find({ _id: { $in: roles } }) : [];
+    if (roles && rolesByIds.length !== roles.length) {
       return res.status(404).json({ message: 'Some roles not found' });
     }
 

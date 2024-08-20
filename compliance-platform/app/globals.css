@@ -178,7 +178,6 @@ fieldset legend {
   width: fit-content !important;
   padding: 0px 8px !important;
   font-weight: 500 !important;
-  color: #303030 !important;
   border: none !important;
 }
 
@@ -194,12 +193,14 @@ fieldset legend {
   color: #fff;
 }
 
+.ant-input-number-outlined:hover,
 .ant-picker-outlined:hover,
 .ant-select-selector:hover,
 .ant-input-outlined:hover {
   border-color: rgb(0, 188, 212) !important;
 }
 
+.ant-input-number-outlined:focus-within,
 .ant-picker-outlined:focus-within,
 .ant-input-outlined:focus-within,
 .ant-select-selector:focus-within {
@@ -268,7 +269,15 @@ fieldset legend {
   border: none !important;
 }
 
+.ant-picker-cell-in-view.ant-picker-cell-selected:not(.ant-picker-cell-disabled) .ant-picker-cell-inner,
+.ant-picker-cell-in-view.ant-picker-cell-range-start:not(.ant-picker-cell-disabled) .ant-picker-cell-inner,
+.ant-picker-cell-in-view.ant-picker-cell-range-end:not(.ant-picker-cell-disabled) .ant-picker-cell-inner,
 .ant-tabs-ink-bar,
 .ant-picker-active-bar {
   background: rgb(0, 188, 212) !important;
+}
+
+.ant-picker-cell-in-view .ant-picker-cell-inner::before,
+.ant-picker-cell-in-view.ant-picker-cell-today .ant-picker-cell-inner::before {
+  border: 1px solid rgb(0, 188, 212) !important;
 }

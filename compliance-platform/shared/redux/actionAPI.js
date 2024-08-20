@@ -3,6 +3,8 @@ import { getSites, gettingSiteListLoading, gettingSiteListSuccess, gettingSiteLi
 import { getLOBs, gettingLOBListLoading, gettingLOBListSuccess, gettingLOBListFailed, gettingLOBListClear } from './action/LOBs/LOBSlice'
 import { getRoles, gettingRoleListLoading, gettingRoleListSuccess, gettingRoleListFailed, gettingRoleListClear } from './action/Roles/RolesSlice'
 import { getFormTemplates, gettingFormTemplateListLoading, gettingFormTemplateListSuccess, gettingFormTemplateListFailed, gettingFormTemplateListClear } from './action/FormTemplate/FormTemplateSlice'
+import { getCoachingLookups, gettingCoachingLookupListClear, gettingCoachingLookupListFailed, gettingCoachingLookupListLoading, gettingCoachingLookupListSuccess } from './action/CoachingLookups/CoachingLookupSlice'
+import { getCoaching, gettingCoachingListClear, gettingCoachingListFailed, gettingCoachingListLoading, gettingCoachingListSuccess } from './action/Coaching/CoachingSlice'
 
 export const actionAPI = {
     getUsers, 
@@ -29,5 +31,15 @@ export const actionAPI = {
     gettingFormTemplateListLoading, 
     gettingFormTemplateListSuccess, 
     gettingFormTemplateListFailed, 
-    gettingFormTemplateListClear
+    gettingFormTemplateListClear,
+    getCoachingLookups, 
+    gettingCoachingLookupListClear, 
+    gettingCoachingLookupListFailed, 
+    gettingCoachingLookupListLoading, 
+    gettingCoachingLookupListSuccess,
+    getCoaching, 
+    gettingCoachingListClear, 
+    gettingCoachingListFailed, 
+    gettingCoachingListLoading, 
+    gettingCoachingListSuccess
 }

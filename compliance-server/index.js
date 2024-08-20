@@ -10,6 +10,8 @@ const roleRoute = require("./Routes/RoleRoute");
 const siteRoute = require("./Routes/SiteRoute");
 const LOBRoute = require("./Routes/LOBRoute");
 const FormTemplateRoute = require("./Routes/FormTemplateRoute");
+const CoachingLookupRoute = require("./Routes/CoachingLookupRoute");
+const CoachingRoute = require("./Routes/CoachingRoute");
 const { MONGO_URL, PORT } = process.env;
 
 mongoose
@@ -50,3 +52,5 @@ app.use("/", roleRoute);
 app.use("/", siteRoute);
 app.use("/", LOBRoute);
 app.use("/", FormTemplateRoute);
+app.use("/", CoachingLookupRoute);
+app.use("/", CoachingRoute);

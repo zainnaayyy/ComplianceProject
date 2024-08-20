@@ -10,11 +10,14 @@ import {
   Table,
   Tag,
   Typography,
+  Upload,
 } from "antd";
 import { useEffect, useState } from "react";
-import { FaEye, FaPen, FaCheck, FaTrash, FaSquareXmark } from "react-icons/fa6";
+import { FaEye, FaPen, FaCheck, FaTrash, FaSquareXmark, FaFileImport, FaFileArrowUp, FaFileExport } from "react-icons/fa6";
 import {
   actionAPI,
+  blobValidation,
+  isEmpty,
   url,
   useAuth,
   useSharedDispatcher,
@@ -22,6 +25,7 @@ import {
 } from "@/shared";
 import ModalComponent from "@/components/ModalComponent";
 import AddUserModal from '@/components/AddUserModal';
+import * as XLSX from 'xlsx';
 
 const Users = () => {
   const [form] = Form.useForm();
@@ -50,9 +54,12 @@ const Users = () => {
   ]);
   const [sitesArray, setSitesArray] = useState([]);
   const [LOBsArray, setLOBsArray] = useState([]);
+  const [rolesArray, setRolesArray] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [isAddUserModalOpen, setIsAddUserModalOpen] = useState(false);
+  const [file, setFile] = useState(null);
+  const [percentage, setPercentage] = useState(0);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -91,14 +98,19 @@ const Users = () => {
       }));
       setLOBsArray(lobOptions);
     }
-  }, [users, sites, LOBs]);
+
+    if (Roles) {
+      const roleOptions = Roles.map((role) => ({
+        value: role._id,
+        label: role.name,
+      }));
+      setRolesArray(roleOptions);
+    }
+  }, [users, sites, LOBs, Roles]);
 
   const isEditing = (record) => record === editingKey;
   const edit = (record) => {
-    form.setFieldsValue({
-      ...record,
-      roles: record.roles.map((role) => role._id), // Ensure roles are set correctly
-    });
+    form.setFieldsValue(record);
     setEditingKey(record._id);
   };
 
@@ -152,6 +164,7 @@ const Users = () => {
   };
 
   const handleDelete = (id) => {
+    setLoading(true);
     const myHeaders = new Headers();
     myHeaders.append('Content-Type', 'application/json');
     myHeaders.append('Authorization', 'Bearer ' + token);
@@ -219,6 +232,22 @@ const Users = () => {
       render: (id, record) => {
         const site = sites?.length && sites.find((val) => val._id === id);
         return site?.name;
+      },
+    },
+    {
+      title: 'Roles',
+      dataIndex: 'roles',
+      key: 'roles',
+      width: 50,
+      editable: true,
+      render: (id, record) => {
+        const selectedRoles = [];
+        Roles?.length &&
+          record.roles.forEach((role, index) => {
+            const roles = Roles?.find((val) => val._id === role);
+            if (roles) selectedRoles.push(roles.name);
+          });
+        return selectedRoles.join(', ');
       },
     },
     {
@@ -317,7 +346,8 @@ const Users = () => {
         inputType:
           col.dataIndex === 'status' ||
           col.dataIndex === 'LOB' ||
-          col.dataIndex === 'site'
+          col.dataIndex === 'site'||
+          col.dataIndex === 'roles'
             ? 'select'
             : 'text',
         dataIndex: col.dataIndex,
@@ -357,8 +387,11 @@ const Users = () => {
               ? LOBsArray
               : dataIndex === 'status'
               ? statusArray
+              : dataIndex === 'roles'
+              ? rolesArray
               : null
           }
+          mode={ dataIndex === 'roles' ? "multiple" : "" }
         />
       ) : (
         <Input />
@@ -433,11 +466,161 @@ const Users = () => {
     setIsModalOpen(true);
   };
 
+  const handleFileChange = async(file, onProgress, onSuccess, onError) => {
+    try {
+      var allowedTypes = /\.(xlsx)$/i
+      if (!allowedTypes.test(file?.name)) {
+        message.error('Allowed formats is XLSX only')
+        onError();
+        return;
+      }
+      else if (file.size > 10000000) {
+        message.error('File size should be less than 10 mbs')
+        onError();
+        return;
+      }
+      setFile(file)
+      onSuccess()
+    } catch (e) {
+      console.log('upload error', e);
+      onError();
+    }
+  };
+
+  const importUserData = async() => {
+    // Read the file as an ArrayBuffer
+    const buffer = await file.arrayBuffer();
+  
+    // Parse the buffer into a workbook
+    const workbook = XLSX.read(buffer);
+
+    // Get the first sheet's name
+    const sheetName = workbook.SheetNames[0];
+
+    // Get the worksheet
+    const worksheet = workbook.Sheets[sheetName];
+
+    // Convert the worksheet to JSON
+    const jsonData = XLSX.utils.sheet_to_json(worksheet);
+    
+    // Iterate through the JSON data and save each record to the database
+    let i = 0;
+    for (const record of jsonData) {
+      let saved = await addRecordToDatabase(record);
+      if(!saved) break
+      setPercentage((++i / jsonData.length) * 100);
+    }
+    setLoading(false);
+    setFile(null)
+    setPercentage(0);
+    dispatcher(actionAPI.getUsers(token));
+  }
+
+  const addRecordToDatabase = async (rec) => {
+    setLoading(true);
+    if (typeof rec.roleIds === 'string') {
+      try {
+          rec.roleIds = JSON.parse(rec.roleIds);
+      } catch (error) {
+          console.error('Error parsing roleIds:', error);
+          message.error('Invalid roleIds format');
+          setLoading(false);
+          return false;
+      }
+    }
+    try {
+      const response = await fetch(url + '/addUser', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(rec),
+      });
+
+      const result = await response.json();
+      if (result?.success) {
+        message.success(result.message);
+        return true
+      } else {
+        message.error(result.message);
+        return false
+      }
+    } catch (error) {
+      message.error('An error occurred while adding the user');
+      setLoading(false);
+    }
+  };
+
+  async function fetchData(apiUrl) {
+    try {
+        const response = await fetch(apiUrl, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+          },
+        });
+        if (!response.ok) {
+            throw new Error(`Error fetching data from ${apiUrl}`);
+        }
+        return await response.json();
+    } catch (error) {
+        console.error(error);
+        return [];
+    }
+  }
+
+  async function downloadFiles() {
+    setLoading(true);
+      const lobsApiUrl = url+'/getAllLOBs';
+      const sitesApiUrl = url+'/getAllSites';
+      const rolesApiUrl = url+'/getAllRoles';
+
+      const lobs = await fetchData(lobsApiUrl);
+      const sites = await fetchData(sitesApiUrl);
+      const roles = await fetchData(rolesApiUrl);
+      setLoading(false);
+      const data = [
+          ['Category', 'ID', 'Name'], // Headers
+          ...lobs.lobs.map(lob => ['LOB', lob._id, lob.name]),
+          ...sites.sites.map(site => ['Site', site._id, site.name]),
+          ...roles.roles.map(role => ['Role', role._id, role.name])
+      ];
+
+      const worksheet = XLSX.utils.aoa_to_sheet(data);
+      const workbook = XLSX.utils.book_new();
+
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'Data');
+
+      const workbookBinary = XLSX.write(workbook, { bookType: 'xlsx', type: 'binary' });
+      const blob = new Blob([s2ab(workbookBinary)], { type: 'application/octet-stream' });
+
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'lookupData.xlsx';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      const linkk = document.createElement('a');
+      linkk.href = '/userData.xlsx';
+      linkk.download = ('/userData.xlsx').split('/').pop(); // Use the file name as download name
+      document.body.appendChild(linkk);
+      linkk.click();
+      document.body.removeChild(linkk);
+  }
+
+  function s2ab(s) {
+      const buf = new ArrayBuffer(s.length);
+      const view = new Uint8Array(buf);
+      for (let i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xff;
+      return buf;
+  }
   return (
     <div>
       <div className='flex justify-between'>
         <div className='text-3xl p-2'>Users Table </div>
-        <div className='flex'>
+        <div className='flex pt-1'>
           <div class='group/nui-input relative'>
             <Input.Search
               allowClear
@@ -474,7 +657,7 @@ const Users = () => {
               className='text-dark-muted-600 placeholder:text-dark-muted-300 dark:text-black dark:placeholder:text-dark-muted-500 peer w-full font-sans transition-all duration-300 disabled:cursor-not-allowed disabled:opacity-75 text-sm leading-5 rounded'
             />
           </div>
-          <div className='flex space-x-2 px-4'>
+          <div className='flex px-2'>
             <Button
               className='nui-focus border-dark-muted-300 dark:border-dark-muted-700 text-white focus:ring-4 focus:ring-dark-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none dark:focus:ring-dark-primary-800 bg-dark-primary'
               type='primary'
@@ -482,6 +665,44 @@ const Users = () => {
               onClick={() => setIsAddUserModalOpen(true)}
             >
               Add Users
+            </Button>
+          </div>
+          <div className='flex'>
+            <Button
+              className='nui-focus border-dark-muted-300 dark:border-dark-muted-700 text-white focus:ring-4 focus:ring-dark-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none dark:focus:ring-dark-primary-800 bg-dark-primary'
+              type='primary'
+              size='large'
+              icon={<FaFileExport />}
+              disabled={loading}
+              onClick={downloadFiles}
+            >
+              Download Template
+            </Button>
+          </div>
+          <div className='flex'>
+            <Upload name="upload" customRequest={({file, onProgress, onSuccess, onError}) => handleFileChange(file, onProgress, onSuccess, onError)} maxCount={1} fileList={!isEmpty(file) ? [file] : null} onRemove={() => setFile(null)}>
+              <Button
+                className='nui-focus border-dark-muted-300 dark:border-dark-muted-700 text-white focus:ring-4 focus:ring-dark-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none dark:focus:ring-dark-primary-800 bg-dark-primary'
+                type='primary'
+                size='large'
+                icon={<FaFileArrowUp />}
+                disabled={loading}
+              >
+                Upload CSV
+              </Button>
+            </Upload>
+          </div>
+          <div className='flex'>
+            <Button
+              className='nui-focus border-dark-muted-300 dark:border-dark-muted-700 text-white focus:ring-4 focus:ring-dark-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none dark:focus:ring-dark-primary-800 bg-dark-primary'
+              type='primary'
+              size='large'
+              icon={<FaFileImport />}
+              loading={loading}
+              onClick={importUserData}
+              disabled={!file}
+            >
+              Import{loading ? 'ing' : ' '}Users {loading ? percentage+'%' : ''}
             </Button>
           </div>
         </div>
@@ -501,7 +722,7 @@ const Users = () => {
           //   x: 1500,
           //   y: 300,
           // }}
-          loading={usersLoading || sitesLoading || LOBsLoading || loading}
+          loading={usersLoading || sitesLoading || LOBsLoading || RolesLoading || loading}
           pagination={{
             onChange: cancel,
           }}

@@ -104,7 +104,7 @@ const FormTemplate = () => {
     <div>
       <div className="flex justify-between">
         <div className="text-3xl p-2">Forms</div>
-        <div className="flex">
+        <div className="flex pt-1">
           <div class="group/nui-input relative">
             <Input.Search
               allowClear

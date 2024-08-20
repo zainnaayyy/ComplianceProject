@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit"
-import {UserData, SiteData ,LOBData, RolesData, FormTemplateData} from "./action"
+import {UserData, SiteData ,LOBData, RolesData, FormTemplateData, CoachingLookupsData, CoachingData} from "./action"
 
 export const Store = configureStore({
     reducer: {
@@ -7,6 +7,8 @@ export const Store = configureStore({
         SiteData,
         LOBData,
         RolesData,
-        FormTemplateData
+        FormTemplateData,
+        CoachingLookupsData,
+        CoachingData
     },
 })

@@ -71,9 +71,9 @@ const DashboardPage = async () => {
             <ColumnChart />
           </div>
         </div>
-        {/* <div className='mt-10'>
+        <div className='mt-10'>
           <ColumnRotatedChart />
-        </div> */}
+        </div>
       </div>
     </div>
   );
