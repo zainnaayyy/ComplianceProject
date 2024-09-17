@@ -204,6 +204,7 @@ const ModalComponent = ({
                 afterOpenChange: (visible) => !visible && setPreviewImage(''),
               }}
               src={previewImage}
+              alt="uploaded-image"
             />
           ) : null}
         </Flex>

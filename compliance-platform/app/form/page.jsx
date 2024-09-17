@@ -162,6 +162,7 @@ const FormTemplate = () => {
                   loading={loading}
                   actions={[
                     <Typography.Link
+                      key={"edit"+i}
                       disabled={loading}
                       onClick={() => onEdit(template)}
                     >
@@ -170,7 +171,7 @@ const FormTemplate = () => {
                         key="edit"
                       />
                     </Typography.Link>,
-                    <Typography.Link disabled={loading} onClick={() => handleDelete(template._id)}>
+                    <Typography.Link key={'trash'+i} disabled={loading} onClick={() => handleDelete(template._id)}>
                       <FaTrash
                         className="text-red-600 hover:text-red-800"
                         key="delete"
@@ -195,17 +196,19 @@ const FormTemplate = () => {
               );
             }) : formTemplateLoading ?
             <Card
+                  key={'loading'}
                   loading={true}
                   actions={[
                     <Typography.Link
                       disabled={true}
+                      key={"disabled-edit"}
                     >
                       <FaPen
                         className="text-dark-primary hover:text-dark-primary-700"
                         key="edit"
                       />
                     </Typography.Link>,
-                    <Typography.Link disabled={true}>
+                    <Typography.Link disabled={true} key={"disabled-trash"}>
                       <FaTrash
                         className="text-red-600 hover:text-red-800"
                         key="delete"

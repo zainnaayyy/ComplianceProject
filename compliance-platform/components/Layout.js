@@ -84,6 +84,7 @@ const Layout = ({ children }) => {
           <div className="flex flex-col sm:flex-row h-screen w-screen overflow-y-hidden">
             <div className="flex justify-center items-center sm:hidden h-24 w-full">
               <img src="/logow.svg" alt="logo" className="w-20 py-1" />
+              <Image width={200} height={200} src="/logow.svg" alt="logo" className="w-20 py-1" />
             </div>
             <div className="w-screen sm:w-1/2 flex flex-col justify-center items-center">
               <div className="flex flex-col items-center mt-12">

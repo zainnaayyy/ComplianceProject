@@ -4,6 +4,7 @@ import { Dropdown } from "antd";
 import { FaBoxesPacking, FaBuilding, FaIdCard, FaPowerOff, FaSitemap } from "react-icons/fa6";
 import { actionAPI, useSharedSelector, useSharedDispatcher, useAuth } from "@/shared";
 import LookupsDrawer from "./Drawers/LookupsDrawer";
+import Image from "next/image";
 
 const Navbar = ({handleToggleSideBar, isSideBar, handleThemeToggle, theme, logout, token}) => {
   const dispatcher = useSharedDispatcher()
@@ -190,13 +191,16 @@ const Navbar = ({handleToggleSideBar, isSideBar, handleThemeToggle, theme, logou
                 aria-expanded='false'
               >
                 <div className='relative inline-flex h-9 w-9 items-center justify-center rounded-full'>
-                  <img
+                  <Image
+                    width={200}
+                    height={200}
                     src={
                       user.profileImage
                         ? user.profileImage
                         : 'https://tairo.cssninja.io/img/avatars/2.svg'
                     }
                     className='max-w-full max-h-full rounded-full object-cover shadow-sm dark:border-transparent'
+                    alt="profile-image"
                   />
                 </div>
               </button>
