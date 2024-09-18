@@ -22,9 +22,10 @@ mongoose
   .then(() => console.log("MongoDB is  connected successfully"))
   .catch((err) => console.error(err));
 
-app.listen(PORT, () => {
-  console.log(`Server is listening on port ${PORT}`);
-});
+// app.listen(PORT, () => {
+//   console.log(`Server is listening on port ${PORT}`);
+// });
+app.listen(PORT, '0.0.0.0');
 
 // app.use(
 //   cors({
