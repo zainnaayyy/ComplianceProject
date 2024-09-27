@@ -86,13 +86,10 @@ export function AuthProvider({ children }) {
         "Authorization": `Bearer ${token}`
       },
     });
-    if (response.status === 200) {
       setIsValidToken(false);
       setToken(null);
       setUser(null);
       router.push("/");
-    }
-    return false;
   };
 
   const updateToken = async () => {
